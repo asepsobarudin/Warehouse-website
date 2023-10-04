@@ -625,10 +625,6 @@ video {
   display: none;
 }
 
-.h-\[30px\] {
-  height: 30px;
-}
-
 .h-\[40px\] {
   height: 40px;
 }
@@ -770,13 +766,13 @@ video {
   background-color: rgb(220 38 38 / var(--tw-bg-opacity));
 }
 
+.bg-transparent {
+  background-color: transparent;
+}
+
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-transparent {
-  background-color: transparent;
 }
 
 .object-cover {
@@ -1496,7 +1492,8 @@ a:active {
 
 .product_container {
   display: flex;
-  min-height: 100%;
+  height: -moz-max-content;
+  height: max-content;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: center;

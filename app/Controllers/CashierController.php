@@ -15,12 +15,8 @@ class CashierController extends BaseController
 
     public function index()
     {
-        $pager = \Config\Services::pager();
-
         $data = [
             'title' => 'Dashboard',
-            'goods' => $this->Goods->getAll(),
-            'pager' => $pager
         ];
         return view('pages/home_pages', $data);
     }

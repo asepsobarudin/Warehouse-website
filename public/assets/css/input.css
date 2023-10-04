@@ -234,7 +234,7 @@ a:active {
 }
 
 .product_container {
-  @apply flex justify-center items-start flex-wrap gap-2 min-h-full;
+  @apply flex justify-center items-start flex-wrap gap-2 h-max;
 }
 
 .product_container .product_card {

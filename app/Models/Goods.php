@@ -40,10 +40,10 @@ class Goods extends Model
     protected $afterDelete    = [];
 
     public function getAll(){
-        return $this->orderBy('id', 'desc')->paginate(20);
+        return $this->orderBy('created_at', 'desc')->paginate(20);
     }
 
     public function search($search) {
-        return $this->like("name_goods", $search)->paginate(20);
+        return $this->like("name_goods", $search)->orderBy('created_at', 'desc')->paginate(20);
     }
 }

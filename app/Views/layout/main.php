@@ -12,19 +12,11 @@
 
  <body>
    <?= $this->renderSection('content'); ?>
+
    <script>
      paginate('<?= base_url() ?>', '<?= base_url() ?>')
 
      const page = document.getElementById("block_ctn")
-
-     function paginateButton(link) {
-       paginate(link, '<?= base_url() ?>')
-
-       page.scrollTo({
-         top: 0,
-         behavior: "smooth"
-       })
-     }
 
      function paginateButton(link) {
        paginate(link, '<?= base_url() ?>')
@@ -38,7 +30,6 @@
        })
      }
 
-
      let typingTimer;
      const doneTypingInterval = 1000;
      $(document).ready(function() {
@@ -46,6 +37,8 @@
        searchInput.on("input", function() {
          clearTimeout(typingTimer);
          document.getElementById("product_container").innerHTML = '<img src="<?= base_url('assets/icons/loading.png') ?>" alt="loading" class="bg-transparent rounded-full h-[40px] w-[40px] relative z-20 flex justify-center items-center animate-spin">';
+         document.getElementById("paginate_button").innerHTML = "";
+         document.getElementById("paginate_text").innerHTML = "";
          typingTimer = setTimeout(function() {
            const keyword = searchInput.val();
            if (keyword) {
@@ -62,6 +55,10 @@
        const keyword = searchInput.value
        Search(link, '<?= base_url() ?>', keyword)
        page.scrollTo({
+         top: 0,
+         behavior: "smooth"
+       })
+       window.scrollTo({
          top: 0,
          behavior: "smooth"
        })
