@@ -1,17 +1,27 @@
 function productCard(image, nameGoods, price, storeStok, kodeGoods) {
   return `<div class="product_card">
-            <img src="${image}/assets/images/image1.jpeg" alt="image">
+            <div class="con_image">
+              <img src="${image}/assets/images/image1.jpeg" alt="image" class="images">
+            </div>
             <div class="card_text">
               <a href="#">${nameGoods}</a>
               <div>
-                <span>${price}</span>
-                <span>/${storeStok}</span>
+                <span>Rp. ${price}</span>
+                <span>(${storeStok})</span>
               </div>
             </div>
             <button onclick="addCart('${kodeGoods}')">
               <img src="${image}/assets/icons/add_cart.png" alt="add_cart">
             </button>
           </div>`;
+}
+
+function loading() {
+  document.getElementById("paginate_button").innerHTML = "";
+  document.getElementById("paginate_text").innerHTML = "";
+  return `<dialog open class="dialog_loading">
+  <img src="${baseURL}assets/icons/loading.png" alt="loading" class="loading">
+</dialog>`;
 }
 
 function paginateBtn(
@@ -54,7 +64,8 @@ function paginateBtn(
     `;
 }
 
-async function paginate(link, image) {
+async function paginate(link) {
+  document.getElementById("product_container").innerHTML = loading();
   try {
     const response = await fetch(link + "/product");
 
@@ -64,40 +75,38 @@ async function paginate(link, image) {
 
     const data = await response.json();
 
-    if (!data || !data.length) {
-      document.getElementById("product_container").innerHTML =
-        "Data tidak ditemukan ";
-    }
+    if (data) {
+      setTimeout(() => {
+        document.getElementById("product_container").innerHTML = "";
+        data.goods.map(async (list) => {
+          const price = list.price;
+          const idr = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+          const productCon = document.getElementById("product_container");
+          productCon.innerHTML += productCard(
+            baseURL,
+            list.name_goods,
+            idr,
+            list.store_stok,
+            list.kode_goods
+          );
+        });
 
-    if (data.code != 404) {
-      document.getElementById("product_container").innerHTML = "";
-
-      data.goods.map(async (list) => {
-        const productCon = document.getElementById("product_container");
-        productCon.innerHTML += productCard(
-          image,
-          list.name_goods,
-          list.price,
-          list.store_stok,
-          list.kode_goods
+        paginateBtn(
+          data.backPage,
+          data.nextPage,
+          data.currentPage,
+          data.pageCount,
+          data.totalItems,
+          false
         );
-      });
-
-      paginateBtn(
-        data.backPage,
-        data.nextPage,
-        data.currentPage,
-        data.pageCount,
-        data.totalItems,
-        false
-      );
+      }, 1000);
     }
   } catch (error) {
     document.getElementById("product_container").innerHTML = "Server Error 500";
   }
 }
 
-function Search(link, image, keyword) {
+function Search(link, keyword) {
   const dataToSend = { search: keyword };
   fetch(link, {
     method: "POST",
@@ -106,31 +115,33 @@ function Search(link, image, keyword) {
     },
     body: JSON.stringify(dataToSend),
   })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.goods.length != 0) {
-        document.getElementById("product_container").innerHTML = "";
-        data.goods.map(async (list) => {
-          const productCon = document.getElementById("product_container");
-          productCon.innerHTML += productCard(
-            image,
-            list.name_goods,
-            list.price,
-            list.store_stok,
-            list.kode_goods
+    .then(async (response) => response.json())
+    .then(async (data) => {
+      if (data && data.goods.length != 0) {
+        setTimeout(async () => {
+          document.getElementById("product_container").innerHTML = "";
+          data.goods.map(async (list) => {
+            const productCon = document.getElementById("product_container");
+            productCon.innerHTML += productCard(
+              baseURL,
+              list.name_goods,
+              list.price,
+              list.store_stok,
+              list.kode_goods
+            );
+          });
+          paginateBtn(
+            data.backPage,
+            data.nextPage,
+            data.currentPage,
+            data.pageCount,
+            data.totalItems,
+            true
           );
-        });
-        paginateBtn(
-          data.backPage,
-          data.nextPage,
-          data.currentPage,
-          data.pageCount,
-          data.totalItems,
-          true
-        );
+        }, 1000);
       } else {
         document.getElementById("product_container").innerHTML =
-          "Data tidak ditemukan";
+          "Barang Tidak Ada";
         document.getElementById("paginate_button").innerHTML = "";
         document.getElementById("paginate_text").innerHTML = "";
       }

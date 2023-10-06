@@ -15,41 +15,42 @@ class Goods extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'kode_goods' => [
+            'id_category' => [
                 'type' => 'INT',
-                'constraint' => 7
+                'null' => false
+            ],
+            'code_goods' => [
+                'type' => 'VARCHAR',
+                'constraint' => 255,
+                'null' => false
             ],
             'name_goods' => [
                 'type' => 'VARCHAR',
-                'constraint' => '255'
+                'constraint' => '255',
+                'null' => false
             ],
             'description' => [
                 'type' => 'TEXT',
                 'null' => true
             ],
-            'previous_price' => [
-                'type' => 'INT',
-                'constraint' => 10,
-                'null' => true
-            ],
             'price' => [
                 'type' => 'INT',
-                'constraint' => 10,
                 'null' => false
+            ],
+            'previous_price' => [
+                'type' => 'INT',
+                'null' => true
             ],
             'store_stok' => [
                 'type' => 'INT',
-                'constraint' => 10,
                 'null' => true
             ],
             'warehouse_stok' => [
                 'type' => 'INT',
-                'constraint' => 10,
                 'null' => true
             ],
             'minimum_stok' => [
                 'type' => 'INT',
-                'constraint' => 10,
                 'null' => true
             ],
             'images' => [
@@ -58,12 +59,10 @@ class Goods extends Migration
                 'null' => true
             ],
             'created_at' => [
-                'type'           => 'DATETIME',
-                'null'           => true,
+                'type' => 'DATETIME',
             ],
             'updated_at' => [
-                'type'           => 'DATETIME',
-                'null'           => true,
+                'type' => 'DATETIME',
             ]
         ]);
 
@@ -76,4 +75,3 @@ class Goods extends Migration
         $this->forge->dropTable('goods');
     }
 }
- 

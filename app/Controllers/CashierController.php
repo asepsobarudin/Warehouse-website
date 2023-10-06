@@ -3,35 +3,38 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Category;
 use App\Models\Goods;
 
 class CashierController extends BaseController
 {
     protected $Goods;
+    protected $Category;
     public function __construct()
     {
         $this->Goods = new Goods();
+        $this->Category = new Category();
     }
 
     public function index()
     {
         $data = [
-            'title' => 'Dashboard',
+            'title' => 'Cashier',
         ];
-        return view('pages/home_pages', $data);
+        return view('pages/cashier/cashier_page', $data);
     }
 
     public function product()
     {
         $pager = \Config\Services::pager();
-
         $data = [
-            'goods' => $this->Goods->getAll(),
+            'goods' => $this->Goods->getPaginate(),
             'currentPage' => $pager->getCurrentPage(),
             'pageCount'  => $pager->getPageCount(),
             'totalItems' => $pager->getTotal(),
             'nextPage' => $pager->getNextPageURI(),
             'backPage' => $pager->getPreviousPageURI(),
+            'category' => $this->Category->getAll(),
         ];
 
         $this->response->setContentType('application/json');

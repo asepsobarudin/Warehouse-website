@@ -6,7 +6,7 @@ class Home extends BaseController
 {
     public function index(): string
     {
-        return view('pages/home_pages', [
+        return view('pages/cashier/dashboard_page', [
             'title' => 'Dashboard'
         ]);
     }

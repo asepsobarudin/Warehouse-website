@@ -14,12 +14,14 @@
    <?= $this->renderSection('content'); ?>
 
    <script>
-     paginate('<?= base_url() ?>', '<?= base_url() ?>')
+     const baseURL = '<?= base_url() ?>'
+     paginate(baseURL)
 
      const page = document.getElementById("block_ctn")
 
      function paginateButton(link) {
-       paginate(link, '<?= base_url() ?>')
+       document.getElementById("product_container").innerHTML = loading();
+       paginate(link)
        page.scrollTo({
          top: 0,
          behavior: "smooth"
@@ -36,15 +38,13 @@
        const searchInput = $("#search");
        searchInput.on("input", function() {
          clearTimeout(typingTimer);
-         document.getElementById("product_container").innerHTML = '<img src="<?= base_url('assets/icons/loading.png') ?>" alt="loading" class="bg-transparent rounded-full h-[40px] w-[40px] relative z-20 flex justify-center items-center animate-spin">';
-         document.getElementById("paginate_button").innerHTML = "";
-         document.getElementById("paginate_text").innerHTML = "";
          typingTimer = setTimeout(function() {
            const keyword = searchInput.val();
            if (keyword) {
-             Search('<?= base_url("/search") ?>', '<?= base_url() ?>', keyword)
+             document.getElementById("product_container").innerHTML = loading();
+             Search(`${baseURL}/search`, keyword)
            } else {
-             paginate('<?= base_url() ?>', '<?= base_url() ?>')
+             paginate(baseURL)
            }
          }, doneTypingInterval);
        });
@@ -52,8 +52,9 @@
 
      function paginateSearchBtn(link) {
        const searchInput = document.getElementById("search")
+       document.getElementById("product_container").innerHTML = loading();
        const keyword = searchInput.value
-       Search(link, '<?= base_url() ?>', keyword)
+       Search(link, keyword)
        page.scrollTo({
          top: 0,
          behavior: "smooth"
@@ -63,6 +64,22 @@
          behavior: "smooth"
        })
      }
+
+     const btn_nav = document.getElementById('btn_nav')
+     const navbar = document.getElementById('navbar')
+
+     function openNav() {
+       if (btn_nav.checked == true) {
+         navbar.classList.remove('not_active');
+         navbar.classList.add('active');
+       } else {
+         navbar.classList.remove('active');
+         navbar.classList.add('not_active');
+       }
+     }
+     btn_nav.addEventListener('click', (e) => {
+       openNav();
+     })
    </script>
  </body>
 
