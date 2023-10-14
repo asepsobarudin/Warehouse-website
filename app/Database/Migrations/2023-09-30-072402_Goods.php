@@ -15,47 +15,47 @@ class Goods extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'id_category' => [
+            'goods_category' => [
                 'type' => 'INT',
                 'null' => false
             ],
-            'code_goods' => [
+            'goods_code' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
                 'null' => false
             ],
-            'name_goods' => [
+            'goods_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
                 'null' => false
             ],
-            'description' => [
+            'goods_description' => [
                 'type' => 'TEXT',
                 'null' => true
             ],
-            'price' => [
+            'goods_price' => [
                 'type' => 'INT',
                 'null' => false
             ],
-            'previous_price' => [
+            'goods_prev_price' => [
                 'type' => 'INT',
                 'null' => true
             ],
-            'store_stok' => [
+            'goods_stok' => [
                 'type' => 'INT',
                 'null' => true
             ],
-            'warehouse_stok' => [
+            'goods_min_stok' => [
                 'type' => 'INT',
                 'null' => true
             ],
-            'minimum_stok' => [
-                'type' => 'INT',
-                'null' => true
-            ],
-            'images' => [
+            'goods_images' => [
                 'type' => 'VARCHAR',
                 'constraint' => '255',
+                'null' => true
+            ],
+            'goods_users' => [
+                'type' => 'INT',
                 'null' => true
             ],
             'created_at' => [
@@ -67,7 +67,7 @@ class Goods extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->createTable('goods', true);
+        $this->forge->createTable('goods');
     }
 
     public function down()

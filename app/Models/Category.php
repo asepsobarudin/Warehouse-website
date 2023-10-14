@@ -44,10 +44,14 @@ class Category extends Model
     protected $afterDelete    = [];
 
     public function getAll () {
-        return $this->orderBy('created_at', 'desc')->paginate(null);
+        return $this->findAll();
     }
 
     public function getCategory ($category) {
         return $this->where(['category_name'=> $category])->first();
+    }
+
+    public function getCategoryById ($id) {
+        return $this->where(['id'=> $id])->first();
     }
 }

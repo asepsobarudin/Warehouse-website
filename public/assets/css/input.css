@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply md:overflow-hidden bg-black/5;
+  @apply bg-black/5;
 }
 
 body::-webkit-scrollbar,
@@ -25,14 +25,13 @@ body::-webkit-scrollbar-thumb,
   @apply bg-black/30 rounded-full;
 }
 
-.cart_container::-webkit-scrollbar-thumb,
 .cart_list::-webkit-scrollbar-thumb {
   @apply bg-green-600/80 rounded-full;
 }
 
 /* Navbar */
 nav.navbar {
-  @apply hidden lg:block bg-white h-screen rounded-r-md relative shadow-md;
+  @apply hidden lg:block bg-white h-screen rounded-r-md fixed left-0 z-10 shadow-md;
 }
 
 nav.active {
@@ -43,7 +42,7 @@ nav.active {
   }
 
   & div.profile {
-    @apply w-[150px] h-[55px];
+    @apply w-[150px] h-[55px] justify-start;
   }
   & h2.tit_company {
     @apply w-[80px] relative opacity-100;
@@ -72,17 +71,17 @@ nav.not_active {
   }
 
   & div.profile {
-    @apply w-[55px] h-[55px] relative;
+    @apply w-[55px] h-[55px] relative justify-center;
   }
   & h2.tit_company {
-    @apply w-[0px] absolute -z-10 overflow-hidden opacity-0;
+    @apply w-[0px] h-[0px] absolute -z-10 overflow-hidden opacity-0;
   }
 
   & a.menu {
     @apply w-[40px] relative;
   }
   & h2.tit_menu {
-    @apply w-[0px] absolute -z-10 overflow-hidden;
+    @apply w-[0px] absolute left-[50px] -z-10 overflow-hidden;
   }
 
   & .btm_menu {
@@ -93,43 +92,19 @@ nav.not_active {
   }
 }
 
+#main {
+  @apply lg:ml-[75px] ease-in-out duration-300;
+}
+
+#main.active {
+  @apply lg:ml-[180px]
+}
+
 .navbar .nav_ct .nav_opt a:hover,
 a:active {
   @apply bg-red-700;
 }
 
-/* Mobile */
-.navbar_mobile {
-  @apply flex lg:hidden justify-center items-center h-[60px] fixed bottom-0 left-0 z-10 w-full bg-white;
-}
-
-.navbar_mobile > .nav_menu {
-  @apply container flex justify-evenly items-center gap-2 h-full;
-}
-
-.navbar_mobile > .nav_menu a {
-  @apply flex justify-center items-center relative w-max h-full p-2;
-}
-
-.navbar_mobile > .nav_menu a img {
-  @apply w-[30px];
-}
-
-.navbar_mobile > .nav_menu a span {
-  @apply block h-1 rounded-full bg-black/50 absolute bottom-1 ease-in duration-200;
-}
-
-.navbar_mobile .nav_menu a .active {
-  @apply w-[20%];
-}
-
-.navbar_mobile .nav_menu a .non_active {
-  @apply w-[0%];
-}
-
-.navbar_mobile > .nav_menu a:hover span {
-  @apply w-[80%];
-}
 /* End Navbar */
 
 div.product_card {
@@ -139,7 +114,7 @@ div.product_card {
     @apply flex justify-center items-center w-full h-[200px] overflow-hidden;
   }
   & .images {
-    @apply object-cover w-full ease-in duration-200;
+    @apply object-contain h-full ease-in duration-200;
   }
   & .images:hover {
     @apply scale-110;
@@ -149,8 +124,9 @@ div.product_card {
     @apply p-2 flex flex-col gap-1;
   }
   & .card_text a {
-    @apply text-base font-medium duration-100 ease-in;
+    @apply text-base font-medium duration-100 ease-in bg-transparent;
   }
+
   & .card_text a:hover {
     @apply text-sky-800;
   }
@@ -158,10 +134,10 @@ div.product_card {
     @apply flex justify-start items-center gap-1;
   }
   & .card_text div span {
-    @apply font-medium;
+    @apply font-medium block;
   }
   & .card_text div span:nth-child(1) {
-    @apply text-green-700;
+    @apply text-green-700 text-xl;
   }
   & .card_text div span:nth-child(2) {
     @apply text-sm text-black/60;
@@ -180,35 +156,44 @@ div.product_card {
 
 div.paginate_text {
   @apply flex justify-center items-center gap-1 font-semibold text-black/70 text-sm;
-}
 
-div.paginate_text > span {
-  @apply block;
+  & span {
+    @apply block;
+  }
 }
 
 div.paginate_button {
   @apply flex justify-center items-center gap-2;
+
+  & button {
+    @apply flex justify-center items-center py-2 px-3 rounded-md  w-max  font-medium ease-in duration-100;
+  }
+
+  & button.back {
+    @apply bg-black/20 hover:bg-black/30 text-black;
+  }
+
+  & button.next {
+    @apply bg-black hover:bg-black/80 text-white;
+  }
+} 
+
+div.loading {
+  @apply h-[80vh] flex justify-center items-center flex-col gap-2;
+
+  & h2 {
+    @apply text-lg font-semibold text-black/80;
+  }
+
+  & p {
+    @apply text-sm font-medium text-black/50;
+  }
 }
 
-div.paginate_button > button {
-  @apply flex justify-center items-center py-2 px-3 rounded-md  w-max  font-medium ease-in duration-100;
+div.loading > img.spiner {
+  @apply w-[40px] h-[40px] bg-transparent animate-spin;
 }
 
-div.paginate_button > button.back {
-  @apply bg-black/20 hover:bg-black/30 text-black;
-}
-
-div.paginate_button > button.next {
-  @apply bg-black hover:bg-black/80 text-white;
-}
-
-dialog.dialog_loading {
-  @apply bg-transparent;
-}
-
-img.loading {
-  @apply bg-transparent rounded-full h-[40px] w-[40px] relative z-20 flex justify-center items-center animate-spin;
-}
 
 details.data_pelangan > summary {
   list-style-type: none;
@@ -229,4 +214,24 @@ input::-webkit-inner-spin-button {
 
 .cartOpen {
   @apply w-full md:w-[800px];
+}
+
+.trix-button-group.trix-button-group--file-tools {
+  display:none;
+}
+
+div.description > ul > li:nth-child(n) {
+  @apply list-disc;
+}
+
+div.description > ol > li:nth-child(n) {
+  @apply list-decimal;
+}
+
+.trix-content > ul li:nth-child(n){
+  @apply list-disc;
+}
+
+.trix-content > ol li:nth-child(n){
+  @apply list-decimal;
 }

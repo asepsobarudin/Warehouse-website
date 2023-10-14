@@ -27,12 +27,18 @@ class CashierController extends BaseController
     public function product()
     {
         $pager = \Config\Services::pager();
+        
+        $lengthData = sizeof($this->Goods->getPaginate());
+        $nextURL = null;
+        if($lengthData != 0) {
+            $nextURL = $pager->getNextPageURI();
+        }
         $data = [
             'goods' => $this->Goods->getPaginate(),
             'currentPage' => $pager->getCurrentPage(),
             'pageCount'  => $pager->getPageCount(),
             'totalItems' => $pager->getTotal(),
-            'nextPage' => $pager->getNextPageURI(),
+            'nextPage' => $nextURL,
             'backPage' => $pager->getPreviousPageURI(),
             'category' => $this->Category->getAll(),
         ];
