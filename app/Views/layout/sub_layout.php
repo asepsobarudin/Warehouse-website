@@ -15,8 +15,8 @@
 <body class="flex flex-col justify-start items-center">
   <nav class="w-full h-[60px] bg-white flex justify-center items-center fixed top-0 z-10">
     <div class="container flex justify-between items-center gap-2 after:contents-[''] after:block px-2">
-      <a href="<?= $_SERVER['HTTP_REFERER'] ?>" class="p-2 w-[40px] h-[40px] block rounded-md hover:bg-black/10">
-        <img src="<?= base_url('assets/icons/arrow1.png') ?>" alt="arrow" class="w-full h-full object-cover rotate-180">
+      <a href="<?= base_url($link) ?>" class="p-1 w-[40px] h-[40px] block rounded-md hover:bg-black/10">
+        <img src="<?= base_url('assets/icons/arrow-right-s-line.svg') ?>" alt="arrow" class="w-full h-full object-cover rotate-180">
       </a>
       <h2 class="text-lg font-medium"><?= $title ?></h2>
     </div>
@@ -24,18 +24,6 @@
   <?= $this->renderSection('content'); ?>
 
   <script>
-    function preview() {
-      const cover = document.querySelector('#goods_images');
-      const imagePreview = document.querySelector('#imgPreview');
-
-      const fileCover = new FileReader();
-      fileCover.readAsDataURL(cover.files[0]);
-
-      fileCover.onload = function(e) {
-        imagePreview.src = e.target.result;
-      }
-    }
-
     $(document).ready(function() {
       const price = $("#goods_price");
       price.on("input", function() {
@@ -55,10 +43,12 @@
     }
     getPrice();
 
+    function alertDelete (name) {
+      if(confirm(`Apakah yakin ingin menghapus ${name}?`) == true){
+        return true;
+      }
+    }
 
-    document.addEventListener("trix-file-accept", function(event) {
-      event.preventDefault();
-    });
   </script>
 </body>
 

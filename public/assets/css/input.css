@@ -42,7 +42,7 @@ nav.active {
   }
 
   & div.profile {
-    @apply w-[150px] h-[55px] justify-start;
+    @apply w-[150px] h-[55px];
   }
   & h2.tit_company {
     @apply w-[80px] relative opacity-100;
@@ -52,14 +52,14 @@ nav.active {
     @apply w-[150px];
   }
   & h2.tit_menu {
-    @apply w-[100px] relative;
+    @apply w-[100px] relative opacity-100;
   }
 
   & .btm_menu {
     @apply w-[150px];
   }
-  & h2.btm_title {
-    @apply w-[60px] relative;
+  & .btm_title {
+    @apply w-[100px] relative left-0 opacity-100;
   }
 }
 
@@ -71,24 +71,24 @@ nav.not_active {
   }
 
   & div.profile {
-    @apply w-[55px] h-[55px] relative justify-center;
+    @apply w-[55px] h-[55px] relative;
   }
   & h2.tit_company {
-    @apply w-[0px] h-[0px] absolute -z-10 overflow-hidden opacity-0;
+    @apply w-[0px] absolute left-[50px] -z-10 overflow-hidden opacity-0;
   }
 
   & a.menu {
     @apply w-[40px] relative;
   }
   & h2.tit_menu {
-    @apply w-[0px] absolute left-[50px] -z-10 overflow-hidden;
+    @apply w-[0px] absolute left-[50px] -z-10 overflow-hidden opacity-0;
   }
 
   & .btm_menu {
     @apply w-[45px] relative;
   }
-  & h2.btm_title {
-    @apply w-[0px] absolute -z-10 overflow-hidden;
+  & .btm_title {
+    @apply w-[0px] absolute left-[50px] -z-10 overflow-hidden opacity-0;
   }
 }
 
@@ -97,7 +97,7 @@ nav.not_active {
 }
 
 #main.active {
-  @apply lg:ml-[180px]
+  @apply lg:ml-[180px];
 }
 
 .navbar .nav_ct .nav_opt a:hover,
@@ -106,51 +106,64 @@ a:active {
 }
 
 /* End Navbar */
+tbody.goods_table {
 
-div.product_card {
-  @apply w-[48.5%] lg:w-[24%] 2xl:w-[19%] bg-white rounded-md overflow-hidden relative shadow-md;
-
-  & .con_image {
-    @apply flex justify-center items-center w-full h-[200px] overflow-hidden;
-  }
-  & .images {
-    @apply object-contain h-full ease-in duration-200;
-  }
-  & .images:hover {
-    @apply scale-110;
+  & tr > td {
+    @apply border-b-2 p-2
   }
 
-  & .card_text {
-    @apply p-2 flex flex-col gap-1;
-  }
-  & .card_text a {
-    @apply text-base font-medium duration-100 ease-in bg-transparent;
+  & tr > td.tdLoading {
+    @apply border-0;
   }
 
-  & .card_text a:hover {
-    @apply text-sky-800;
-  }
-  & .card_text a div {
-    @apply flex justify-start items-center gap-1;
-  }
-  & .card_text div span {
-    @apply font-medium block;
-  }
-  & .card_text div span:nth-child(1) {
-    @apply text-green-700 text-xl;
-  }
-  & .card_text div span:nth-child(2) {
-    @apply text-sm text-black/60;
+  & tr > td:nth-child(1) {
+    & div.qrcode {
+      @apply flex flex-col justify-center items-center w-full h-full;
+
+      & div {
+        @apply w-full h-[80px];
+
+        & img {
+          @apply object-contain h-full w-full;
+        }
+      }
+
+      & span {
+        @apply text-[10px] font-semibold text-black block;
+      }
+    }
   }
 
-  & button {
-    @apply flex justify-center items-center absolute top-2 right-2 rounded-md bg-white/20 p-1 duration-100 ease-in z-0;
+  & tr > td:nth-child(2) {
+    & a  {
+      @apply font-medium text-black/80 ease-in-out duration-100;
+    }
+
+    & a:hover  {
+      @apply text-sky-600;
+    }
   }
-  & button:hover {
-    @apply bg-white/50;
+
+  & tr > td:nth-child(3) {
+    @apply font-medium text-center;
   }
-  & button img {
-    @apply w-[30px];
+
+  & tr > td:nth-child(4) {
+    @apply font-semibold text-start;
+  }
+
+  & tr > td:nth-child(5) {
+    & div {
+      @apply flex justify-center items-center;
+
+      & button {
+        @apply p-2 bg-green-600 hover:bg-green-700 ease-in-out duration-100 rounded-md;
+      }
+    }
+  }
+
+  & tr > td:nth-child(3) {
+    @apply text-center;
   }
 }
 
@@ -176,10 +189,10 @@ div.paginate_button {
   & button.next {
     @apply bg-black hover:bg-black/80 text-white;
   }
-} 
+}
 
 div.loading {
-  @apply h-[80vh] flex justify-center items-center flex-col gap-2;
+  @apply h-[70vh] flex justify-center items-center flex-col gap-2;
 
   & h2 {
     @apply text-lg font-semibold text-black/80;
@@ -191,16 +204,15 @@ div.loading {
 }
 
 div.loading > img.spiner {
-  @apply w-[40px] h-[40px] bg-transparent animate-spin;
+  @apply w-[40px] h-[40px] bg-transparent animate-spin fill-slate-500;
 }
 
-
-details.data_pelangan > summary {
+details.accordion > summary {
   list-style-type: none;
 }
 
-details.data_pelangan[open] > summary img {
-  @apply rotate-180;
+details.accordion[open] > summary img {
+  @apply -rotate-90;
 }
 
 input::-webkit-inner-spin-button {
@@ -214,24 +226,4 @@ input::-webkit-inner-spin-button {
 
 .cartOpen {
   @apply w-full md:w-[800px];
-}
-
-.trix-button-group.trix-button-group--file-tools {
-  display:none;
-}
-
-div.description > ul > li:nth-child(n) {
-  @apply list-disc;
-}
-
-div.description > ol > li:nth-child(n) {
-  @apply list-decimal;
-}
-
-.trix-content > ul li:nth-child(n){
-  @apply list-disc;
-}
-
-.trix-content > ol li:nth-child(n){
-  @apply list-decimal;
 }

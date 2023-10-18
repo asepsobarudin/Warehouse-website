@@ -2,7 +2,7 @@
   <div class="w-full h-max flex flex-col gap-2 px-2 pt-2 pb-[60px] lg:pb-2">
     <div class="flex flex-col gap-2">
       <div class="flex justify-center items-center gap-2 text-2xl font-medium h-max w-full opacity-80 mt-4">
-        <img src="<?= base_url("assets/icons/cart.png") ?>" alt="cart" class="w-[30px]">
+        <img src="<?= base_url("assets/icons/shopping-cart-line.svg") ?>" alt="cart" class="w-[30px]">
         <h2>Keranjang Belanja</h2>
       </div>
       <span class="block h-[2px] w-full bg-black/10 mb-2"></span>
@@ -10,9 +10,9 @@
         <h2>No Transaksi</h2>
         <input type="text" class="p-1 bg-white rounded-md outline-none border-2 focus:border-black/30" value="T-0000001" id="no_trans">
       </div>
-      <details class="p-2 bg-black/5 hover:bg-black/0 ease-in-out duration-100 rounded-md border-2 border-black/5 data_pelangan">
+      <details class="p-2 bg-black/5 hover:bg-black/0 ease-in-out duration-100 rounded-md border-2 border-black/5 accordion">
         <summary class="text-base font-semibold select-none flex items-center gap-2">
-          <img src="<?= base_url('assets/icons/arrow.png') ?>" alt="arrow" class="w-[30px] duration-200 ease-in-out">
+          <img src="<?= base_url('assets/icons/arrow-right-s-line.svg') ?>" alt="arrow" class="w-[30px] duration-200 ease-in-out rotate-90">
           <span>Tambahkan Data Pelanggan</span>
         </summary>
         <div class="py-4 flex flex-col gap-4">
@@ -79,12 +79,12 @@
         <h2>Rp. 500.000</h2>
       </div>
       <div class="flex justify-center items-center gap-2">
-        <button class="flex justify-center items-center gap-1 p-1 bg-red-600 hover:bg-red-700 w-[20%] text-white font-semibold rounded-md ease-in duration-100 mt-2">
-          <img src="<?= base_url("assets/icons/trash.png") ?>" alt="trash" class="w-[30px]">
+        <button class="flex justify-center items-center gap-1 p-2 bg-red-600 hover:bg-red-700 w-[20%] text-white font-semibold rounded-md ease-in duration-100 mt-2">
+          <img src="<?= base_url("assets/icons/delete-bin-line.svg") ?>" alt="trash" class="w-[30px]">
         </button>
-        <button class="flex justify-center items-center gap-1 p-1 bg-green-600 hover:bg-green-700 w-[80%] text-white font-semibold rounded-md ease-in duration-100 mt-2">
+        <button class="flex justify-center items-center gap-1 p-2 bg-green-600 hover:bg-green-700 w-[80%] text-white font-semibold rounded-md ease-in duration-100 mt-2">
           <span>Checkout</span>
-          <img src="<?= base_url("assets/icons/checkout.png") ?>" alt="checkout" class="w-[30px]">
+          <img src="<?= base_url("assets/icons/shopping-cart-line-white.svg") ?>" alt="checkout" class="w-[30px]">
         </button>
       </div>
     </div>

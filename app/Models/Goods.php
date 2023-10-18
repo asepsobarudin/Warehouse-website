@@ -14,15 +14,13 @@ class Goods extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'goods_category',
         'goods_code',
         'goods_name',
-        'goods_description',
         'goods_price',
         'goods_prev_price',
-        'goods_stok',
+        'goods_stok_toko',
+        'goods_stok_gudang',
         'goods_min_stok',
-        'goods_images',
     ];
 
     // Dates
@@ -36,11 +34,12 @@ class Goods extends Model
     protected $validationRules = [
         'goods_code' => 'is_unique[goods.goods_code]',
         'goods_name' => 'required|min_length[5]|max_length[255]',
-        'goods_category' => 'required',
         'goods_price' => 'required|min_length[3]|numeric',
         'goods_prev_price' => 'numeric',
-        'goods_stok' => 'min_length[1]|numeric',
-        'goods_images' => 'max_size[goods_images,5120]|is_image[goods_images]|mime_in[goods_images,image/png,image/jpeg,image/jpg,image/webp]'
+        'goods_stok_toko' => 'min_length[1]|numeric',
+        'goods_stok_gudang' => 'min_length[1]|numeric',
+        'goods_min_stok' => 'min_length[1]|numeric',
+        // 'goods_users' => 'required'
     ];
     protected $validationMessages   = [
         'goods_name' => [
@@ -48,25 +47,25 @@ class Goods extends Model
             'min_length' => 'Minimal panjang nama barang harus lebih 3 karakter!',
             'max_length' => 'Maksimal panjang nama barang adalah 255 karakter'
         ],
-        'goods_category' => [
-            'required' => 'Category tidak boleh kosong!'
-        ],
         'goods_price' => [
             'required' => 'Harga tidak boleh kosong!',
             'min_length' => 'Minimal harga Rp 100',
             'numeric' => 'Input Harus berupa angka!'
         ],
-        'goods_stok' => [
-            'min_length' => 'Minimal stok 1',
+        'goods_stok_toko' => [
+            'min_length' => 'Stok toko minimal 1!',
             'numeric' => 'Input Harus berupa angka!'
         ],
-        'goods_images' => [
-            'max_size' => 'File image tidak boleh lebih dari 5MB!',
-            'is_image' => 'Yang anda inputkan bukan file image jpg,jpeg,png!',
-            'mime_in' => 'Yang anda inputkan bukan file image jpg,jpeg,png!'
-        ]
+        'goods_stok_gudang' => [
+            'min_length' => 'Stok gudang minimal 1!',
+            'numeric' => 'Input Harus berupa angka!'
+        ],
+        'goods_min_stok' => [
+            'min_length' => 'Stok minimal barang 1!',
+            'numeric' => 'Input Harus berupa angka!'
+        ],
     ];
-    protected $skipValidation       = true;
+    protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
     // Callbacks
@@ -92,7 +91,15 @@ class Goods extends Model
 
     public function search($search)
     {
-        return $this->like("goods_name", $search)->orderBy('created_at', 'desc')->paginate(20);
+        $searchData = "";
+        if($search) {
+            $searchData = $this->like("goods_name", $search)->orderBy('created_at', 'desc')->paginate(20);
+        }
+
+        if($searchData == null) {
+            $searchData = $this->like("goods_code", $search)->getAll();
+        }
+        return $searchData;
     }
 
     public function getOneData($code)

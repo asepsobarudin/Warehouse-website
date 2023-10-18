@@ -15,10 +15,6 @@ class Goods extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'goods_category' => [
-                'type' => 'INT',
-                'null' => false
-            ],
             'goods_code' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
@@ -29,10 +25,6 @@ class Goods extends Migration
                 'constraint' => '255',
                 'null' => false
             ],
-            'goods_description' => [
-                'type' => 'TEXT',
-                'null' => true
-            ],
             'goods_price' => [
                 'type' => 'INT',
                 'null' => false
@@ -41,17 +33,16 @@ class Goods extends Migration
                 'type' => 'INT',
                 'null' => true
             ],
-            'goods_stok' => [
+            'goods_stok_toko' => [
+                'type' => 'INT',
+                'null' => true
+            ],
+            'goods_stok_gudang' => [
                 'type' => 'INT',
                 'null' => true
             ],
             'goods_min_stok' => [
                 'type' => 'INT',
-                'null' => true
-            ],
-            'goods_images' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
                 'null' => true
             ],
             'goods_users' => [

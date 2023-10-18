@@ -10,7 +10,7 @@ function backToTop() {
 }
 
 function paginateButton(link) {
-  document.getElementById("goods_container").innerHTML = loading();
+  document.getElementById("goods_table").innerHTML = loading();
   const searchInput = document.getElementById("search");
   const keyword = searchInput.value;
   if (keyword) {
@@ -21,47 +21,59 @@ function paginateButton(link) {
   backToTop();
 }
 
+function generateQRCode(data) {
+  const qr = qrcode(0, "L");
+  qr.addData(data);
+  qr.make();
+  return qr.createDataURL(8); // Sesuaikan ukuran QR code jika diperlukan
+}
+
 function productCard(data) {
   const setPrice = data.goods_price;
   const price = setPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
   const setName = data.goods_name;
   var name = setName.substring(0, 40);
-  const images = data.goods_images;
-  console.log(images);
-  if (name.length >= 30) {
-    name = name + "...";
-  }
-  if (!images) {
-    images = "dummyimages.jpg";
-  }
+
   return `
-  <div class="product_card">
-    <div class="con_image">
-      <img src="${baseURL}/assets/images/uploads/${data.goods_images}" alt="image" class="images">
-    </div>
-    <div class="card_text">
-      <a href="${baseURL}goods_detail/${data.goods_code}">${name}</a>
+    <tr>
+      <td>
+        <div class="qrcode">
+          <div>
+            <img src="${generateQRCode(
+              baseURL + "goods_detail/" + data.goods_code
+            )}" alt="${data.goods_code}">
+          </div>
+          <span>${data.goods_code}</span>
+        </div>
+      </td>
+      <td>
+      <a href="${baseURL + "goods_detail/" + data.goods_code}">${name}</a>
+      </td>
+      <td>${data.goods_stok_toko}</td>
+      <td>Rp. ${price}</td>
+      <td>
         <div>
-          <span>Rp. ${price}</span>
-          <span>Tersedia | ${data.goods_stok}</span>
-        </div>
-        </div>
           <button onclick="addCart('${data.goods_code}')">
-            <img src="${baseURL}/assets/icons/add_cart.png" alt="add_cart">
-        </button>
-    </div>`;
+            <img src="${baseURL}/assets/icons/shopping-cart-line-white.svg" width="30" heigth="30" style="stroke:#ffff" />
+          </button>
+        </div>
+      </td>
+    </tr>`;
 }
 
 function loading() {
   document.getElementById("paginate_button").innerHTML = "";
   document.getElementById("paginate_text").innerHTML = "";
   return `
-    <div class="loading">
-      <img src="${baseURL}assets/icons/loading.png" alt="loading" class="spiner">
-      <p>Loading...</p>
-    </div>
-  `;
+  <tr>
+    <td colspan="5" class="tdLoading">
+      <div class="loading">
+        <img src="${baseURL}/assets/icons/loader-4-line.svg" alt="loading" class="spiner">
+        <p>Loading...</p>
+      </div>
+    </td>
+  </tr>`;
 }
 
 function paginateBtn(data) {
@@ -85,7 +97,7 @@ function paginateBtn(data) {
   }
 
   if (data.totalItems == 0) {
-    document.getElementById("goods_container").innerHTML = "Tidak Ada Barang!";
+    document.getElementById("goods_table").innerHTML = "Tidak Ada Barang!";
   }
 }
 
@@ -97,28 +109,36 @@ async function getGoods(url) {
     .then(async (response) => response.json())
     .then((result) => {
       if (result && result.goods.length != 0) {
-        setTimeout(() => {
+        setTimeout((async) => {
           goodsContainer.innerHTML = "";
           paginateBtn(result);
           result.goods.map(async (value) => {
-            const listGoods = document.getElementById("goods_container");
+            const listGoods = document.getElementById("goods_table");
             listGoods.innerHTML += productCard(value);
           });
         }, 1000);
       } else {
         goodsContainer.innerHTML = `
-        <div class="loading">
-          <h2>Tidak Ada Barang</h2>
-        </div>
+        <tr>
+          <td colspan="5" >
+            <div class="loading">
+              <h2>Tidak Ada Barang</h2>
+            </div>
+          </td>
+        </tr>
         `;
       }
     })
     .catch((errors) => {
       goodsContainer.innerHTML = `
-      <div class="loading">
-        <h2>Server Error 500</h2>
-        <p>Silahkan Periksa Kembali Konksi Internet!</p>
-      </div>
+      <tr>
+        <td colspan="5">
+          <div class="loading">
+            <h2>Server Error 500</h2>
+            <p>Silahkan Periksa Kembali Konksi Internet!</p>
+          </div>
+        </td>
+      </tr>
     `;
     });
 }
@@ -139,7 +159,7 @@ async function searchGoods(url, key) {
           goodsContainer.innerHTML = "";
           paginateBtn(result);
           result.goods.map(async (value) => {
-            const listGoods = document.getElementById("goods_container");
+            const listGoods = document.getElementById("goods_table");
             listGoods.innerHTML += productCard(value);
           });
         }, 1000);
@@ -147,9 +167,13 @@ async function searchGoods(url, key) {
         document.getElementById("paginate_text").innerHTML = "";
         document.getElementById("paginate_button").innerHTML = "";
         goodsContainer.innerHTML = `
-        <div class="loading">
-          <h2>Tidak Ada Barang</h2>
-        </div>
+        <tr>
+          <td colspan="5" >
+            <div class="loading">
+              <h2>Barang tidak ditemuken!</h2>
+            </div>
+          </td>
+        </tr>
         `;
       }
     })

@@ -17,3 +17,4 @@ $routes->get('/goods_detail/(:segment)', 'GoodsController::detail/$1');
 $routes->match(['get', 'post'], '/goods_create', 'GoodsController::create');
 $routes->get('/goods_edit/(:segment)', 'GoodsController::edit/$1');
 $routes->post('/goods_update', 'GoodsController::update');
+$routes->post('/goods_delete', 'GoodsController::delete');

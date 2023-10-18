@@ -3,17 +3,14 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\Category;
 use App\Models\Goods;
 
 class CashierController extends BaseController
 {
     protected $Goods;
-    protected $Category;
     public function __construct()
     {
         $this->Goods = new Goods();
-        $this->Category = new Category();
     }
 
     public function index()
@@ -40,7 +37,6 @@ class CashierController extends BaseController
             'totalItems' => $pager->getTotal(),
             'nextPage' => $nextURL,
             'backPage' => $pager->getPreviousPageURI(),
-            'category' => $this->Category->getAll(),
         ];
 
         $this->response->setContentType('application/json');

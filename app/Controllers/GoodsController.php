@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\Category;
 use App\Models\Goods;
 use CodeIgniter\I18n\Time;
 use DateTime;
@@ -11,11 +10,10 @@ use DateTimeZone;
 
 class GoodsController extends BaseController
 {
-    protected $Goods, $Category;
+    protected $Goods;
     public function __construct()
     {
         $this->Goods = new Goods();
-        $this->Category = new Category();
     }
     public function index()
     {
@@ -37,8 +35,6 @@ class GoodsController extends BaseController
     {
         $goods = $this->Goods->getOneData($slug);
         unset($goods['id']);
-        $category = $this->Category->getCategoryById($goods['goods_category']);
-        $goods['goods_category'] = $category['category_name'];
         $data = [
             'title' => 'Details',
             'goods' => $goods
@@ -51,18 +47,8 @@ class GoodsController extends BaseController
         $data = $this->request->getPost();
         if ($data) {
             if ($data) {
-                if ($data['goods_category'] == 0) {
-                    $data['goods_category'] = "";
-                }
-
-                if ($data['goods_category'] != "") {
-                    $category = $this->Category->getCategory($data['goods_category']);
-                    $data['goods_category'] = $category['id'];
-                }
-
-                if ($data['goods_stok'] == "") {
-                    $data['goods_stok'] = "0";
-                }
+                $prepPrice = ['goods_prev_price' => 0];
+                $data = array_merge($data, $prepPrice);
             }
 
             $uniqueCode = ['goods_code' => $this->Goods->uniqueCode()];
@@ -71,25 +57,14 @@ class GoodsController extends BaseController
             if (!$this->validateData($data, $this->Goods->getValidationRules(), $this->Goods->getValidationMessages())) {
                 return redirect()->back()->withInput();
             } else {
-                $imagesName = "dummyimages.jpg";
-                $images = $this->request->getFile('goods_images');
-
-                if ($images->isValid()) {
-                    $randomName = $images->getRandomName();
-                    $images->move('assets/images/uploads', $randomName);
-                    $imagesName = $images->getName();
-                }
-
                 $this->Goods->insert([
-                    'goods_category' => $data['goods_category'],
                     'goods_code' => $data['goods_code'],
                     'goods_name' => $data['goods_name'],
-                    'goods_description' => $data['goods_description'],
                     'goods_price' => $data['goods_price'],
-                    'goods_prev_price' => "0",
-                    'goods_stok' => $data['goods_stok'],
-                    'goods_min_stok' => "0",
-                    'goods_images' => $imagesName
+                    'goods_prev_price' => $data['goods_prev_price'],
+                    'goods_stok_toko' => $data['goods_stok_toko'],
+                    'goods_stok_gudang' => $data['goods_stok_gudang'],
+                    'goods_min_stok' => $data['goods_min_stok'],
                 ]);
                 session()->setFlashdata('success', 'Barang berhasil di tambahkan');
                 return redirect()->to('/goods');
@@ -97,7 +72,7 @@ class GoodsController extends BaseController
         } else {
             $data = [
                 'title' => 'Create New Goods',
-                'category' => $this->Category->getAll(),
+                'link' => '/goods'
             ];
             return view('pages/all/goods_create', $data);
         }
@@ -107,15 +82,13 @@ class GoodsController extends BaseController
     {
         $goods = $this->Goods->getOneData($slug);
         unset($goods['id']);
-        $category = $this->Category->getCategoryById($goods['goods_category']);
-        $goods['goods_category'] = $category['category_name'];
         $goods['created_at'] = Time::parse($goods['created_at'], 'Asia/Jakarta', 'id-ID')->humanize();
         $goods['updated_at'] = Time::parse($goods['updated_at'], 'Asia/Jakarta', 'id-ID')->humanize();
 
         $data = [
             'title' => "Edit Goods",
+            'link' => '/goods',
             'goods' => $goods,
-            'category' => $this->Category->getAll(),
         ];
 
         return view('pages/all/goods_update', $data);
@@ -127,19 +100,6 @@ class GoodsController extends BaseController
         $goods = $this->Goods->getOneData($data['goods_code']);
         unset($data['goods_code']);
         if ($data) {
-            if ($data['goods_category'] == 0) {
-                $data['goods_category'] = "";
-            }
-
-            if ($data['goods_category'] != "") {
-                $category = $this->Category->getCategory($data['goods_category']);
-                $data['goods_category'] = $category['id'];
-            }
-
-            if ($data['goods_stok'] == "") {
-                $data['goods_stok'] = "0";
-            }
-
             if ($goods['goods_price'] != $data['goods_price']) {
                 $data += ['goods_prev_price' => $goods['goods_price']];
             } else {
@@ -151,28 +111,26 @@ class GoodsController extends BaseController
             return redirect()->back()->withInput();
         } else {
             $data = [
-                'goods_category' => $data['goods_category'],
                 'goods_name' => $data['goods_name'],
-                'goods_description' => $data['goods_description'],
                 'goods_price' => $data['goods_price'],
                 'goods_prev_price' => $data['goods_prev_price'],
-                'goods_stok' => $data['goods_stok'],
-                'goods_min_stok' => "0",
+                'goods_stok_toko' => $data['goods_stok_toko'],
+                'goods_stok_gudang' => $data['goods_stok_gudang'],
+                'goods_min_stok' => $data['goods_min_stok'],
             ];
-
-            $images = $this->request->getFile('goods_images');
-            if ($images->isValid()) {
-                if ($goods['goods_images'] != 'dummyimages.jpg') {
-                    unlink('assets/images/uploads/' . $goods['goods_images']);
-                }
-                $randomName = $images->getRandomName();
-                $images->move('assets/images/uploads', $randomName);
-                $data += ['goods_images' => $images->getName()];
-            }
 
             $this->Goods->update($goods['id'], $data);
             session()->setFlashdata('success', 'Barang berhasil di update');
             return redirect()->to('/goods');
         }
+    }
+
+    public function delete()
+    {
+        $data = $this->request->getPost();
+        $goods = $this->Goods->getOneData($data['delete_code']);
+        $this->Goods->delete($goods['id']);
+        session()->setFlashdata('success', 'Barang berhasil di hapus');
+        return redirect()->to('/goods');
     }
 }
