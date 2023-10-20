@@ -1,13 +1,12 @@
-<div class="block w-full h-full md:w-[500px] lg:w-[600px] bg-white md:overflow-y-scroll cart_container">
+<div class="block w-full h-full md:w-[500px] bg-white md:overflow-y-scroll cart_container">
   <div class="w-full h-max flex flex-col gap-2 px-2 pt-2 pb-[60px] lg:pb-2">
     <div class="flex flex-col gap-2">
-      <div class="flex justify-center items-center gap-2 text-2xl font-medium h-max w-full opacity-80 mt-4">
+      <div class="flex justify-center items-center gap-2 text-2xl font-medium h-max w-full opacity-80 my-4">
         <img src="<?= base_url("assets/icons/shopping-cart-line.svg") ?>" alt="cart" class="w-[30px]">
         <h2>Keranjang Belanja</h2>
       </div>
-      <span class="block h-[2px] w-full bg-black/10 mb-2"></span>
       <div class="flex justify-start items-center gap-2 text-sm font-semibold text-black/50 mb-2">
-        <h2>No Transaksi</h2>
+        <h2>No</h2>
         <input type="text" class="p-1 bg-white rounded-md outline-none border-2 focus:border-black/30" value="T-0000001" id="no_trans">
       </div>
       <details class="p-2 bg-black/5 hover:bg-black/0 ease-in-out duration-100 rounded-md border-2 border-black/5 accordion">
@@ -27,11 +26,10 @@
         </div>
       </details>
     </div>
-    <div class="cart_list flex h-max md:h-[450px] md:overflow-y-scroll shadow-inner bg-black/5 rounded-md md:p-2">
-      <div class="flex flex-col h-full w-full">
+    <div class="cart_list flex h-max md:h-[450px] md:overflow-y-scroll shadow-inner bg-black/10 rounded-md md:p-1">
+      <div class="flex flex-col h-full w-full gap-1">
         <?php for ($i = 1; $i <= 10; $i++) : ?>
           <div class="p-2 bg-white rounded-md flex justify-start items-start gap-2 w-full">
-            <img src="<?= base_url("assets/images/image1.jpeg") ?>" alt="image1" class="w-[80px] h-[80px] object-cover rounded-md">
             <div class="w-full">
               <h2 class="font-medium">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex, maxime?</h2>
               <div class="flex justify-between items-center flex-wrap gap-2 w-full">

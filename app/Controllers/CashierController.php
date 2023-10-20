@@ -16,7 +16,7 @@ class CashierController extends BaseController
     public function index()
     {
         $data = [
-            'title' => 'Cashier',
+            'title' => 'Kasir',
         ];
         return view('pages/cashier/cashier_page', $data);
     }

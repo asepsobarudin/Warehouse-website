@@ -12,15 +12,15 @@ endif; ?>
       <span>Edit Data Barang</span>
     </summary>
     <div class="py-2 flex flex-col gap-4">
-      <form action="<?= base_url('goods_delete') ?>" method="post" class="flex justify-end">
+      <form action="<?= base_url('goods/goods_delete') ?>" method="post" class="flex justify-end">
         <?= csrf_field() ?>
-        <input type="hidden" name="delete_code" value="<?= $goods['goods_code'] ?>">
-        <button type="submit" class="py-2 px-3 bg-red-600 hover:bg-red-700 font-semibold text-white rounded-md ease-in-out duration-100 flex justify-center items-center gap-1" onclick="return confirm(`Apakah yakin ingin menghapus <?= $goods['goods_name'] ?>`)">
-          <span>Hapus</span>
+        <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
+        <button type="submit" class="py-2 px-3 bg-delete hover:bg-deleteHover font-semibold text-white rounded-md ease-in-out duration-100 flex justify-center items-center gap-1" onclick="return confirm(`Apakah yakin ingin menghapus <?= $goods['goods_name'] ?>`)">
           <img src="<?= base_url('assets/icons/delete-bin-line.svg') ?>" alt="save" class="w-[30px] h-[30px]">
+          <span>Hapus</span>
         </button>
       </form>
-      <form action="<?= base_url('goods_update') ?>" method="post" class="flex flex-col gap-2">
+      <form action="<?= base_url('goods/goods_update') ?>" method="post" class="flex flex-col gap-2">
         <? csrf_field() ?>
         <div class="flex flex-col justify-center items-start gap-2 w-full">
           <div class="block w-full">
@@ -49,34 +49,14 @@ endif; ?>
               <span class="block text-red-600 text-sm font-medium mt-1"><?= $errors['goods_price'] ?></span>
             <?php endif; ?>
           </div>
-          <div class="flex flex-col gap-4 w-full">
-            <div class="block w-full">
-              <label for="goods_stok_toko" class="relative flex justify-start items-center">
-                <input type="number" id="goods_stok_toko" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-[50%]" placeholder="0" name="goods_stok_toko" value="<?= old('goods_stok_toko') ? old('goods_stok_toko') : $goods['goods_stok_toko'] ?>">
-                <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Stok Toko</span>
-              </label>
-              <?php if (isset($errors['goods_stok_toko'])) : ?>
-                <span class="block text-red-600 text-sm font-medium"><?= $errors['goods_stok_toko'] ?></span>
-              <?php endif; ?>
-            </div>
-            <div class="block w-full">
-              <label for="goods_stok_gudang" class="relative flex justify-start items-center">
-                <input type="number" id="goods_stok_gudang" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-[50%]" placeholder="0" name="goods_stok_gudang" value="<?= old('goods_stok_gudang') ? old('goods_stok_gudang') : $goods['goods_stok_gudang'] ?>">
-                <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Stok Gudang</span>
-              </label>
-              <?php if (isset($errors['goods_stok_gudang'])) : ?>
-                <span class="block text-red-600 text-sm font-medium"><?= $errors['goods_stok_gudang'] ?></span>
-              <?php endif; ?>
-            </div>
-            <div class="block w-full">
-              <label for="goods_min_stok" class="relative flex justify-start items-center">
-                <input type="number" id="goods_min_stok" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-[50%]" placeholder="0" name="goods_min_stok" value="<?= old('goods_min_stok') ? old('goods_min_stok') : $goods['goods_min_stok'] ?>">
-                <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Minimal Stok</span>
-              </label>
-              <?php if (isset($errors['goods_min_stok'])) : ?>
-                <span class="block text-red-600 text-sm font-medium"><?= $errors['goods_min_stok'] ?></span>
-              <?php endif; ?>
-            </div>
+          <div class="block w-full">
+            <label for="goods_min_stok" class="relative flex justify-start items-center">
+              <input type="number" id="goods_min_stok" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-[50%]" placeholder="0" name="goods_min_stok" value="<?= old('goods_min_stok') ? old('goods_min_stok') : $goods['goods_min_stok'] ?>">
+              <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Minimal Stok</span>
+            </label>
+            <?php if (isset($errors['goods_min_stok'])) : ?>
+              <span class="block text-red-600 text-sm font-medium"><?= $errors['goods_min_stok'] ?></span>
+            <?php endif; ?>
           </div>
           <div class="flex justify-start items-center gap-2 font-medium text-sm w-full">
             <span class="block p-2 bg-black/10 w-max rounded-md">Di tambahkan : <?= $goods['created_at'] ?></span>
@@ -85,9 +65,9 @@ endif; ?>
           <h2 class="text-base font-medium p-2 bg-black/5 rounded-md w-max">Terakhir di ubah oleh : Kasir 1</h2>
         </div>
         <div class="flex justify-end items-center">
-          <button type="submit" class="py-2 px-3 bg-sky-600 hover:bg-sky-700 font-semibold text-white rounded-md ease-in-out duration-100 flex justify-center items-center gap-1" onclick="return confirm(`Apakah yakin ingin mengubah <?= $goods['goods_name'] ?>`)">
-            <span>Simpan</span>
-            <img src="<?= base_url('assets/icons/save-line.svg') ?>" alt="save" class="w-[30px] h-[30px]">
+          <button type="submit" class="py-2 px-3 bg-edit hover:bg-editHover rounded-md ease-in-out duration-100 flex justify-center items-center gap-1" onclick="return confirm(`Apakah yakin ingin mengubah <?= $goods['goods_name'] ?>`)">
+            <img src="<?= base_url('assets/icons/file-edit-line.svg') ?>" alt="save" class="w-[30px] h-[30px]">
+            <span class="font-semibold text-black">Edit</span>
           </button>
         </div>
       </form>
@@ -99,7 +79,8 @@ endif; ?>
       <span>Tambah Barang</span>
     </summary>
     <div class="py-2 flex flex-col gap-4">
-      <form action="<?= base_url('goods_update_stok') ?>" method="post" class="mt-2">
+      <form action="<?= base_url('goods/goods_stock') ?>" method="post" class="mt-2">
+        <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
         <div class="flex flex-col gap-4 w-full">
           <div class="block w-full">
             <label for="goods_stok_toko" class="relative flex justify-start items-center">

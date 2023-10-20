@@ -3,8 +3,8 @@
 <?= $this->section('content') ?>
 <main class="container p-2" id="main">
   <div class="block relative">
-    <div class="w-full flex justify-between items-center my-2">
-      <h2 class="text-xl font-semibold">Barang</h2>
+    <div class="w-full flex justify-between items-center mb-2">
+      <h2 class="text-lg font-medium">Barang</h2>
       <div class="flex flex-col items-end gap-2">
         <?php if (session()->getFlashdata('success')) : ?>
           <div class="block">
@@ -13,19 +13,22 @@
             </span>
           </div>
         <?php endif; ?>
-        <a href="<?= base_url("/goods_create") ?>" class="p-2 bg-[#1d2d44] hover:bg-[#0d1321] rounded-md font-medium text-white ease-in duration-100 block">Tambah Barang</a>
+        <a href="<?= base_url("goods/goods_create") ?>" class="p-2 bg-add hover:bg-addHover rounded-md ease-in duration-100 flex justify-center items-center gap-1">
+          <img src="<?= base_url('assets/icons/add-line.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+          <span class="font-medium text-white">Tambah Barang</span>
+        </a>
       </div>
     </div>
     <table class="table-auto w-full border my-2">
       <thead>
         <tr>
-          <td class="border p-2 bg-[#264653] text-white font-semibold text-center w-[230px]">Kode Barang</td>
-          <td class="border p-2 bg-[#264653] text-white font-semibold text-center w-[300px]">Nama Barang</td>
-          <td class="border p-2 bg-[#264653] text-white font-semibold text-center w-[100px]">Toko</td>
-          <td class="border p-2 bg-[#264653] text-white font-semibold text-center w-[100px]">Gudang</td>
-          <td class="border p-2 bg-[#264653] text-white font-semibold text-center w-[180px]">Harga</td>
-          <td class="border p-2 bg-[#264653] text-white font-semibold text-center">Update</td>
-          <td class="border p-2 bg-[#264653] text-white font-semibold text-center w-[100px]">Action</td>
+          <td class="border p-2 bg-pallet1 text-white font-semibold text-center w-[230px]">Kode Barang</td>
+          <td class="border p-2 bg-pallet1 text-white font-semibold text-center w-[300px]">Nama Barang</td>
+          <td class="border p-2 bg-pallet1 text-white font-semibold text-center w-[100px]">Toko</td>
+          <td class="border p-2 bg-pallet1 text-white font-semibold text-center w-[100px]">Gudang</td>
+          <td class="border p-2 bg-pallet1 text-white font-semibold text-center w-[180px]">Harga</td>
+          <td class="border p-2 bg-pallet1 text-white font-semibold text-center">Update</td>
+          <td class="border p-2 bg-pallet1 text-white font-semibold text-center w-[100px]">Action</td>
         </tr>
       </thead>
       <tbody>
@@ -45,7 +48,7 @@
               <td class="border p-2 bg-white text-green-600 font-semibold"></td>
               <td class="border p-2 bg-white">
                 <div class="flex justify-center items-center">
-                  <a href="<?= base_url("/goods_edit/" . $list['goods_code']) ?>" class="p-2 bg-sky-500 hover:bg-sky-600 rounded-md font-medium text-white ease-in duration-100 block w-max">
+                  <a href="<?= base_url("goods/goods_edit/" . $list['goods_code']) ?>" class="p-2 bg-view hover:bg-viewHover rounded-md font-medium text-white ease-in duration-100 block w-max">
                     <div class="w-[30px] h-[30px] block">
                       <img src="<?= base_url('assets/icons/eye-line.svg') ?>" alt="eye" class="h-full w-full object-cover">
                     </div>

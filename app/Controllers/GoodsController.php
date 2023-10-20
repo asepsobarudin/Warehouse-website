@@ -5,8 +5,6 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\Goods;
 use CodeIgniter\I18n\Time;
-use DateTime;
-use DateTimeZone;
 
 class GoodsController extends BaseController
 {
@@ -19,7 +17,7 @@ class GoodsController extends BaseController
     {
         $pager = \Config\Services::pager();
         $data = [
-            'title' => 'Goods',
+            'title' => 'Barang',
             'goods' => $this->Goods->getAll(),
             'currentPage' => $pager->getCurrentPage(),
             'pageCount'  => $pager->getPageCount(),
@@ -28,7 +26,7 @@ class GoodsController extends BaseController
             'backPage' => $pager->getPreviousPageURI(),
         ];
 
-        return view('pages/all/goods_page', $data);
+        return view('pages/goods/goods_page', $data);
     }
 
     public function detail($slug)
@@ -39,7 +37,7 @@ class GoodsController extends BaseController
             'title' => 'Details',
             'goods' => $goods
         ];
-        return view('pages/all/goods_detail', $data);
+        return view('pages/goods/goods_detail', $data);
     }
 
     public function create()
@@ -74,7 +72,7 @@ class GoodsController extends BaseController
                 'title' => 'Create New Goods',
                 'link' => '/goods'
             ];
-            return view('pages/all/goods_create', $data);
+            return view('pages/goods/goods_create', $data);
         }
     }
 
@@ -91,7 +89,7 @@ class GoodsController extends BaseController
             'goods' => $goods,
         ];
 
-        return view('pages/all/goods_update', $data);
+        return view('pages/goods/goods_update', $data);
     }
 
     public function update()
@@ -107,16 +105,44 @@ class GoodsController extends BaseController
             }
         }
 
-        if (!$this->validateData($data, $this->Goods->getValidationRules(), $this->Goods->getValidationMessages())) {
+        $rules = $this->Goods->getValidationRules();
+        unset($rules['goods_stok_toko']);
+        unset($rules['goods_stok_gudang']);
+
+        if (!$this->validateData($data, $rules, $this->Goods->getValidationMessages())) {
             return redirect()->back()->withInput();
         } else {
             $data = [
                 'goods_name' => $data['goods_name'],
                 'goods_price' => $data['goods_price'],
                 'goods_prev_price' => $data['goods_prev_price'],
+                'goods_min_stok' => $data['goods_min_stok'],
+            ];
+
+            $this->Goods->update($goods['id'], $data);
+            session()->setFlashdata('success', 'Barang berhasil di update');
+            return redirect()->to('/goods');
+        }
+    }
+
+    public function updateStock()
+    {
+        $data = $this->request->getPost();
+        $goods = $this->Goods->getOneData($data['goods_code']);
+        unset($data['goods_code']);
+
+        $rules = $this->Goods->getValidationRules();
+        unset($rules['goods_name']);
+        unset($rules['goods_price']);
+        unset($rules['goods_prev_price']);
+        unset($rules['goods_min_stok']);
+
+        if (!$this->validateData($data, $rules, $this->Goods->getValidationMessages())) {
+            return redirect()->back()->withInput();
+        } else {
+            $data = [
                 'goods_stok_toko' => $data['goods_stok_toko'],
                 'goods_stok_gudang' => $data['goods_stok_gudang'],
-                'goods_min_stok' => $data['goods_min_stok'],
             ];
 
             $this->Goods->update($goods['id'], $data);
@@ -128,7 +154,7 @@ class GoodsController extends BaseController
     public function delete()
     {
         $data = $this->request->getPost();
-        $goods = $this->Goods->getOneData($data['delete_code']);
+        $goods = $this->Goods->getOneData($data['goods_code']);
         $this->Goods->delete($goods['id']);
         session()->setFlashdata('success', 'Barang berhasil di hapus');
         return redirect()->to('/goods');

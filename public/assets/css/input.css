@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-black/5;
+  @apply bg-[#F6F1EE];
 }
 
 body::-webkit-scrollbar,
@@ -31,7 +31,7 @@ body::-webkit-scrollbar-thumb,
 
 /* Navbar */
 nav.navbar {
-  @apply hidden lg:block bg-white h-screen rounded-r-md fixed left-0 z-10 shadow-md;
+  @apply hidden lg:block bg-pallet3 h-screen rounded-r-md fixed top-0 left-0 z-10 shadow-md shadow-black/20;
 }
 
 nav.active {
@@ -93,7 +93,7 @@ nav.not_active {
 }
 
 #main {
-  @apply lg:ml-[75px] ease-in-out duration-300;
+  @apply lg:ml-[80px] ease-in-out duration-300;
 }
 
 #main.active {
@@ -109,7 +109,7 @@ a:active {
 tbody.goods_table {
 
   & tr > td {
-    @apply border-b-2 p-2
+    @apply border p-2 bg-white;
   }
 
   & tr > td.tdLoading {
