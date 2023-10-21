@@ -2,11 +2,12 @@
 
 namespace App\Filters;
 
+use App\Models\Users;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use \Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use \Firebase\JWT\Key;
 
 class AuthFilter implements FilterInterface
 {
@@ -25,15 +26,31 @@ class AuthFilter implements FilterInterface
      *
      * @return mixed
      */
+
+    protected $User;
+    public function __construct()
+    {
+        $this->User = new Users();
+    }
+
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
         $token = str_replace('Bearer ', '',  $session->get('jwt_token'));
-
-        if ($token) {
+        if($token){
+            $user = $this->User->getToken($token);
+        }
+        
+        if ($token && $token == isset($user)) {
             $decoded = JWT::decode($token, new Key('tokoKitaNo1', 'HS256'));
             $role = $decoded->role;
-            if (isset($arguments[0]) && $role === $arguments[0]) {
+            $session->set('role', $role);
+
+            if($arguments != null){
+                $index = array_search($role, $arguments);
+            }
+
+            if (isset($arguments[isset($index)]) && $role === $arguments[$index]) {
                 return $request;
             } else if ($arguments === null && $token) {
                 return $request;
@@ -41,6 +58,8 @@ class AuthFilter implements FilterInterface
                 return redirect()->to('/access-denied');
             }
         } else {
+            $session->remove('jwt_token');
+            $session->remove('role');
             return redirect()->to('/');
         }
     }

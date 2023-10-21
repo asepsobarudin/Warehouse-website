@@ -27,7 +27,7 @@ class AuthController extends BaseController
         $data = $this->request->getPost();
 
         if (!$this->validateData($data, $this->Users->getValidationRules(), $this->Users->getValidationMessages())) {
-            return redirect()->to('/login')->withInput();
+            return redirect()->back()->withInput();
         } else {
             $user = $this->Users->getUser($data['username']);
             if ($data['username'] == isset($user['username']) && password_verify($data['password'], $user['password'])) {
@@ -55,7 +55,7 @@ class AuthController extends BaseController
                 }
             } else {
                 session()->setFlashdata('fail', 'Email atau Password salah!');
-                return redirect()->to('/')->withInput();
+                return redirect()->back();
             }
         }
     }
@@ -73,6 +73,7 @@ class AuthController extends BaseController
                     'token' => null
                 ]);
                 $session->remove('jwt_token');
+                $session->remove('role');
                 return redirect()->to('/');
             }
         }

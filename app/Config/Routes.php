@@ -12,12 +12,11 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/dashboard', 'Home::index', ['filter' => 'auth']);
 $routes->get('/cashier', 'CashierController::index', ['filter' => 'auth:kasir,']);
-$routes->get('/product', 'CashierController::product');
-$routes->post('/search', 'CashierController::search');
-$routes->post('/category', 'CashierController::getByCategory');
+$routes->get('/product', 'CashierController::product', ['filter' => 'auth:kasir,']);
+$routes->post('/search', 'CashierController::search', ['filter' => 'auth:kasir,']);
+$routes->get('/goods_detail/(:segment)', 'GoodsController::detail/$1');
 
-$routes->get('/goods', 'GoodsController::index', ['filter' => 'auth:kasir']);
-$routes->get('/goods/goods_detail/(:segment)', 'GoodsController::detail/$1');
+$routes->get('/goods', 'GoodsController::index', ['filter' => 'auth:gudang,kasir']);
 $routes->match(['get', 'post'], '/goods/goods_create', 'GoodsController::create');
 $routes->get('/goods/goods_edit/(:segment)', 'GoodsController::edit/$1');
 $routes->post('/goods/goods_update', 'GoodsController::update');

@@ -41,7 +41,7 @@ class Users extends Model
             'min_length' => 'username harus lebih dari 4 karakter'
         ],
         'password' => [
-            'required' => 'password harus di isi',
+            'required' => 'Silahkan masukan password',
             'min_length' => 'panjang password minimal 8 karakter'
         ]
     ];
@@ -76,5 +76,10 @@ class Users extends Model
         $token = str_replace('Bearer ', '',  $data);
         $decoded = JWT::decode($token, new Key('tokoKitaNo1', 'HS256'));
         return $decoded;
+    }
+
+    public function getToken ($token) {
+        $value = $this->where('token', $token)->first();
+        return $value['token'];
     }
 }

@@ -1,36 +1,54 @@
 <?php
 $list_menu = [
-  [
-    'title' => 'Dashboard',
-    'link' => '/dashboard',
-    'icons' => 'dashboard-line'
+  'all' => [
+    [
+      'title' => 'Dashboard',
+      'link' => '/dashboard',
+      'icons' => 'dashboard-line'
+    ],
   ],
-  [
-    'title' => 'Pengguna',
-    'link' => 'user',
-    'icons' => 'user-line'
+
+  'admin' => [
+    [
+      'title' => 'Pengguna',
+      'link' => 'user',
+      'icons' => 'user-line'
+    ],
   ],
-  [
-    'title' => 'Kasir',
-    'link' => 'cashier',
-    'icons' => 'calculator-line'
+
+  'kasir' => [
+    [
+      'title' => 'Kasir',
+      'link' => 'cashier',
+      'icons' => 'calculator-line'
+    ],
+    [
+      'title' => 'Barang',
+      'link' => 'goods',
+      'icons' => 'archive-2-line'
+    ],
+    [
+      'title' => 'Transaksi',
+      'link' => 'transaction',
+      'icons' => 'bill-line'
+    ]
   ],
-  [
-    'title' => 'Stok',
-    'link' => 'stock',
-    'icons' => 'dropbox-line'
+
+  'gudang' => [
+    [
+      'title' => 'Stok',
+      'link' => 'stock',
+      'icons' => 'dropbox-line'
+    ],
+    [
+      'title' => 'Barang',
+      'link' => 'goods',
+      'icons' => 'archive-2-line'
+    ],
   ],
-  [
-    'title' => 'Barang',
-    'link' => 'goods',
-    'icons' => 'archive-2-line'
-  ],
-  [
-    'title' => 'Transaksi',
-    'link' => 'transaction',
-    'icons' => 'bill-line'
-  ]
-]
+];
+
+$listRole = $list_menu[session()->get('role')];
 ?>
 
 <nav class="navbar not_active ease-in-out duration-300" id="navbar">
@@ -47,7 +65,18 @@ $list_menu = [
         <h2 class="text-base font-medium tit_company ease-in-out duration-300 overflow-hidden whitespace-nowrap">TB Serba</h2>
       </div>
       <div class="flex flex-col justify-center items-center gap-2 mt-4">
-        <?php foreach ($list_menu as $list) : ?>
+        <?php foreach ($list_menu['all'] as $list) : ?>
+          <a href="<?= $list['link'] ?>" class="flex justify-start items-center gap-2 rounded-md p-1 hover:bg-primay1/80 relative ease-in-out duration-300 menu">
+            <div class="w-[30px] h-[30px]">
+              <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
+            </div>
+            <h2 class="text-sm font-medium tit_menu ease-in-out duration-300 overflow-hidden whitespace-nowrap"><?= $list['title'] ?></h2>
+            <?php if ($list['title'] == $title) : ?>
+              <span class="block absolute h-[60%] w-[3px] rounded-full bg-pallet1 right-0"></span>
+            <?php endif; ?>
+          </a>
+        <?php endforeach; ?>
+        <?php foreach ($listRole as $list) : ?>
           <a href="<?= $list['link'] ?>" class="flex justify-start items-center gap-2 rounded-md p-1 hover:bg-primay1/80 relative ease-in-out duration-300 menu">
             <div class="w-[30px] h-[30px]">
               <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
@@ -77,7 +106,7 @@ $list_menu = [
 <!-- Mobile -->
 <nav class="block lg:hidden w-full fixed bottom-0 z-10">
   <div class="flex justify-evenly items-center h-[60px] bg-primay1 rounded-md pb-4">
-    <?php foreach ($list_menu as $list) : ?>
+    <?php foreach ($listRole as $list) : ?>
       <a href="<?= $list['link'] ?>">
         <div class="w-[30px] h-[30px]">
           <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
