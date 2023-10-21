@@ -90,15 +90,14 @@ $listRole = $list_menu[session()->get('role')];
       </div>
     </div>
     <div class="block">
-      <form action="<?= base_url('logout') ?>" method="post" class="flex justify-start items-center bg-delete hover:bg-deleteHover rounded-md p-2 gap-1 ease-in-out duration-300 btm_menu relative">
-        <input type="hidden" value="<?= session()->get('jwt_token') ?>" name="token">
-        <button type="submit" class="flex justify-start items-center gap-1">
+      <div class="flex justify-start items-center bg-delete hover:bg-deleteHover rounded-md p-2 gap-1 ease-in-out duration-300 btm_menu relative">
+        <a href="<?= site_url('/logout') ?>" class="flex justify-start items-center gap-1">
           <div class="w-[30px] h-[30px]">
             <img src="<?= base_url("assets/icons/logout-box-line.svg") ?>" alt="logout" class="w-full h-full object-cover">
           </div>
           <h2 class="text-sm font-semibold text-white btm_title whitespace-nowrap ease-in-out duration-300 text-start">Logout</h2>
-        </button>
-      </form>
+        </a>
+      </div>
     </div>
   </div>
 </nav>

@@ -41,11 +41,9 @@
             <input type="password" id="password" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" name="password">
             <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Password</span>
           </label>
-          <?php if (isset($errors['password'])) :
-            if ($errors['password'] != 'panjang password minimal 8 karakter') : ?>
-              <span class="block text-red-600 text-sm font-medium"><?= $errors['password'] ?></span>
-          <?php endif;
-          endif; ?>
+          <?php if (isset($errors['password'])) : ?>
+            <span class="block text-red-600 text-sm font-medium"><?= $errors['password'] ?></span>
+          <?php endif; ?>
         </div>
         <button class="p-2 w-full flex justify-center items-center bg-add hover:bg-addHover font-semibold text-white rounded-md">
           Login

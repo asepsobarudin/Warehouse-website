@@ -8,7 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 
  $routes->get('/', 'AuthController::index');
  $routes->post('/auth', 'AuthController::login');
- $routes->post('/logout', 'AuthController::logOut');
+ $routes->get('/logout', 'AuthController::logOut');
 
 $routes->get('/dashboard', 'Home::index', ['filter' => 'auth']);
 $routes->get('/cashier', 'CashierController::index', ['filter' => 'auth:kasir,']);

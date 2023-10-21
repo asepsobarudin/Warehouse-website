@@ -25,8 +25,12 @@ class AuthController extends BaseController
     public function login()
     {
         $data = $this->request->getPost();
+        $session = session();
 
-        if (!$this->validateData($data, $this->Users->getValidationRules(), $this->Users->getValidationMessages())) {
+        $rules = $this->Users->getValidationRules();
+        $rules['password'] = 'required';
+
+        if (!$this->validateData($data, $rules, $this->Users->getValidationMessages())) {
             return redirect()->back()->withInput();
         } else {
             $user = $this->Users->getUser($data['username']);
@@ -36,8 +40,6 @@ class AuthController extends BaseController
                     'username' => $user['username'],
                     'role' => $user['role']
                 ];
-
-                $session = session();
 
                 $token = $this->Users->generateToken($dataToken);
 
@@ -63,10 +65,10 @@ class AuthController extends BaseController
     public function logOut()
     {
         $session = session();
-        $data = $this->request->getPost();
+        $data = $session->get('jwt_token');
 
         if ($data) {
-            $dataToken = $this->Users->decodeToken($data['token']);
+            $dataToken = $this->Users->decodeToken($data);
             $user = $this->Users->getUser($dataToken->username);
             if ($user) {
                 $this->Users->update($user['id'], [
