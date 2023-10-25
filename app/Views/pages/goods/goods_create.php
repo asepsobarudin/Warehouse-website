@@ -5,8 +5,8 @@
 endif; ?>
 
 <?= $this->section('content') ?>
-<main class="container pt-[70px]">
-  <form action="<?= base_url('goods_create') ?>" method="post" class="p-2 bg-white rounded-md flex flex-col gap-2">
+<main class="container mt-2">
+  <form action="<?= base_url('goods/goods_create') ?>" method="post" class="p-2 bg-white rounded-md flex flex-col gap-2">
     <? csrf_field() ?>
     <div class="flex flex-col lg:flex-row justify-center items-start gap-2 w-full">
       <div class="w-full flex flex-col gap-4 py-2">

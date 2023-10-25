@@ -5,7 +5,7 @@
 endif; ?>
 
 <?= $this->section('content') ?>
-<main class="container mt-[70px] bg-white rounded-md p-2 flex flex-col gap-2">
+<main class="container mt-2 bg-white rounded-md p-2 flex flex-col gap-2">
   <details class="p-2 bg-white ease-in-out duration-100 rounded-md border-2 border-black/5 accordion cursor-pointer">
     <summary class="text-base font-semibold select-none flex items-center gap-2">
       <img src="<?= base_url('assets/icons/arrow-right-s-line.svg') ?>" alt="arrow" class="w-[30px] duration-200 ease-in-out rotate-90">

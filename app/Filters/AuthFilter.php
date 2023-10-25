@@ -27,35 +27,36 @@ class AuthFilter implements FilterInterface
      * @return mixed
      */
 
-    protected $User;
+    protected $Users;
     public function __construct()
     {
-        $this->User = new Users();
+        $this->Users = new Users();
     }
 
     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
         $token = str_replace('Bearer ', '',  $session->get('jwt_token'));
-        if($token){
-            $user = $this->User->getToken($token);
+        $user = '';
+        if ($token) {
+            $user = $this->Users->getToken($token);
         }
-        
-        if ($token && $token == isset($user)) {
-            $decoded = JWT::decode($token, new Key('tokoKitaNo1', 'HS256'));
+
+        if ($token && $token === $user) {
+            $decoded = $this->Users->decodeToken($token);
+
             $role = $decoded->role;
             $session->set('role', $role);
 
-            if($arguments != null){
+            if ($arguments != null) {
                 $index = array_search($role, $arguments);
-            }
-
-            if (isset($arguments[isset($index)]) && $role === $arguments[$index]) {
-                return $request;
-            } else if ($arguments === null && $token) {
-                return $request;
+                if ($arguments[$index] && $role === $arguments[$index]) {
+                    return $request;
+                } else {
+                    return redirect()->to('/access-denied');
+                }
             } else {
-                return redirect()->to('/access-denied');
+                return $request;
             }
         } else {
             $session->remove('jwt_token');

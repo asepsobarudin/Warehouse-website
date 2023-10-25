@@ -13,7 +13,7 @@
 </head>
 
 <body class="flex flex-col justify-start items-center">
-  <nav class="w-full h-[60px] bg-white flex justify-center items-center fixed top-0 z-10">
+  <nav class="w-full h-[60px] bg-white flex justify-center items-center">
     <div class="container flex justify-between items-center gap-2 after:contents-[''] after:block px-2">
       <a href="<?= base_url($link) ?>" class="p-1 w-[40px] h-[40px] block rounded-md hover:bg-black/10">
         <img src="<?= base_url('assets/icons/arrow-right-s-line.svg') ?>" alt="arrow" class="w-full h-full object-cover rotate-180">

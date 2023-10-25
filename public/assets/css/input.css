@@ -48,6 +48,19 @@ nav.active {
     @apply w-[80px] relative opacity-100;
   }
 
+  & div.head_menu {
+    @apply gap-1 ;
+
+    & span:nth-child(2) {
+      @apply w-full;
+    }
+
+    & span:nth-child(1) {
+      @apply w-max text-start;
+    }
+
+  }
+
   & a.menu {
     @apply w-[150px];
   }
@@ -75,6 +88,18 @@ nav.not_active {
   }
   & h2.tit_company {
     @apply w-[0px] absolute left-[50px] -z-10 overflow-hidden opacity-0;
+  }
+
+  & div.head_menu {
+    @apply gap-0;
+
+    & span:nth-child(2) {
+      @apply w-[0%];
+    }
+
+    & span:nth-child(1) {
+      @apply w-[100%] text-center;
+    }
   }
 
   & a.menu {

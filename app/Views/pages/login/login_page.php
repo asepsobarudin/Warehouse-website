@@ -30,7 +30,10 @@
         <div class="block w-full">
           <label for="username" class="relative flex justify-start items-center">
             <input type="text" id="username" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" name="username" value="<?= old('username') ?>" autofocus>
-            <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Username</span>
+            <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white/10 ease-out duration-100 peer-focus:text-black/60">
+              <span class="block w-full h-[3px] bg-white absolute top-[9px] z-0"></span>
+              <span class="block relative z-10">Username</span>
+            </span>
           </label>
           <?php if (isset($errors['username'])) : ?>
             <span class="block text-red-600 text-sm font-medium"><?= $errors['username'] ?></span>
@@ -39,7 +42,10 @@
         <div class="block w-full">
           <label for="password" class="relative flex justify-start items-center">
             <input type="password" id="password" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" name="password">
-            <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Password</span>
+            <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 peer-focus:text-black/60">
+              <span class="block w-full h-[3px] bg-white absolute top-[9px] z-0"></span>
+              <span class="block relative z-10">Password</span>
+            </span>
           </label>
           <?php if (isset($errors['password'])) : ?>
             <span class="block text-red-600 text-sm font-medium"><?= $errors['password'] ?></span>

@@ -10,8 +10,8 @@ $list_menu = [
 
   'admin' => [
     [
-      'title' => 'Pengguna',
-      'link' => 'user',
+      'title' => 'User',
+      'link' => 'users',
       'icons' => 'user-line'
     ],
   ],
@@ -21,11 +21,6 @@ $list_menu = [
       'title' => 'Kasir',
       'link' => 'cashier',
       'icons' => 'calculator-line'
-    ],
-    [
-      'title' => 'Barang',
-      'link' => 'goods',
-      'icons' => 'archive-2-line'
     ],
     [
       'title' => 'Transaksi',
@@ -49,6 +44,7 @@ $list_menu = [
 ];
 
 $listRole = $list_menu[session()->get('role')];
+$role = session()->get('role');
 ?>
 
 <nav class="navbar not_active ease-in-out duration-300" id="navbar">
@@ -64,31 +60,92 @@ $listRole = $list_menu[session()->get('role')];
         </div>
         <h2 class="text-base font-medium tit_company ease-in-out duration-300 overflow-hidden whitespace-nowrap">TB Serba</h2>
       </div>
-      <div class="flex flex-col justify-center items-center gap-2 mt-4">
-        <?php foreach ($list_menu['all'] as $list) : ?>
-          <a href="<?= $list['link'] ?>" class="flex justify-start items-center gap-2 rounded-md p-1 hover:bg-primay1/80 relative ease-in-out duration-300 menu">
-            <div class="w-[30px] h-[30px]">
-              <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
+      <div class="my-2">
+        <div class="block">
+          <div class="w-full flex justify-between items-center head_menu mb-1">
+            <span class="block font-medium text-black/70 text-xs ease-in-out duration-200">All</span>
+            <span class="block h-[2px] bg-black/40 ease-in-out duration-200"></span>
+          </div>
+          <div class="flex flex-col justify-start items-center gap-1">
+            <?php foreach ($list_menu['all'] as $list) : ?>
+              <a href="<?= $list['link'] ?>" class="flex justify-start items-center gap-2 rounded-md p-1 hover:bg-primay1/80 relative ease-in-out duration-300 menu">
+                <div class="w-[30px] h-[30px]">
+                  <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
+                </div>
+                <h2 class="text-sm font-medium tit_menu ease-in-out duration-300 overflow-hidden whitespace-nowrap"><?= $list['title'] ?></h2>
+                <?php if ($list['title'] == $title) : ?>
+                  <span class="block absolute h-[60%] w-[3px] rounded-full bg-pallet1 right-0"></span>
+                <?php endif; ?>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        </div>
+        <?php if ($role === 'admin') : ?>
+          <div class="block my-4">
+            <div class="w-full flex justify-between items-center head_menu mb-1">
+              <span class="block font-medium text-black/70 text-xs ease-in-out duration-200">Admin</span>
+              <span class="block h-[2px] bg-black/40 ease-in-out duration-200"></span>
             </div>
-            <h2 class="text-sm font-medium tit_menu ease-in-out duration-300 overflow-hidden whitespace-nowrap"><?= $list['title'] ?></h2>
-            <?php if ($list['title'] == $title) : ?>
-              <span class="block absolute h-[60%] w-[3px] rounded-full bg-pallet1 right-0"></span>
-            <?php endif; ?>
-          </a>
-        <?php endforeach; ?>
-        <?php foreach ($listRole as $list) : ?>
-          <a href="<?= $list['link'] ?>" class="flex justify-start items-center gap-2 rounded-md p-1 hover:bg-primay1/80 relative ease-in-out duration-300 menu">
-            <div class="w-[30px] h-[30px]">
-              <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
+            <div class="flex flex-col justify-start items-center gap-1">
+              <?php foreach ($list_menu['admin'] as $list) : ?>
+                <a href="<?= $list['link'] ?>" class="flex justify-start items-center gap-2 rounded-md p-1 hover:bg-primay1/80 relative ease-in-out duration-300 menu">
+                  <div class="w-[30px] h-[30px]">
+                    <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
+                  </div>
+                  <h2 class="text-sm font-medium tit_menu ease-in-out duration-300 overflow-hidden whitespace-nowrap"><?= $list['title'] ?></h2>
+                  <?php if ($list['title'] == $title) : ?>
+                    <span class="block absolute h-[60%] w-[3px] rounded-full bg-pallet1 right-0"></span>
+                  <?php endif; ?>
+                </a>
+              <?php endforeach; ?>
             </div>
-            <h2 class="text-sm font-medium tit_menu ease-in-out duration-300 overflow-hidden whitespace-nowrap"><?= $list['title'] ?></h2>
-            <?php if ($list['title'] == $title) : ?>
-              <span class="block absolute h-[60%] w-[3px] rounded-full bg-pallet1 right-0"></span>
-            <?php endif; ?>
-          </a>
-        <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+        <?php if ($role === 'gudang' || $role == 'admin') : ?>
+          <div class="block my-4">
+            <div class="w-full flex justify-between items-center head_menu mb-1">
+              <span class="block font-medium text-black/70 text-xs ease-in-out duration-200">Gudang</span>
+              <span class="block h-[2px] bg-black/40 ease-in-out duration-200"></span>
+            </div>
+            <div class="flex flex-col justify-start items-center gap-1">
+              <?php foreach ($list_menu['gudang'] as $list) : ?>
+                <a href="<?= $list['link'] ?>" class="flex justify-start items-center gap-2 rounded-md p-1 hover:bg-primay1/80 relative ease-in-out duration-300 menu">
+                  <div class="w-[30px] h-[30px]">
+                    <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
+                  </div>
+                  <h2 class="text-sm font-medium tit_menu ease-in-out duration-300 overflow-hidden whitespace-nowrap"><?= $list['title'] ?></h2>
+                  <?php if ($list['title'] == $title) : ?>
+                    <span class="block absolute h-[60%] w-[3px] rounded-full bg-pallet1 right-0"></span>
+                  <?php endif; ?>
+                </a>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        <?php endif; ?>
+        <?php if ($role === 'kasir' || $role == 'admin') : ?>
+          <div class="block my-4">
+            <div class="w-full flex justify-between items-center head_menu mb-1">
+              <span class="block font-medium text-black/70 text-xs ease-in-out duration-200">Kasir</span>
+              <span class="block h-[2px] bg-black/40 ease-in-out duration-200"></span>
+            </div>
+            <div class="flex flex-col justify-start items-center gap-1">
+              <?php foreach ($list_menu['kasir'] as $list) : ?>
+                <a href="<?= $list['link'] ?>" class="flex justify-start items-center gap-2 rounded-md p-1 hover:bg-primay1/80 relative ease-in-out duration-300 menu">
+                  <div class="w-[30px] h-[30px]">
+                    <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
+                  </div>
+                  <h2 class="text-sm font-medium tit_menu ease-in-out duration-300 overflow-hidden whitespace-nowrap"><?= $list['title'] ?></h2>
+                  <?php if ($list['title'] == $title) : ?>
+                    <span class="block absolute h-[60%] w-[3px] rounded-full bg-pallet1 right-0"></span>
+                  <?php endif; ?>
+                </a>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        <?php endif; ?>
       </div>
     </div>
+
     <div class="block">
       <div class="flex justify-start items-center bg-delete hover:bg-deleteHover rounded-md p-2 gap-1 ease-in-out duration-300 btm_menu relative">
         <a href="<?= site_url('/logout') ?>" class="flex justify-start items-center gap-1">

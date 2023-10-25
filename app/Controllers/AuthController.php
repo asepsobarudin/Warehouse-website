@@ -19,7 +19,7 @@ class AuthController extends BaseController
         if (session('jwt_token')) {
             return redirect()->back();
         }
-        return view('pages/login/index');
+        return view('pages/login/login_page');
     }
 
     public function login()
@@ -28,17 +28,21 @@ class AuthController extends BaseController
         $session = session();
 
         $rules = $this->Users->getValidationRules();
+        $rules['username'] = 'required';
         $rules['password'] = 'required';
+        unset($rules['passwordConf']);
+        unset($rules['role']);
 
         if (!$this->validateData($data, $rules, $this->Users->getValidationMessages())) {
             return redirect()->back()->withInput();
         } else {
             $user = $this->Users->getUser($data['username']);
-            if ($data['username'] == isset($user['username']) && password_verify($data['password'], $user['password'])) {
+            if ($user && $data['username'] === $user['username'] && password_verify($data['password'], $user['password'])) {
 
                 $dataToken = [
                     'username' => $user['username'],
-                    'role' => $user['role']
+                    'role' => $user['role'],
+                    'updated_at' => $user['updated_at'],
                 ];
 
                 $token = $this->Users->generateToken($dataToken);
@@ -47,11 +51,8 @@ class AuthController extends BaseController
                     $dt = [
                         'token' => $token
                     ];
-
                     $session->set('jwt_token', $token);
-
                     $this->Users->update($user['id'], $dt);
-
                     $role = $user['role'];
                     return redirect()->to('/dashboard');
                 }

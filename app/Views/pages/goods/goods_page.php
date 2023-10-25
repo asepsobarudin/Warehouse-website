@@ -13,10 +13,12 @@
             </span>
           </div>
         <?php endif; ?>
-        <a href="<?= base_url("goods/goods_create") ?>" class="p-2 bg-add hover:bg-addHover rounded-md ease-in duration-100 flex justify-center items-center gap-1">
-          <img src="<?= base_url('assets/icons/add-line.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
-          <span class="font-medium text-white">Tambah Barang</span>
-        </a>
+        <?php if (session()->get('role') === 'gudang') { ?>
+          <a href="<?= base_url("goods/goods_create") ?>" class="p-2 bg-add hover:bg-addHover rounded-md ease-in duration-100 flex justify-center items-center gap-1">
+            <img src="<?= base_url('assets/icons/add-line.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+            <span class="font-medium text-white">Tambah Barang</span>
+          </a>
+        <?php } ?>
       </div>
     </div>
     <table class="table-auto w-full border my-2">
