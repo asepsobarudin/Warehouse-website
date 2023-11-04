@@ -1,4 +1,4 @@
-<div class="block w-full h-full md:w-[500px] bg-white md:overflow-y-scroll cart_container">
+<div class="hidden lg:block w-full h-full md:w-[500px] bg-white md:overflow-y-scroll scrollBar scrollBarColors">
   <div class="w-full h-max flex flex-col gap-2 px-2 pt-2 pb-[60px] lg:pb-2">
     <div class="flex flex-col gap-2">
       <div class="flex justify-center items-center gap-2 text-2xl font-medium h-max w-full opacity-80 my-4">
@@ -26,7 +26,7 @@
         </div>
       </details>
     </div>
-    <div class="cart_list flex h-max md:h-[450px] md:overflow-y-scroll shadow-inner bg-black/10 rounded-md md:p-1">
+    <div class="flex h-max md:h-[450px] md:overflow-y-scroll shadow-inner bg-black/10 rounded-md md:p-1 scrollBar scrollBarBg scrollBarColors">
       <div class="flex flex-col h-full w-full gap-1">
         <?php for ($i = 1; $i <= 10; $i++) : ?>
           <div class="p-2 bg-white rounded-md flex justify-start items-start gap-2 w-full">

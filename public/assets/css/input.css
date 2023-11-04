@@ -6,28 +6,19 @@ body {
   @apply bg-[#F6F1EE];
 }
 
-body::-webkit-scrollbar,
-.container::-webkit-scrollbar,
-.cart_list::-webkit-scrollbar,
-.cart_container::-webkit-scrollbar {
+/* ScrollBar */
+.scrollBar::-webkit-scrollbar {
   @apply w-[5px];
 }
 
-body::-webkit-scrollbar-track,
-.container::-webkit-scrollbar-track,
-.cart_list::-webkit-scrollbar-track,
-.cart_container::-webkit-scrollbar-track {
+.scrollBarBg::-webkit-scrollbar-track {
   @apply bg-black/0;
 }
 
-body::-webkit-scrollbar-thumb,
-.container::-webkit-scrollbar-thumb {
+.scrollBarColors::-webkit-scrollbar-thumb {
   @apply bg-black/30 rounded-full;
 }
-
-.cart_list::-webkit-scrollbar-thumb {
-  @apply bg-green-600/80 rounded-full;
-}
+/* End ScrollBar */
 
 /* Navbar */
 nav.navbar {
@@ -35,37 +26,32 @@ nav.navbar {
 }
 
 nav.active {
-  @apply w-[170px];
+  @apply w-[180px];
 
   & .nav_btn_image {
     @apply rotate-180;
   }
 
   & div.profile {
-    @apply w-[150px] h-[55px];
+    @apply w-[150px];
   }
   & h2.tit_company {
-    @apply w-[80px] relative opacity-100;
+    @apply w-[80px] opacity-100;
   }
 
   & div.head_menu {
-    @apply gap-1 ;
-
-    & span:nth-child(2) {
-      @apply w-full;
-    }
+    @apply gap-1;
 
     & span:nth-child(1) {
-      @apply w-max text-start;
+      @apply text-start pl-1;
     }
-
   }
 
   & a.menu {
     @apply w-[150px];
   }
   & h2.tit_menu {
-    @apply w-[100px] relative opacity-100;
+    @apply relative opacity-100;
   }
 
   & .btm_menu {
@@ -77,28 +63,24 @@ nav.active {
 }
 
 nav.not_active {
-  @apply w-[70px];
+  @apply w-[80px];
 
   & .nav_btn_image {
     @apply rotate-0;
   }
 
   & div.profile {
-    @apply w-[55px] h-[55px] relative;
+    @apply w-max relative;
   }
   & h2.tit_company {
-    @apply w-[0px] absolute left-[50px] -z-10 overflow-hidden opacity-0;
+    @apply absolute left-[50px] -z-10 overflow-hidden opacity-0;
   }
 
   & div.head_menu {
     @apply gap-0;
 
-    & span:nth-child(2) {
-      @apply w-[0%];
-    }
-
     & span:nth-child(1) {
-      @apply w-[100%] text-center;
+      @apply text-center w-full ml-0 overflow-hidden;
     }
   }
 
@@ -118,11 +100,11 @@ nav.not_active {
 }
 
 #main {
-  @apply lg:ml-[80px] ease-in-out duration-300;
+  @apply lg:ml-[90px] ease-in-out duration-300;
 }
 
 #main.active {
-  @apply lg:ml-[180px];
+  @apply lg:ml-[190px];
 }
 
 .navbar .nav_ct .nav_opt a:hover,
@@ -132,7 +114,6 @@ a:active {
 
 /* End Navbar */
 tbody.goods_table {
-
   & tr > td {
     @apply border p-2 bg-white;
   }
@@ -142,29 +123,15 @@ tbody.goods_table {
   }
 
   & tr > td:nth-child(1) {
-    & div.qrcode {
-      @apply flex flex-col justify-center items-center w-full h-full;
-
-      & div {
-        @apply w-full h-[80px];
-
-        & img {
-          @apply object-contain h-full w-full;
-        }
-      }
-
-      & span {
-        @apply text-[10px] font-semibold text-black block;
-      }
-    }
+    @apply text-center;
   }
 
   & tr > td:nth-child(2) {
-    & a  {
+    & a {
       @apply font-medium text-black/80 ease-in-out duration-100;
     }
 
-    & a:hover  {
+    & a:hover {
       @apply text-sky-600;
     }
   }
@@ -174,7 +141,7 @@ tbody.goods_table {
   }
 
   & tr > td:nth-child(4) {
-    @apply font-semibold text-start;
+    @apply font-semibold text-center;
   }
 
   & tr > td:nth-child(5) {
@@ -251,4 +218,44 @@ input::-webkit-inner-spin-button {
 
 .cartOpen {
   @apply w-full md:w-[800px];
+}
+
+.restock_cart.active {
+  @apply w-full md:w-[50%] lg:w-[30%];
+}
+
+.restock_cart.nonActive {
+  @apply w-[0%] md:w-[0%] lg:w-[30%];
+}
+
+.labelButton.active {
+  @apply left-2;
+}
+
+.labelButton.nonActive {
+  @apply -left-[48px];
+}
+
+div.cart_restock {
+  @apply flex flex-col justify-center items-start gap-2 w-full p-2 bg-black/5 rounded-md;
+
+  & div:nth-child(1) {
+    @apply flex justify-start items-start gap-4 font-medium;
+  }
+
+  & div:nth-child(2) {
+    @apply flex justify-end items-center w-full gap-2;
+
+    & label > input {
+      @apply py-1 px-2 w-[150px] outline-none rounded-md border-2 border-black/10 focus:border-black/30;
+    }
+
+    & button {
+      @apply block p-1 rounded-md bg-black/10 hover:bg-black/5 ease-in-out duration-200;
+
+      & img {
+        @apply w-[30px] h-[30px] object-cover;
+      }
+    }
+  }
 }

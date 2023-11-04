@@ -15,14 +15,14 @@
   endif; ?>
 
   <main class="container flex justify-center items-center h-screen">
-    <div class="w-[60%] h-[80%] bg-white px-4 flex justify-center items-center gap-2 rounded-md">
+    <div class="w-[80%] lg:w-[60%] h-[80%] bg-white px-4 flex justify-center flex-col lg:flex-row items-center gap-2 rounded-md">
       <img src="<?= base_url('assets/images/wellcome.svg') ?>" alt="wellcome" class="block w-[50%]">
-      <form action="<?= base_url('auth') ?>" method="post" class="w-[50%] flex flex-col justify-center items-center gap-4">
+      <form action="<?= base_url('auth') ?>" method="post" class="w-full md:w-[50%] flex flex-col justify-center items-center gap-4">
         <?= csrf_field() ?>
         <h2 class="block text-[30px] font-semibold text-add">LOGIN</h2>
         <?php if (session()->getFlashdata('fail')) : ?>
           <div class="block w-full">
-            <span class="text-sm font-normal p-2 bg-delete/50 text-white w-full block">
+            <span class="text-sm font-medium p-2 bg-delete/50 text-white w-full block">
               <?= session()->getFlashdata('fail') ?>
             </span>
           </div>
@@ -41,7 +41,7 @@
         </div>
         <div class="block w-full">
           <label for="password" class="relative flex justify-start items-center">
-            <input type="password" id="password" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" name="password">
+            <input type="password" id="password" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" name="password" >
             <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 peer-focus:text-black/60">
               <span class="block w-full h-[3px] bg-white absolute top-[9px] z-0"></span>
               <span class="block relative z-10">Password</span>

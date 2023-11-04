@@ -9,6 +9,7 @@ endif; ?>
 <main class="container mt-2">
   <div class="flex flex-col gap-2 bg-white rounded-md p-2">
     <form action="<?= base_url('users/users_delete') ?>" method="post" class="w-full flex justify-end items-center">
+      <? csrf_field() ?>
       <input type="hidden" value="<?= $users['username'] ?>" name="username">
       <button type="submit" class="py-2 px-3 bg-delete hover:bg-deleteHover font-semibold text-white rounded-md ease-in-out duration-100 flex justify-center items-center gap-1" onclick="return confirm(`Apakah yakin ingin menghapus user <?= $users['username'] ?>`)">
         <img src="<?= base_url('assets/icons/delete-bin-line.svg') ?>" alt="save" class="w-[30px] h-[30px]">
@@ -17,6 +18,7 @@ endif; ?>
     </form>
 
     <form action="<?= base_url('users/users_update') ?>" method="post" class="flex flex-col gap-4">
+      <? csrf_field() ?>
       <?php if (session()->getFlashdata('failed')) { ?>
         <div class="block w-full p-2 bg-red-600/20">
           <h2 class="font-medium text-black/80"><?= session()->getFlashdata('failed') ?></h2>

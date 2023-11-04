@@ -21,6 +21,7 @@ class Goods extends Model
         'goods_stok_toko',
         'goods_stok_gudang',
         'goods_min_stok',
+        'users_id'
     ];
 
     // Dates
@@ -39,7 +40,7 @@ class Goods extends Model
         'goods_stok_toko' => 'min_length[1]|numeric',
         'goods_stok_gudang' => 'min_length[1]|numeric',
         'goods_min_stok' => 'min_length[1]|numeric',
-        // 'goods_users' => 'required'
+        'users_id' => 'required'
     ];
     protected $validationMessages   = [
         'goods_name' => [
@@ -86,7 +87,7 @@ class Goods extends Model
 
     public function getAll()
     {
-        return $this->orderBy('created_at', 'desc')->paginate(30);
+        return $this->orderBy('goods_stok_toko', 'ASC')->get();
     }
 
     public function search($search)
@@ -97,7 +98,7 @@ class Goods extends Model
         }
 
         if($searchData == null) {
-            $searchData = $this->like("goods_code", $search)->getAll();
+            $searchData = $this->like("goods_code", $search)->orderBy('created_at', 'desc')->paginate(20);
         }
         return $searchData;
     }

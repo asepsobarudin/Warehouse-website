@@ -20,7 +20,7 @@
       <table class="table border-collapse rounded-md w-full table-auto">
         <thead>
           <tr>
-            <td class="bg-[#186F65] text-white font-medium p-2 text-center border">Kode</td>
+            <td class="bg-[#186F65] text-white font-medium p-2 text-center border">No</td>
             <td class="bg-[#186F65] text-white font-medium p-2 text-center border">Nama</td>
             <td class="bg-[#186F65] text-white font-medium p-2 text-center border">Stok</td>
             <td class="bg-[#186F65] text-white font-medium p-2 text-center border">Harga</td>

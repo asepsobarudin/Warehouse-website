@@ -1,14 +1,3 @@
-function backToTop() {
-  page.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-}
-
 function paginateButton(link) {
   document.getElementById("goods_table").innerHTML = loading();
   const searchInput = document.getElementById("search");
@@ -18,34 +7,18 @@ function paginateButton(link) {
   } else {
     getGoods(link);
   }
-  backToTop();
+  backToTop({ element: page });
 }
 
-function generateQRCode(data) {
-  const qr = qrcode(0, "L");
-  qr.addData(data);
-  qr.make();
-  return qr.createDataURL(8); // Sesuaikan ukuran QR code jika diperlukan
-}
-
-function productCard(data) {
+function productCard({ data, no }) {
   const setPrice = data.goods_price;
   const price = setPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
   const setName = data.goods_name;
   var name = setName.substring(0, 40);
-
   return `
     <tr>
       <td>
-        <div class="qrcode">
-          <div>
-            <img src="${generateQRCode(
-              baseURL + "goods_detail/" + data.goods_code
-            )}" alt="${data.goods_code}">
-          </div>
-          <span>${data.goods_code}</span>
-        </div>
+        ${no}
       </td>
       <td>
       <a href="${baseURL + "goods_detail/" + data.goods_code}">${name}</a>
@@ -62,30 +35,15 @@ function productCard(data) {
     </tr>`;
 }
 
-function loading() {
-  document.getElementById("paginate_button").innerHTML = "";
-  document.getElementById("paginate_text").innerHTML = "";
-  return `
-  <tr>
-    <td colspan="5" class="tdLoading">
-      <div class="loading">
-        <img src="${baseURL}/assets/icons/loader-4-line.svg" alt="loading" class="spiner">
-        <p>Loading...</p>
-      </div>
-    </td>
-  </tr>`;
-}
-
 function paginateBtn(data) {
   const btnBack = document.getElementById("paginate_button");
+  const textPaginate = document.getElementById("paginate_text");
   if (data.backPage) {
     btnBack.innerHTML += `<button onclick="paginateButton('${data.backPage}')" class="back">Back</button>`;
   }
   if (data.nextPage) {
     btnBack.innerHTML += `<button onclick="paginateButton('${data.nextPage}')" class="next">Next</button>`;
   }
-
-  const textPaginate = document.getElementById("paginate_text");
   if (data.totalItems >= 1) {
     textPaginate.innerHTML = `
         <span>Page</span>
@@ -94,10 +52,6 @@ function paginateBtn(data) {
         <span>${data.pageCount}</span>
         <span>(${data.totalItems} Barang)</span>
     `;
-  }
-
-  if (data.totalItems == 0) {
-    document.getElementById("goods_table").innerHTML = "Tidak Ada Barang!";
   }
 }
 
@@ -112,9 +66,11 @@ async function getGoods(url) {
         setTimeout((async) => {
           goodsContainer.innerHTML = "";
           paginateBtn(result);
+          var no = 1;
           result.goods.map(async (value) => {
             const listGoods = document.getElementById("goods_table");
-            listGoods.innerHTML += productCard(value);
+            listGoods.innerHTML += productCard({ data: value, no: no });
+            no++;
           });
         }, 1000);
       } else {
@@ -130,16 +86,7 @@ async function getGoods(url) {
       }
     })
     .catch((errors) => {
-      goodsContainer.innerHTML = `
-      <tr>
-        <td colspan="5">
-          <div class="loading">
-            <h2>Server Error 500</h2>
-            <p>Silahkan Periksa Kembali Konksi Internet!</p>
-          </div>
-        </td>
-      </tr>
-    `;
+      goodsContainer.innerHTML = serverError();
     });
 }
 
@@ -154,13 +101,14 @@ async function searchGoods(url, key) {
   })
     .then(async (response) => response.json())
     .then(async (result) => {
-      if (result && result.goods.length != 0) {
+      if (result && result.goods.length != 0 && result.goods.currentRow != 0) {
         setTimeout(() => {
           goodsContainer.innerHTML = "";
           paginateBtn(result);
+          var no = 1;
           result.goods.map(async (value) => {
             const listGoods = document.getElementById("goods_table");
-            listGoods.innerHTML += productCard(value);
+            listGoods.innerHTML += productCard({ data: value, no: no });
           });
         }, 1000);
       } else {
@@ -178,6 +126,6 @@ async function searchGoods(url, key) {
       }
     })
     .catch((error) => {
-      console.error(error);
+      goodsContainer.innerHTML = serverError();
     });
 }

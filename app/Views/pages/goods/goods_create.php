@@ -10,6 +10,7 @@ endif; ?>
     <? csrf_field() ?>
     <div class="flex flex-col lg:flex-row justify-center items-start gap-2 w-full">
       <div class="w-full flex flex-col gap-4 py-2">
+        <input type="hidden" name="username" value="<?= session()->get('username') ?>">
         <div class="block">
           <label for="goods_name" class="relative flex justify-start items-center">
             <input type="text" id="goods_name" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="Nama" name="goods_name" value="<?= old('goods_name') ?>" autofocus>

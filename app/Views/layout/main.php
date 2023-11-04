@@ -5,23 +5,26 @@
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="<?= base_url('/assets/css/style.css') ?>">
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"></script>
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
    <title><?= $title ?></title>
  </head>
 
- <body class="flex justify-center items-start">
-   <?= $this->include('components/navbar') ?>
+ <body class="flex justify-center items-start scrollBar scrollBarBg scrollBarColors">
+   <?= $this->include('components/navbar/navbar') ?>
    <?= $this->renderSection('content'); ?>
 
-   <script src="<?= base_url('/assets/js/main.js') ?>"></script>
    <script>
      const goodsContainer = document.getElementById("goods_table");
      const page = document.getElementById("block_ctn")
      const baseURL = '<?= base_url() ?>'
 
-     getGoods(baseURL)
+     var link = window.location.href;
+     window.addEventListener('load', (e) => {
+       if (link == `${baseURL}cashier` || link == `${baseURL}index.php/cashier`) {
+         getGoods(baseURL)
+       }
+     })
 
      let typingTimer;
      const doneTypingInterval = 1000;
@@ -33,9 +36,9 @@
          typingTimer = setTimeout(function() {
            const key = searchInput.val();
            if (key) {
-             searchGoods(`${baseURL}/search`, key)
+             searchGoods(`${baseURL}/search`, key);
            } else {
-             getGoods(baseURL)
+             getGoods(baseURL);
            }
          }, doneTypingInterval);
        });
@@ -50,16 +53,12 @@
        if (btn_nav.checked == true) {
          navbar.classList.remove('not_active');
          navbar.classList.add('active');
-
          btn_nav_label.classList.add('rotate-180')
-
          main.classList.add('active')
        } else {
          navbar.classList.remove('active');
          navbar.classList.add('not_active');
-
          btn_nav_label.classList.remove('rotate-180')
-
          main.classList.remove('active')
        }
      }
@@ -67,6 +66,8 @@
        openNav();
      })
    </script>
+   <script src="<?= base_url('/assets/js/main.js') ?>"></script>
+   <script src="<?= base_url('/assets/js/components.js') ?>"></script>
  </body>
 
  </html>

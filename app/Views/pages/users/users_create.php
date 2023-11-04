@@ -7,7 +7,8 @@
 endif; ?>
 
 <main class="container mt-2">
-  <form action="<?= base_url('users/add_users') ?>" method="post" class="p-2 bg-white rounded-md flex flex-col gap-4">
+  <form action="<?= base_url('users/users_create') ?>" method="post" class="p-2 bg-white rounded-md flex flex-col gap-4">
+    <? csrf_field() ?>
     <div class="block w-full">
       <label for="username" class="relative flex justify-start items-center">
         <input type="text" id="username" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full lg:w-[50%]" name="username" value="<?= old('username') ?>" autofocus>

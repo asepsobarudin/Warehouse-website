@@ -22,10 +22,10 @@ class UserController extends BaseController
             unset($user['id']);
             unset($user['password']);
 
-            if ($user['token']) {
-                $user['token'] = 'online';
+            if ($user['status']) {
+                $user['status'] = 'online';
             } else {
-                $user['token'] = null;
+                $user['status'] = null;
             }
 
             $setUser = array_merge($setUser, [$user]);
@@ -36,7 +36,7 @@ class UserController extends BaseController
             'user' => $setUser
         ];
 
-        return view('pages/admin/users_page', $data);
+        return view('pages/users/users_page', $data);
     }
 
     public function create()
@@ -79,7 +79,7 @@ class UserController extends BaseController
                 'title' => 'Buat User Baru',
                 'link' => '/users'
             ];
-            return view('pages/admin/users_create', $data);
+            return view('pages/users/users_create', $data);
         }
     }
 
@@ -93,7 +93,7 @@ class UserController extends BaseController
             'link' => '/users',
             'users' => $users
         ];
-        return view('pages/admin/users_edit', $data);
+        return view('pages/users/users_edit', $data);
     }
 
     public function update()
@@ -124,10 +124,15 @@ class UserController extends BaseController
                     $data = [
                         'password' => $password,
                         'role' => $data['role'],
-                        'token' => null
+                        'status' => null
                     ];
 
                     if ($this->Users->update($users['id'], $data)) {
+                        if(session()->get('username') === $users['username']) {
+                            session()->remove('jwt_token');
+                            session()->remove('rules');
+                            session()->remove('username');
+                        }
                         session()->setFlashdata('success', 'Username Berhasil Di Ubah!');
                         return redirect()->to('/users');
                     } else {
@@ -177,11 +182,11 @@ class UserController extends BaseController
                 return redirect()->back();
             } else {
                 $data = [
-                    'token' => null
+                    'status' => null
                 ];
 
                 if ($this->Users->update($users['id'], $data)) {
-                    session()->setFlashdata('success', 'Access user ' . $users['username'] . 'berhasil di tutup');
+                    session()->setFlashdata('success', 'Access user ' . $users['username'] . ' berhasil di tutup');
                     return redirect()->to('/users');
                 } else {
                     session()->setFlashdata('failed', 'Penghapusan hak akses gagal!');

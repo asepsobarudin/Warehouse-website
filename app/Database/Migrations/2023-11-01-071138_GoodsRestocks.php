@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Users extends Migration
+class GoodsRestocks extends Migration
 {
     public function up()
     {
@@ -15,25 +15,17 @@ class Users extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'username' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
+            'goods_id' => [
+                'type' => 'INT',
                 'null' => false
             ],
-            'password' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
+            'restock_id' => [
+                'type' => 'INT',
                 'null' => false
             ],
-            'role' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
+            'qty' => [
+                'type' => 'INT',
                 'null' => false
-            ],
-            'status' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
-                'null' => true
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -44,11 +36,11 @@ class Users extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->createTable('users');
+        $this->forge->createTable('goods_restocks');
     }
 
     public function down()
     {
-        $this->forge->dropTable('users');
+        $this->forge->dropTable('goods_restocks');
     }
 }

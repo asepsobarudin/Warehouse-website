@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use \Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 
 class Users extends Model
 {
@@ -19,7 +17,7 @@ class Users extends Model
         'username',
         'password',
         'role',
-        'token'
+        'status'
     ];
 
     // Dates
@@ -44,7 +42,7 @@ class Users extends Model
         'password' => [
             'required' => 'silahkan masukan password!',
             'min_length' => 'panjang password minimal 8 karakter!'
-        ], 
+        ],
         'role' => [
             'required' => 'silahkan pilih role!'
         ]
@@ -68,33 +66,22 @@ class Users extends Model
         return $this->orderBy('updated_at', 'desc')->paginate(20);
     }
 
+    public function getUserId($id)
+    {
+        return $this->where('id', $id)->first();
+    }
+
     public function getUser($username)
     {
         return $this->like('username', $username)->first();
     }
 
-    public function generateToken($data)
+    public function getStatus($username)
     {
-        $key = 'tokoKitaNo1';
-        $value = $data;
-        $algoritma = 'HS256';
-        $token = JWT::encode($value, $key, $algoritma);
-        return $token;
-    }
-
-    public function decodeToken($data)
-    {
-        $token = str_replace('Bearer ', '',  $data);
-        $decoded = JWT::decode($token, new Key('tokoKitaNo1', 'HS256'));
-        return $decoded;
-    }
-
-    public function getToken($token)
-    {
-        $value = $this->where('token', $token)->first();
-        if(!$value) {
-            $value['token'] = 'null';
+        $value = $this->where('username', $username)->first();
+        if (!$value) {
+            $value['status'] = null;
         }
-        return $value['token'];
+        return $value['status'];
     }
 }
