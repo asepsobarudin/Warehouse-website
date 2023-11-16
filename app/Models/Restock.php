@@ -17,7 +17,8 @@ class Restock extends Model
         'restock_code',
         'status',
         'request_user_id',
-        'response_user_id'
+        'response_user_id',
+        'message'
     ];
 
     // Dates
@@ -62,6 +63,10 @@ class Restock extends Model
     public function getOneData($code)
     {
         return $this->where('restock_code', $code)->first();
+    }
+
+    public function getDataById ($id) {
+        return $this->where('id', $id)->first();
     }
 
     public function uniqueCode()

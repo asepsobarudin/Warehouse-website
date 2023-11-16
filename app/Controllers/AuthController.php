@@ -2,15 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
-use App\Helpers\JwtHelpers;
 use App\Models\Users;
+use App\Helpers\JwtHelpers;
+use App\Controllers\BaseController;
+use DateTime;
 
 class AuthController extends BaseController
 {
 
-    protected $Users;
-    protected $JwtHelpers;
+    protected $Users, $JwtHelpers;
     public function __construct()
     {
         $this->Users = new Users();
@@ -19,29 +19,40 @@ class AuthController extends BaseController
 
     public function index()
     {
-        if (session('jwt_token')) {
+        $session = session()->get('sessionData');
+        if ($session && $session['jwt_token']) {
             return redirect()->back();
         }
         return view('pages/login/login_page');
     }
 
+    public function back()
+    {
+        session()->destroy();
+        return redirect()->to('/');
+    }
+
     public function login()
     {
-        $data = $this->request->getPost();
+        $body = $this->request->getPost();
         $session = session();
-
         $rules = $this->Users->getValidationRules();
         $rules['username'] = 'required';
         $rules['password'] = 'required';
-        unset($rules['passwordConf']);
         unset($rules['role']);
 
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+            $session->setFlashdata('errors', 'Login gagal input tidak sah!');
+            return redirect()->back();
+        }
+
         $failed = [];
-        if (preg_match('/[&%|]/', $data['username'])) {
+        if (preg_match('/[&%|]/', $body['username'])) {
             $failed += ['username' => 'Karakter "& % |" tidak diizinkan.'];
         }
 
-        if (preg_match('/[&%|]/', $data['password'])) {
+        if (preg_match('/[&%|]/', $body['password'])) {
             $failed += ['password' => 'Karakter "& % |" tidak diizinkan.'];
         }
 
@@ -50,17 +61,15 @@ class AuthController extends BaseController
             return redirect()->back()->withInput();
         }
 
-        if (!$this->validateData($data, $rules, $this->Users->getValidationMessages())) {
+        if (!$this->validateData($body, $rules, $this->Users->getValidationMessages())) {
             return redirect()->back()->withInput();
         } else {
-            $user = $this->Users->getUser($data['username']);
-
-            if ($user && $data['username'] === $user['username'] && password_verify($data['password'], $user['password'])) {
+            $user = $this->Users->getUser($body['username']);
+            if ($user && $body['username'] === $user['username'] && password_verify($body['password'], $user['password'])) {
                 $unique = uniqid();
-
                 $iat = time();
                 $exp = time() + (getenv('SESSION_TOKEN') * 60);
-                $dataToken = [
+                $generateToken = [
                     'iss' => getenv('ISS'),
                     'sub' => 'authToken',
                     'username' => $user['username'],
@@ -71,20 +80,33 @@ class AuthController extends BaseController
                     'exp' => $exp
                 ];
 
-                $token = $this->JwtHelpers->generateToken($dataToken);
-                $session->set('jwt_token', $token);
+                $token = $this->JwtHelpers->generateToken($generateToken);
+                $this->SessionHelpers->setSession('jwt_token', $token);
+
+                $lastLogin = new DateTime($user['updated_at']);
+                $time =  new DateTime();
+
+                $loginTime = $lastLogin->diff($time)->h;
+                if ($loginTime >= 1) {
+                    $data = [
+                        'status' => null
+                    ];
+                    $this->Users->update($user['id'], $data);
+                    $user['status'] = $data['status'];
+                }
+
                 if ($token && !$user['status']) {
-                    $dt = [
+                    $data = [
                         'status' => $unique
                     ];
-                    $this->Users->update($user['id'], $dt);
+                    $this->Users->update($user['id'], $data);
                     return redirect()->to('/dashboard');
                 } else {
-                    $session->set('online', $user['username']);
+                    $this->SessionHelpers->setSession('username', $user['username']);
                     return redirect()->to('/auth/online');
                 }
             } else {
-                session()->setFlashdata('fail', 'Email atau Password salah!');
+                session()->setFlashdata('errors', 'Username atau Password salah!');
                 return redirect()->back();
             }
         }
@@ -92,54 +114,76 @@ class AuthController extends BaseController
 
     public function online()
     {
-        session()->remove('username');
-        return view('pages/login/online_page');
+        $data = [
+            'title' => 'User Online',
+            'link' => 'back'
+        ];
+        return view('pages/login/online_page', $data);
     }
 
     public function removeOnline()
     {
-        $data = $this->request->getPost();
-        if ($data && isset($data['username'])) {
-            $users = $this->Users->getUser($data['username']);
+        $body = $this->request->getPost();
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
+
+        if ($body && isset($body['username'])) {
+            $users = $this->Users->getUser($body['username']);
             if (!$users) {
-                session()->setFlashdata('failed', 'Username tidak ditemukan!');
+                session()->setFlashdata('errors', 'Username tidak ditemukan!');
                 return redirect()->back();
             } else {
-                $sessionToken = str_replace('Bearer ', '',  session()->get('jwt_token'));
+                $session = $this->SessionHelpers->getSession();
+                $sessionToken = str_replace('Bearer ', '', $session['jwt_token']);
                 $token = $this->JwtHelpers->decodeToken($sessionToken);
-                $data = [
+                $body = [
                     'status' => $token->unique
                 ];
 
-                if ($this->Users->update($users['id'], $data)) {
-                    session()->remove('online');
+                if ($this->Users->update($users['id'], $body)) {
+                    $this->SessionHelpers->removeSession(['online']);
                     return redirect()->to('/dashboard');
                 } else {
-                    session()->setFlashdata('failed', 'Penghapusan hak akses gagal!');
+                    session()->setFlashdata('errors', 'Penghapusan hak akses gagal!');
                     return redirect()->back();
                 }
             }
         } else {
-            session()->setFlashdata('failed', 'Data Tidak Ditemukan');
+            session()->setFlashdata('errors', 'Data user Tidak Ditemukan');
             return redirect()->back();
         }
     }
 
     public function logOut()
     {
-        $session = session();
-        $data = $session->get('jwt_token');
+        $session = $this->SessionHelpers->getSession();
+        $body = $this->request->getPost();
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
 
-        if ($data) {
-            $dataToken = $this->JwtHelpers->decodeToken($data);
-            $user = $this->Users->getUser($dataToken->username);
+        if ($session && isset($session['jwt_token'])) {
+            $dataToken = $this->JwtHelpers->decodeToken($session['jwt_token']);
+            $user = null;
+
+            if ($body && isset($body['username']) == $dataToken->username) {
+                $user = $this->Users->getUser($dataToken->username);
+            }
+
             if ($user) {
                 $this->Users->update($user['id'], [
                     'status' => null
                 ]);
-                $session->destroy();
+                session()->destroy();
                 return redirect()->to('/');
+            } else {
+                session()->setFlashdata('errors', 'Logout gagal!');
+                return redirect()->back();
             }
+        } else {
+            session()->setFlashdata('errors', 'Logout gagal!');
+            return redirect()->back();
         }
     }
 }

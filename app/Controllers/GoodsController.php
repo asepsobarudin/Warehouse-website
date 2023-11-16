@@ -3,87 +3,138 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Helpers\JwtHelpers;
 use App\Models\Goods;
 use App\Models\Users;
 use CodeIgniter\I18n\Time;
 
 class GoodsController extends BaseController
 {
-    protected $Goods;
-    protected $Users;
+    protected $Goods, $Users, $JwtHelpers;
     public function __construct()
     {
         $this->Goods = new Goods();
         $this->Users = new Users();
+        $this->JwtHelpers = new JwtHelpers();
     }
     public function index()
     {
-        $pager = \Config\Services::pager();
 
         $getGoods = $this->Goods->getPaginate();
         $setGoods = [];
 
         foreach ($getGoods as $goods) {
-            $users = $this->Users->getUserId($goods['users_id']);
-            $goods['users_id'] = $users['username'];
+            unset($goods['users_id']);
             $setGoods = array_merge($setGoods, [$goods]);
         }
         $data = [
             'title' => 'Barang',
             'goods' => $setGoods,
-            'currentPage' => $pager->getCurrentPage(),
-            'pageCount'  => $pager->getPageCount(),
-            'totalItems' => $pager->getTotal(),
-            'nextPage' => $pager->getNextPageURI(),
-            'backPage' => $pager->getPreviousPageURI(),
+            'currentPage' => $this->Pager->getCurrentPage(),
+            'pageCount'  => $this->Pager->getPageCount(),
+            'totalItems' => $this->Pager->getTotal(),
+            'nextPage' => $this->Pager->getNextPageURI(),
+            'backPage' => $this->Pager->getPreviousPageURI(),
         ];
 
         return view('pages/goods/goods_page', $data);
     }
 
-    public function detail($slug)
+    // Json Response
+    public function goodsList()
     {
-        $goods = $this->Goods->getOneData($slug);
-        unset($goods['id']);
+        $lengthData = sizeof($this->Goods->getPaginate());
+        $nextURL = null;
+        if ($lengthData != 0) {
+            $nextURL = $this->Pager->getNextPageURI();
+        }
+
+        $getGoods = $this->Goods->getPaginate();
+        $setGoods = [];
+        foreach ($getGoods as $goods) {
+            unset($goods['id']);
+            unset($goods['users_id']);
+            $setGoods = array_merge($setGoods, [$goods]);
+        }
+
         $data = [
-            'title' => 'Details',
-            'goods' => $goods
+            'goods' => $setGoods,
+            'currentPage' => $this->Pager->getCurrentPage(),
+            'pageCount'  => $this->Pager->getPageCount(),
+            'totalItems' => $this->Pager->getTotal(),
+            'nextPage' => $nextURL,
+            'backPage' => $this->Pager->getPreviousPageURI(),
         ];
-        return view('pages/goods/goods_detail', $data);
+
+        $this->response->setContentType('application/json');
+        return $this->response->setJSON($data);
     }
+
+    public function goodsSearch()
+    {
+        $requestBody = $this->request->getBody();
+        $jsonData = json_decode($requestBody, true);
+
+        $getGoods = $this->Goods->search($jsonData['search']);
+        $setGoods = [];
+        foreach ($getGoods as $goods) {
+            unset($goods['id']);
+            unset($goods['users_id']);
+            $setGoods = array_merge($setGoods, [$goods]);
+        }
+
+        $data = [
+            'goods' => $setGoods,
+            'currentPage' => $this->Pager->getCurrentPage(),
+            'pageCount'  => $this->Pager->getPageCount(),
+            'totalItems' => $this->Pager->getTotal(),
+            'nextPage' => $this->Pager->getNextPageURI(),
+            'backPage' => $this->Pager->getPreviousPageURI(),
+        ];
+        $this->response->setContentType('application/json');
+        return $this->response->setJSON($data);
+    }
+    // End Json Response
 
     public function create()
     {
-        $data = $this->request->getPost();
-        if ($data && isset($data['username'])) {
+        $body = $this->request->getPost();
+        $session = session()->get('sessionData');
+        $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
+        if ($body && isset($decoded->username)) {
+            if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+                $body = null;
+                session()->setFlashdata('errors', 'Barang gagal ditambahkan!');
+                return redirect()->back();
+            }
 
             $prepPrice = ['goods_prev_price' => 0];
-            $data = array_merge($data, $prepPrice);
+            $body = array_merge($body, $prepPrice);
             $uniqueCode = ['goods_code' => $this->Goods->uniqueCode()];
-            $data = array_merge($data, $uniqueCode);
-            $users = $this->Users->getUser($data['username']);
-            $data['users_id'] = $users['id'];
-            unset($data['username']);
+            $body = array_merge($body, $uniqueCode);
+            $users = $this->Users->getUser($decoded->username);
+            $body['users_id'] = $users['id'];
+            unset($decoded->username);
 
-            if (!$this->validateData($data, $this->Goods->getValidationRules(), $this->Goods->getValidationMessages())) {
+            if (!$this->validateData($body, $this->Goods->getValidationRules(), $this->Goods->getValidationMessages())) {
                 return redirect()->back()->withInput();
             } else {
                 $this->Goods->insert([
-                    'goods_code' => $data['goods_code'],
-                    'goods_name' => $data['goods_name'],
-                    'goods_price' => $data['goods_price'],
-                    'goods_prev_price' => $data['goods_prev_price'],
-                    'goods_stok_toko' => $data['goods_stok_toko'],
-                    'goods_stok_gudang' => $data['goods_stok_gudang'],
-                    'goods_min_stok' => $data['goods_min_stok'],
-                    'users_id' => $data['users_id']
+                    'goods_code' => $body['goods_code'],
+                    'goods_name' => $body['goods_name'],
+                    'goods_price' => $body['goods_price'],
+                    'goods_prev_price' => $body['goods_prev_price'],
+                    'goods_stock_shop' => $body['goods_stock_shop'],
+                    'goods_stock_warehouse' => $body['goods_stock_warehouse'],
+                    'goods_min_stock' => $body['goods_min_stock'],
+                    'users_id' => $body['users_id']
                 ]);
                 session()->setFlashdata('success', 'Barang berhasil di tambahkan');
                 return redirect()->to('/goods');
             }
         } else {
             $data = [
-                'title' => 'Create New Goods',
+                'title' => 'Tambah Data Barang',
                 'link' => '/goods'
             ];
             return view('pages/goods/goods_create', $data);
@@ -100,45 +151,51 @@ class GoodsController extends BaseController
         $goods['goods_users'] = $users['username'];
 
         $data = [
-            'title' => "Edit Goods",
+            'title' => "Edit Data Barang",
             'link' => '/goods',
             'goods' => $goods,
         ];
 
-        return view('pages/goods/goods_update', $data);
+        return view('pages/goods/goods_edit', $data);
     }
 
     public function update()
     {
-        $data = $this->request->getPost();
+        $body = $this->request->getPost();
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
 
-        if ($data && isset($data['goods_code']) && isset($data['username'])) {
-            $goods = $this->Goods->getOneData($data['goods_code']);
-            $users = $this->Users->getUser($data['username']);
-            $data = array_merge($data, ['users_id' => $users['id']]);
-            unset($data['goods_code']);
-            unset($data['username']);
-            if ($data) {
-                if ($goods['goods_price'] != $data['goods_price']) {
-                    $data += ['goods_prev_price' => $goods['goods_price']];
+        $session = session()->get('sessionData');
+        $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
+
+        if ($body && isset($body['goods_code']) && isset($decoded->username)) {
+            $goods = $this->Goods->getOneData($body['goods_code']);
+            $users = $this->Users->getUser($decoded->username);
+            $body = array_merge($body, ['users_id' => $users['id']]);
+            unset($body['goods_code']);
+            unset($decoded->username);
+            if ($body) {
+                if ($goods['goods_price'] != $body['goods_price']) {
+                    $body += ['goods_prev_price' => $goods['goods_price']];
                 } else {
-                    $data += ['goods_prev_price' => 0];
+                    $body += ['goods_prev_price' => 0];
                 }
             }
 
             $rules = $this->Goods->getValidationRules();
-            unset($rules['goods_stok_toko']);
-            unset($rules['goods_stok_gudang']);
+            unset($rules['goods_stock_shop']);
+            unset($rules['goods_stock_warehouse']);
 
-            if (!$this->validateData($data, $rules, $this->Goods->getValidationMessages())) {
+            if (!$this->validateData($body, $rules, $this->Goods->getValidationMessages())) {
                 return redirect()->back()->withInput();
             } else {
                 $data = [
-                    'goods_name' => $data['goods_name'],
-                    'goods_price' => $data['goods_price'],
-                    'goods_prev_price' => $data['goods_prev_price'],
-                    'goods_min_stok' => $data['goods_min_stok'],
-                    'users_id' => $data['users_id']
+                    'goods_name' => $body['goods_name'],
+                    'goods_price' => $body['goods_price'],
+                    'goods_prev_price' => $body['goods_prev_price'],
+                    'goods_min_stock' => $body['goods_min_stock'],
+                    'users_id' => $body['users_id']
                 ];
 
                 $this->Goods->update($goods['id'], $data);
@@ -146,33 +203,40 @@ class GoodsController extends BaseController
                 return redirect()->to('/goods');
             }
         } else {
-            session()->setFlashdata('failed', 'Barang yang akan di update tidak ditemukan!');
-            return redirect()->to('/goods');
+            session()->setFlashdata('errors', 'Barang yang akan di update tidak ditemukan!');
+            return redirect()->back();
         }
     }
 
     public function updateStock()
     {
-        $data = $this->request->getPost();
-        if ($data && isset($data['goods_code']) && $data['username']) {
-            $goods = $this->Goods->getOneData($data['goods_code']);
-            $users = $this->Users->getUser($data['username']);
-            $data = array_merge($data, ['users_id' => $users['id']]);
-            unset($data['goods_code']);
+        $body = $this->request->getPost();
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
+
+        $session = session()->get('sessionData');
+        $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
+
+        if ($body && isset($body['goods_code']) && isset($decoded->username)) {
+            $goods = $this->Goods->getOneData($body['goods_code']);
+            $users = $this->Users->getUser($decoded->username);
+            $body = array_merge($body, ['users_id' => $users['id']]);
+            unset($body['goods_code']);
 
             $rules = $this->Goods->getValidationRules();
             unset($rules['goods_name']);
             unset($rules['goods_price']);
             unset($rules['goods_prev_price']);
-            unset($rules['goods_min_stok']);
+            unset($rules['goods_min_stock']);
 
-            if (!$this->validateData($data, $rules, $this->Goods->getValidationMessages())) {
+            if (!$this->validateData($body, $rules, $this->Goods->getValidationMessages())) {
                 return redirect()->back()->withInput();
             } else {
                 $data = [
-                    'goods_stok_toko' => $data['goods_stok_toko'],
-                    'goods_stok_gudang' => $data['goods_stok_gudang'],
-                    'users_id' => $data['users_id']
+                    'goods_stock_shop' => $body['goods_stock_shop'],
+                    'goods_stock_warehouse' => $body['goods_stock_warehouse'],
+                    'users_id' => $body['users_id']
                 ];
 
                 $this->Goods->update($goods['id'], $data);
@@ -180,22 +244,27 @@ class GoodsController extends BaseController
                 return redirect()->to('/goods');
             }
         } else {
-            session()->setFlashdata('failed', 'Stok barang yang akan di update tidak di temukan!');
-            return redirect()->to('/goods');
+            session()->setFlashdata('errors', 'Stok barang yang akan di update tidak di temukan!');
+            return redirect()->back();
         }
     }
 
     public function delete()
     {
-        $data = $this->request->getPost();
-        if ($data && isset($data['goods_code'])) {
-            $goods = $this->Goods->getOneData($data['goods_code']);
+        $body = $this->request->getPost();
+
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
+
+        if ($body && isset($body['goods_code'])) {
+            $goods = $this->Goods->getOneData($body['goods_code']);
             $this->Goods->delete($goods['id']);
             session()->setFlashdata('success', 'Barang berhasil di hapus');
             return redirect()->to('/goods');
         } else {
-            session()->setFlashdata('failed', 'Barang tidak ditemukan!');
-            return redirect()->to('/goods');
+            session()->setFlashdata('errors', 'Barang tidak ditemukan!');
+            return redirect()->back();
         }
     }
 }

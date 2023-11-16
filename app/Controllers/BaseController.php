@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Helpers\SessionHelpers;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -42,6 +43,8 @@ abstract class BaseController extends Controller
      * The creation of dynamic property is deprecated in PHP 8.2.
      */
     // protected $session;
+    protected $SessionHelpers;
+    protected $Pager;
 
     /**
      * @return void
@@ -50,6 +53,8 @@ abstract class BaseController extends Controller
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
+        $this->SessionHelpers = new SessionHelpers();
+        $this->Pager = \Config\Services::pager();
 
         // Preload any models, libraries, etc, here.
 

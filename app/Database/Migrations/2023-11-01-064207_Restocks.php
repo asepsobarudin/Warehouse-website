@@ -33,6 +33,10 @@ class Restocks extends Migration
                 'type' => 'INT',
                 'null' => true
             ],
+            'message' => [
+                'type' => 'TEXT',
+                'null' => true
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
             ],

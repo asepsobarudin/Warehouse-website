@@ -3,70 +3,74 @@
 <?php if (session()->getFlashdata('_ci_validation_errors')) :
   $errors = session()->getFlashdata('_ci_validation_errors');
 endif; ?>
+<?php
+$session = session()->get('sessionData');
+?>
 
 <?= $this->section('content') ?>
-<main class="container mt-2">
-  <form action="<?= base_url('goods/goods_create') ?>" method="post" class="p-2 bg-white rounded-md flex flex-col gap-2">
-    <? csrf_field() ?>
-    <div class="flex flex-col lg:flex-row justify-center items-start gap-2 w-full">
-      <div class="w-full flex flex-col gap-4 py-2">
-        <input type="hidden" name="username" value="<?= session()->get('username') ?>">
-        <div class="block">
-          <label for="goods_name" class="relative flex justify-start items-center">
-            <input type="text" id="goods_name" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="Nama" name="goods_name" value="<?= old('goods_name') ?>" autofocus>
-            <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Nama Barang</span>
-          </label>
+<main class="container mt-2 p-2 block">
+  <?= $this->include('components/flash_message') ?>
+  <div class="flex justify-center items-center w-full bg-netral rounded-md p-4 relative overflow-hidden">
+    <img src="<?= base_url('assets/images/form_goods.jpg') ?>" alt="form_Goods" class="block absolute w-full h-full object-contain lg:relative lg:w-[50%]">
+    <form action="<?= base_url('goods/goods_create') ?>" method="post" class="w-full h-full md:w-[80%] lg:w-[50%] flex flex-col gap-2 relative z-10 bg-netral/80">
+      <?= csrf_field() ?>
+      <label for="goods_name" class="block w-full">
+        <div class="flex justify-between items-center w-full flex-wrap gap-1">
+          <span class="block font-medium text-primary/80 text-sm">Nama Barang</span>
           <?php if (isset($errors['goods_name'])) : ?>
-            <span class="block text-red-600 text-sm font-medium"><?= $errors['goods_name'] ?></span>
+            <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_name'] ?>"</span>
           <?php endif; ?>
         </div>
-        <div class="block w-full">
-          <div class="flex items-center gap-2">
-            <label for="goods_price" class="relative flex justify-start items-center w-[60%]">
-              <input type="number" id="goods_price" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_price" value="<?= old('goods_price') ?>">
-              <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Harga</span>
-            </label>
-            <h2 class="w-[40%] font-semibold text-lg text-black/80" id="out_price">Rp. 0</h2>
+        <input type="text" id="goods_name" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="Nama" name="goods_name" value="<?= old('goods_name') ?>" autofocus>
+      </label>
+      <div class="block w-full">
+        <label for="goods_price" class="block w-full">
+          <div class="flex justify-between items-center w-full flex-wrap gap-1">
+            <span class="block font-medium text-primary/80 text-sm">Harga</span>
+            <?php if (isset($errors['goods_price'])) : ?>
+              <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_price'] ?>"</span>
+            <?php endif; ?>
           </div>
-          <?php if (isset($errors['goods_price'])) : ?>
-            <span class="block text-red-600 text-sm font-medium"><?= $errors['goods_price'] ?></span>
-          <?php endif; ?>
-        </div>
-        <div class="block">
-          <label for="goods_stok_toko" class="relative flex justify-start items-center">
-            <input type="number" id="goods_stok_toko" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-[50%]" placeholder="0" name="goods_stok_toko" value="<?= old('goods_stok_toko') ?>">
-            <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Stok Toko</span>
-          </label>
-          <?php if (isset($errors['goods_stok_toko'])) : ?>
-            <span class="block text-red-600 text-sm font-medium"><?= $errors['goods_stok_toko'] ?></span>
-          <?php endif; ?>
-        </div>
-        <div class="block">
-          <label for="goods_stok_gudang" class="relative flex justify-start items-center">
-            <input type="number" id="goods_stok_gudang" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-[50%]" placeholder="0" name="goods_stok_gudang" value="<?= old('goods_stok_gudang') ?>">
-            <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Stok Gudang</span>
-          </label>
-          <?php if (isset($errors['goods_stok_gudang'])) : ?>
-            <span class="block text-red-600 text-sm font-medium"><?= $errors['goods_stok_gudang'] ?></span>
-          <?php endif; ?>
-        </div>
-        <div class="block">
-          <label for="goods_min_stok" class="relative flex justify-start items-center">
-            <input type="number" id="goods_min_stok" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-[50%]" placeholder="0" name="goods_min_stok" value="<?= old('goods_min_stok') ?>">
-            <span class="absolute block font-medium text-sm text-black/50 -top-[9px] left-2 bg-white ease-out duration-100 px-1 peer-focus:text-black/60">Stok Minimal</span>
-          </label>
-          <?php if (isset($errors['goods_min_stok'])) : ?>
-            <span class="block text-red-600 text-sm font-medium"><?= $errors['goods_min_stok'] ?></span>
-          <?php endif; ?>
-        </div>
+          <input type="number" id="goods_price" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_price" value="<?= old('goods_price') ?>">
+        </label>
+        <h2 class="w-full font-semibold text-base text-black/80 text-end px-2 pt-2" id="out_price">Rp. 0</h2>
       </div>
-    </div>
-    <div class="flex justify-end items-center">
-      <button class="py-2 px-3 bg-sky-600 hover:bg-sky-700 font-semibold text-white rounded-md ease-in-out duration-100 flex justify-center items-center gap-1">
-        <span>Simpan</span>
-        <img src="<?= base_url('assets/icons/save-line.svg') ?>" alt="save" class="w-[30px] h-[30px]">
-      </button>
-    </div>
-  </form>
+      <label for="goods_stock_shop" class="block w-full">
+        <div class="flex justify-between items-center w-full flex-wrap gap-1">
+          <span class="block font-medium text-primary/80 text-sm">Stok Toko</span>
+          <?php if (isset($errors['goods_stock_shop'])) : ?>
+            <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_stock_shop'] ?>"</span>
+          <?php endif; ?>
+        </div>
+        <input type="number" id="goods_stock_shop" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_stock_shop" value="<?= old('goods_stock_shop') ?>">
+      </label>
+      <label for="goods_stock_warehouse" class="block w-full">
+        <div class="flex justify-between items-center w-full flex-wrap gap-1">
+          <span class="block font-medium text-primary/80 text-sm">Stok Gudang</span>
+          <?php if (isset($errors['goods_stock_warehouse'])) : ?>
+            <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_stock_warehouse'] ?>"</span>
+          <?php endif; ?>
+        </div>
+        <input type="number" id="goods_stock_warehouse" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_stock_warehouse" value="<?= old('goods_stock_warehouse') ?>">
+      </label>
+      <label for="goods_min_stock" class="block w-full">
+        <div class="flex justify-between items-center w-full flex-wrap gap-1">
+          <span class="block font-medium text-primary/80 text-sm">Minimal Stok</span>
+          <?php if (isset($errors['goods_min_stock'])) : ?>
+            <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_min_stock'] ?>"</span>
+          <?php endif; ?>
+        </div>
+        <input type="number" id="goods_min_stock" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_min_stock" value="<?= old('goods_min_stock') ?>">
+      </label>
+      <div class="flex justify-end items-center w-full mt-4">
+        <button class="buttonSuccess py-2 px-3 font-semibold text-white flex justify-center items-center gap-1">
+          <img src="<?= base_url('assets/icons/save-line-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
+          <img src="<?= base_url('assets/icons/save-line-green-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
+          <span>Simpan</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
 </main>
 <?= $this->endSection(); ?>

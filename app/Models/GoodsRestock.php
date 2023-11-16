@@ -16,7 +16,8 @@ class GoodsRestock extends Model
     protected $allowedFields    = [
         'goods_id',
         'restock_id',
-        'qty'
+        'qty',
+        'qty_response'
     ];
 
     // Dates
@@ -58,7 +59,20 @@ class GoodsRestock extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function listRestock ($id) {
+    public function listRestock($id)
+    {
         return $this->like('restock_id', $id)->findAll();
+    }
+
+    public function checkList($restock_id, $goods_id)
+    {
+        $listRestock = $this->like('restock_id', $restock_id)->findAll();
+        $result = [];
+        foreach ($listRestock as $list) {
+            if (isset($list['goods_id']) && $list['goods_id'] === $goods_id) {
+                $result = $list;
+            }
+        }
+        return $result;
     }
 }

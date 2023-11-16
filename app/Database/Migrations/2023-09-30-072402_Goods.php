@@ -33,15 +33,15 @@ class Goods extends Migration
                 'type' => 'INT',
                 'null' => true
             ],
-            'goods_stok_toko' => [
+            'goods_stock_shop' => [
                 'type' => 'INT',
                 'null' => true
             ],
-            'goods_stok_gudang' => [
+            'goods_stock_warehouse' => [
                 'type' => 'INT',
                 'null' => true
             ],
-            'goods_min_stok' => [
+            'goods_min_stock' => [
                 'type' => 'INT',
                 'null' => true
             ],

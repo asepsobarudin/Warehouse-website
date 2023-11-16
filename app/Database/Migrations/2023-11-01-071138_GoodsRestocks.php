@@ -27,6 +27,10 @@ class GoodsRestocks extends Migration
                 'type' => 'INT',
                 'null' => false
             ],
+            'qty_response' => [
+                'type' => 'INT',
+                'null' => true
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
             ],

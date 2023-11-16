@@ -35,16 +35,16 @@ class Users extends Model
     ];
     protected $validationMessages   = [
         'username' => [
-            'required' => 'username harus di isi!',
-            'is_unique' => 'username sudah digunakan!',
-            'min_length' => 'username harus lebih dari 4 karakter!'
+            'required' => 'Username tidak boleh kosong!',
+            'is_unique' => 'Username sudah digunakan!',
+            'min_length' => 'Username harus lebih dari 4 karakter!'
         ],
         'password' => [
-            'required' => 'silahkan masukan password!',
-            'min_length' => 'panjang password minimal 8 karakter!'
+            'required' => 'Password tidak boleh kosong!',
+            'min_length' => 'Panjang password minimal 8 karakter!'
         ],
         'role' => [
-            'required' => 'silahkan pilih role!'
+            'required' => 'Silahkan pilih role!'
         ]
     ];
     protected $skipValidation       = false;
@@ -82,6 +82,6 @@ class Users extends Model
         if (!$value) {
             $value['status'] = null;
         }
-        return $value['status'];
+        return $value;
     }
 }

@@ -12,7 +12,8 @@ $menu = [
   ],
 ];
 
-$role = session()->get('role');
+$session = session()->get('sessionData');
+$role = $session['role'];
 ?>
 
 <?php if ($role === 'gudang') : ?>
@@ -22,7 +23,7 @@ $role = session()->get('role');
         <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
       </div>
       <?php if ($title == $list['title']) { ?>
-        <span class="block w-full h-[2px] bg-pallet1 rounded-full mt-1"></span>
+        <span class="block w-full h-[2px] bg-white rounded-full mt-1"></span>
       <?php } else { ?>
         <span class="block mt-1"></span>
       <?php } ?>

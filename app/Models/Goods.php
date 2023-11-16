@@ -18,9 +18,9 @@ class Goods extends Model
         'goods_name',
         'goods_price',
         'goods_prev_price',
-        'goods_stok_toko',
-        'goods_stok_gudang',
-        'goods_min_stok',
+        'goods_stock_shop',
+        'goods_stock_warehouse',
+        'goods_min_stock',
         'users_id'
     ];
 
@@ -37,14 +37,14 @@ class Goods extends Model
         'goods_name' => 'required|min_length[5]|max_length[255]',
         'goods_price' => 'required|min_length[3]|numeric',
         'goods_prev_price' => 'numeric',
-        'goods_stok_toko' => 'min_length[1]|numeric',
-        'goods_stok_gudang' => 'min_length[1]|numeric',
-        'goods_min_stok' => 'min_length[1]|numeric',
+        'goods_stock_shop' => 'min_length[1]|numeric',
+        'goods_stock_warehouse' => 'min_length[1]|numeric',
+        'goods_min_stock' => 'min_length[1]|numeric',
         'users_id' => 'required'
     ];
     protected $validationMessages   = [
         'goods_name' => [
-            'required' => 'Nama tidak boleh kosong!',
+            'required' => 'Nama barang tidak boleh kosong!',
             'min_length' => 'Minimal panjang nama barang harus lebih 3 karakter!',
             'max_length' => 'Maksimal panjang nama barang adalah 255 karakter'
         ],
@@ -53,15 +53,15 @@ class Goods extends Model
             'min_length' => 'Minimal harga Rp 100',
             'numeric' => 'Input Harus berupa angka!'
         ],
-        'goods_stok_toko' => [
+        'goods_stock_shop' => [
             'min_length' => 'Stok toko minimal 1!',
             'numeric' => 'Input Harus berupa angka!'
         ],
-        'goods_stok_gudang' => [
+        'goods_stock_warehouse' => [
             'min_length' => 'Stok gudang minimal 1!',
             'numeric' => 'Input Harus berupa angka!'
         ],
-        'goods_min_stok' => [
+        'goods_min_stock' => [
             'min_length' => 'Stok minimal barang 1!',
             'numeric' => 'Input Harus berupa angka!'
         ],
@@ -82,31 +82,30 @@ class Goods extends Model
 
     public function getPaginate()
     {
-        return $this->orderBy('created_at', 'desc')->paginate(20);
-    }
-
-    public function getAll()
-    {
-        return $this->orderBy('goods_stok_toko', 'ASC')->get();
+        return $this->orderBy('goods_name', 'ASC')->paginate(20);
     }
 
     public function search($search)
     {
         $searchData = "";
-        if($search) {
-            $searchData = $this->like("goods_name", $search)->orderBy('created_at', 'desc')->paginate(20);
+        if ($search) {
+            $searchData = $this->like("goods_name", $search)->orderBy('goods_name', 'ASC')->paginate(20);
         }
 
-        if($searchData == null) {
-            $searchData = $this->like("goods_code", $search)->orderBy('created_at', 'desc')->paginate(20);
+        if ($searchData == null) {
+            $searchData = $this->like("goods_code", $search)->orderBy('goods_name', 'ASC')->paginate(20);
         }
         return $searchData;
     }
 
     public function getOneData($code)
     {
-        $getData = $this->where('goods_code', $code)->first();
-        return $this->where('id', $getData['id'])->first();
+        return $this->where('goods_code', $code)->first();
+    }
+
+    public function getDataById($id)
+    {
+        return $this->where('id', $id)->first();
     }
 
     public function uniqueCode()

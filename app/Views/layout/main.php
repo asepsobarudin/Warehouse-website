@@ -5,44 +5,47 @@
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="<?= base_url('/assets/css/style.css') ?>">
+   <link rel="shortcut icon" type="image/png" href="<?= base_url('assets/images/icons.png') ?>">
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
    <title><?= $title ?></title>
  </head>
 
- <body class="flex justify-center items-start scrollBar scrollBarBg scrollBarColors">
+ <body class="flex justify-center items-start scrollBar scrollBarBg scrollBarColors overflow-x-hidden">
    <?= $this->include('components/navbar/navbar') ?>
+   <dialog class="py-2 px-4 rounded-md bg-netral outline-none font-medium fixed top-2 z-10 select-none" id="message_copy">
+     Text berhasil di copy.
+   </dialog>
+   <div class="fixed right-0 z-20">
+     <dialog class="notification_message" id="notification_message">
+     </dialog>
+   </div>
+   <dialog class="message_confirmation" id="message_confirmation">
+   </dialog>
    <?= $this->renderSection('content'); ?>
 
+   <script src="<?= base_url('/assets/js/components.js') ?>"></script>
    <script>
-     const goodsContainer = document.getElementById("goods_table");
-     const page = document.getElementById("block_ctn")
-     const baseURL = '<?= base_url() ?>'
+     const csTable = document.getElementById("cashier_list_table");
+     const containerPage = document.getElementById('container_page');
+     const baseURL = '<?= base_url() ?>';
+     const csrfToken = document.getElementsByName('<?= csrf_token() ?>')[0];
 
-     var link = window.location.href;
-     window.addEventListener('load', (e) => {
-       if (link == `${baseURL}cashier` || link == `${baseURL}index.php/cashier`) {
-         getGoods(baseURL)
+     loadData({
+       text: "cashier",
+       fnc: `getGoods({url: '${baseURL}goods/goods_list'})`
+     });
+
+     window.addEventListener('load', () => {
+       const notifValue = document.getElementById('notification_value');
+       if (notifValue && notifValue.value != '') {
+         notification({
+           notif: {
+             title: notifValue.value
+           }
+         })
        }
      })
-
-     let typingTimer;
-     const doneTypingInterval = 1000;
-     $(document).ready(function() {
-       const searchInput = $("#search");
-       searchInput.on("input", function() {
-         goodsContainer.innerHTML = loading();
-         clearTimeout(typingTimer);
-         typingTimer = setTimeout(function() {
-           const key = searchInput.val();
-           if (key) {
-             searchGoods(`${baseURL}/search`, key);
-           } else {
-             getGoods(baseURL);
-           }
-         }, doneTypingInterval);
-       });
-     });
 
      const btn_nav = document.getElementById('btn_nav')
      const btn_nav_label = document.getElementById('btn_nav_label')
@@ -62,12 +65,31 @@
          main.classList.remove('active')
        }
      }
+
      btn_nav.addEventListener('click', (e) => {
        openNav();
      })
+     window.addEventListener('load', (e) => {
+       const windowWidth = window.innerWidth;
+       if (windowWidth >= 768) {
+         btn_nav.checked = true;
+       } else {
+         btn_nav.checked = false;
+       }
+       openNav();
+     });
+     window.addEventListener('resize', (e) => {
+       const windowWidth = window.innerWidth;
+       if (windowWidth >= 768) {
+         btn_nav.checked = true;
+       } else {
+         btn_nav.checked = false;
+       }
+       openNav();
+     });
    </script>
+   <script src="<?= base_url('/assets/js/api.js') ?>"></script>
    <script src="<?= base_url('/assets/js/main.js') ?>"></script>
-   <script src="<?= base_url('/assets/js/components.js') ?>"></script>
  </body>
 
  </html>

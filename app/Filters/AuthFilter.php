@@ -3,14 +3,12 @@
 namespace App\Filters;
 
 use App\Helpers\JwtHelpers;
+use App\Helpers\SessionHelpers;
 use App\Models\Users;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
-use \Firebase\JWT\JWT;
-use \Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
-use Firebase\JWT\CachedKeySet;
 
 class AuthFilter implements FilterInterface
 {
@@ -30,31 +28,30 @@ class AuthFilter implements FilterInterface
      * @return mixed
      */
 
-    protected $Users;
-    protected $JwtHelpers;
+    protected $Users, $JwtHelpers, $SessionHelpers;
     public function __construct()
     {
         $this->Users = new Users();
         $this->JwtHelpers = new JwtHelpers();
+        $this->SessionHelpers = new SessionHelpers;
     }
 
     public function before(RequestInterface $request, $arguments = null)
     {
-        $session = session();
-        $token = str_replace('Bearer ', '',  $session->get('jwt_token'));
-
-        if ($token) {
+        $session = $this->SessionHelpers->getSession();
+        if (isset($session['jwt_token'])) {
             try {
-                $decoded = $this->JwtHelpers->decodeToken($token);
+                $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
                 $user = $this->Users->getStatus($decoded->username);
-                if ($decoded && $user === $decoded->unique) {
+                if ($decoded && $user['status'] === $decoded->unique) {
                     $role = $decoded->role;
-                    $session->set('role', $role);
-                    $session->set('username', $decoded->username);
+                    $this->SessionHelpers->setSession('role', $role);
+                    $this->SessionHelpers->setSession('username', $decoded->username);
 
                     $timeToken = getenv('SESSION_TOKEN');
                     $expire = $decoded->exp - ($timeToken * 30);
                     if (time() > $expire) {
+                        $unique = uniqid();
                         $iat = time();
                         $exp = time() + ($timeToken * 60);
                         $dataToken = [
@@ -62,13 +59,16 @@ class AuthFilter implements FilterInterface
                             'sub' => $decoded->sub,
                             'username' => $decoded->username,
                             'role' => $decoded->role,
-                            'unique' => $decoded->unique,
+                            'unique' => $unique,
                             'updated_at' => $decoded->updated_at,
                             'iat' => $iat,
                             'exp' => $exp
                         ];
-                        $refreshToken = $this->JwtHelpers->generateToken($dataToken);
-                        $session->set('jwt_token', $refreshToken);
+
+                        if ($this->Users->update($user['id'], ['status' => $dataToken['unique']])) {
+                            $refreshToken = $this->JwtHelpers->generateToken($dataToken);
+                            $this->SessionHelpers->setSession('jwt_token', $refreshToken);
+                        }
                     }
 
                     if ($arguments != null) {
@@ -85,30 +85,28 @@ class AuthFilter implements FilterInterface
                     if ($arguments != null && $arguments[0] === 'online') {
                         return $request;
                     } else {
-                        $session->remove('jwt_token');
-                        $session->remove('role');
-                        $session->remove('username');
-                        session()->setFlashdata('fail', 'Hak akses anda telah dicabut!');
+                        $this->SessionHelpers->deleteSession();
+                        session()->setFlashdata('errors', 'Anda telah keluar dari sistem!');
                         return redirect()->to('/');
                     }
                 } else {
-                    $session->destroy();
+                    session()->destroy();
                     return redirect()->to('/');
                 }
             } catch (ExpiredException $e) {
-                $username = $session->get('username');
+                $username = $session['username'];
                 if ($username) {
                     $user = $this->Users->getUser($username);
                     $this->Users->update($user['id'], [
                         'status' => null
                     ]);
                 }
-                $session->destroy();
-                $session->setFlashdata('fail', 'Sesi login anda telah berakhir!');
+                $this->SessionHelpers->deleteSession();
+                session()->setFlashdata('errors', 'Sesi login anda telah berakhir!');
                 return redirect()->to('/');
             }
         } else {
-            $session->destroy();
+            session()->destroy();
             return redirect()->to('/');
         }
     }

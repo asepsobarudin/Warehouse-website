@@ -2,15 +2,18 @@
 
 namespace App\Controllers;
 
-use App\Controllers\BaseController;
+use DateTime;
 use App\Models\Users;
+use App\Controllers\BaseController;
+use App\Helpers\SessionHelpers;
 
 class UserController extends BaseController
 {
-    protected $Users;
+    protected $Users, $Session;
     public function __construct()
     {
         $this->Users = new Users();
+        $this->Session = new SessionHelpers();
     }
 
     public function index()
@@ -19,8 +22,17 @@ class UserController extends BaseController
         $setUser = [];
 
         foreach ($getUser as $user) {
-            unset($user['id']);
-            unset($user['password']);
+            $lastLogin = new DateTime($user['updated_at']);
+            $time =  new DateTime();
+
+            $loginTime = $lastLogin->diff($time)->h;
+            if ($loginTime >= 1 && $user['status']) {
+                $dt = [
+                    'status' => null
+                ];
+                $this->Users->update($user['id'], $dt);
+                $user['status'] = $dt['status'];
+            }
 
             if ($user['status']) {
                 $user['status'] = 'online';
@@ -28,6 +40,8 @@ class UserController extends BaseController
                 $user['status'] = null;
             }
 
+            unset($user['id']);
+            unset($user['password']);
             $setUser = array_merge($setUser, [$user]);
         }
 
@@ -41,14 +55,20 @@ class UserController extends BaseController
 
     public function create()
     {
-        $data = $this->request->getPost();
-        if ($data) {
-            if ($data['role'] === '0') {
-                $data['role'] = null;
+        $body = $this->request->getPost();
+        if ($body) {
+            if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+                $body = null;
+                session()->setFlashdata('errors', 'User gagal ditambahkan!');
+                return redirect()->back()->withInput();
             }
 
-            if ($data['role'] != 'kasir' && $data['role'] != 'gudang' && $data['role'] != 'admin') {
-                $data['role'] = null;
+            if ($body['role'] === '0') {
+                $body['role'] = null;
+            }
+
+            if ($body['role'] != 'kasir' && $body['role'] != 'gudang' && $body['role'] != 'admin') {
+                $body['role'] = null;
             }
 
             $rules = $this->Users->getValidationRules();
@@ -56,19 +76,19 @@ class UserController extends BaseController
             $message = $this->Users->getValidationMessages();
             $message = array_merge($message, [
                 'passwordConf' => [
-                    'matches' => 'password konfirmasi tidak cocok!'
+                    'matches' => 'Password konfirmasi tidak cocok!'
                 ]
             ]);
 
-            if (!$this->validateData($data, $rules, $message)) {
+            if (!$this->validateData($body, $rules, $message)) {
                 return redirect()->back()->withInput();
             } else {
-                $password = password_hash($data['password'], PASSWORD_BCRYPT);
+                $password = password_hash($body['password'], PASSWORD_BCRYPT);
 
                 $this->Users->insert([
-                    'username' => $data['username'],
+                    'username' => $body['username'],
                     'password' => $password,
-                    'role' => $data['role'],
+                    'role' => $body['role'],
                 ]);
 
                 session()->setFlashdata('success', 'User berhasil di tambahkan');
@@ -86,7 +106,7 @@ class UserController extends BaseController
     public function edit($username)
     {
         $users = $this->Users->getUser($username);
-        unset($users['id']);
+        unset($users['password']);
 
         $data = [
             'title' => 'Update Password dan Role',
@@ -98,13 +118,17 @@ class UserController extends BaseController
 
     public function update()
     {
-        $data = $this->request->getPost();
+        $body = $this->request->getPost();
 
-        if ($data && isset($data['username'])) {
-            $users = $this->Users->getUser($data['username']);
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
+
+        if ($body && isset($body['username'])) {
+            $users = $this->Users->getUser($body['username']);
 
             if (!$users) {
-                session()->setFlashdata('failed', 'Username tidak ditemukan!');
+                session()->setFlashdata('errors', 'Username tidak ditemukan!');
                 return redirect()->back();
             } else {
                 $rules = $this->Users->getValidationRules();
@@ -113,72 +137,88 @@ class UserController extends BaseController
                 $message = $this->Users->getValidationMessages();
                 $message = array_merge($message, [
                     'passwordConf' => [
-                        'matches' => 'password konfirmasi tidak cocok!'
+                        'matches' => 'Password konfimasi tidak cocok!'
                     ]
                 ]);
 
-                if (!$this->validateData($data, $rules, $message)) {
+                if ($body['role'] === '0') {
+                    $body['role'] = null;
+                }
+
+                if ($body['role'] != 'kasir' && $body['role'] != 'gudang' && $body['role'] != 'admin') {
+                    $body['role'] = null;
+                }
+
+                if (!$this->validateData($body, $rules, $message)) {
                     return redirect()->back()->withInput();
                 } else {
-                    $password = password_hash($data['password'], PASSWORD_BCRYPT);
+                    if (password_verify($body['password'], $users['password'])) {
+                        session()->setFlashdata('errors', 'Password yang sama dengan yang sekarang!');
+                        return redirect()->back();
+                    }
+
+                    $password = password_hash($body['password'], PASSWORD_BCRYPT);
                     $data = [
                         'password' => $password,
-                        'role' => $data['role'],
+                        'role' => $body['role'],
                         'status' => null
                     ];
 
                     if ($this->Users->update($users['id'], $data)) {
-                        if(session()->get('username') === $users['username']) {
-                            session()->remove('jwt_token');
-                            session()->remove('rules');
-                            session()->remove('username');
+                        $session = session()->get('sessionData');
+                        if ($session['username'] === $users['username']) {
+                            $this->Session->deleteSession();
                         }
-                        session()->setFlashdata('success', 'Username Berhasil Di Ubah!');
+                        session()->setFlashdata('success', 'Update data user berhasil.');
                         return redirect()->to('/users');
                     } else {
-                        session()->setFlashdata('failed', 'Update Gagal!');
+                        session()->setFlashdata('errors', 'Update data user gagal!');
                         return redirect()->back();
                     }
                 }
             }
         } else {
-            session()->setFlashdata('failed', 'Data Tidak Ditemukan');
+            session()->setFlashdata('errors', 'Data user tidak ditemukan!');
             return redirect()->back();
         }
     }
 
     public function delete()
     {
-        $data = $this->request->getPost();
-        if ($data && isset($data['username'])) {
-            $users = $this->Users->getUser($data['username']);
+        $body = $this->request->getPost();
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
+
+        if ($body && isset($body['username'])) {
+            $users = $this->Users->getUser($body['username']);
 
             if (!$users) {
-                session()->setFlashdata('failed', 'Username tidak ditemukan!');
+                session()->setFlashdata('errors', 'Username tidak ditemukan!');
                 return redirect()->back();
             } else {
                 if ($this->Users->delete($users['id'])) {
-                    session()->setFlashdata('success', 'User Berhasil Di Hapus!');
+                    session()->setFlashdata('success', 'User berhasil di hapus!');
                     return redirect()->to('/users');
                 } else {
-                    session()->setFlashdata('failed', ' Gagal Menghapus User!');
+                    session()->setFlashdata('errors', ' Gagal menghapus user!');
                     return redirect()->back();
                 }
             }
         } else {
-            session()->setFlashdata('failed', 'Data Tidak Ditemukan');
+            session()->setFlashdata('errors', 'Data user tidak ditemukan');
             return redirect()->back();
         }
     }
 
     public function removeAccess()
     {
-        $data = $this->request->getPost();
-        if ($data && isset($data['username'])) {
-            $users = $this->Users->getUser($data['username']);
+        $body = $this->request->getPost();
+        if ($body && isset($body['username'])) {
+            $users = $this->Users->getUser($body['username']);
 
             if (!$users) {
-                session()->setFlashdata('failed', 'Username tidak ditemukan!');
+                session()->setFlashdata('errors', 'Username tidak ditemukan!');
                 return redirect()->back();
             } else {
                 $data = [
@@ -186,15 +226,15 @@ class UserController extends BaseController
                 ];
 
                 if ($this->Users->update($users['id'], $data)) {
-                    session()->setFlashdata('success', 'Access user ' . $users['username'] . ' berhasil di tutup');
+                    session()->setFlashdata('success', 'Akses user ' . $users['username'] . ' berhasil di tutup.');
                     return redirect()->to('/users');
                 } else {
-                    session()->setFlashdata('failed', 'Penghapusan hak akses gagal!');
+                    session()->setFlashdata('errors', 'Penghapusan hak akses user gagal!');
                     return redirect()->back();
                 }
             }
         } else {
-            session()->setFlashdata('failed', 'Data Tidak Ditemukan');
+            session()->setFlashdata('errors', 'Data user Tidak Ditemukan');
             return redirect()->back();
         }
     }

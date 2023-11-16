@@ -1,38 +1,32 @@
 <?= $this->extend('layout/main') ?>
 
 <?= $this->section('content') ?>
+<?php
+$session = session()->get('sessionData');
+?>
 
-<main class="container p-2" id="main">
-  <header class="flex justify-between items-center">
-    <h2 class="text-lg font-semibold">Daftar Pengguna</h2>
-    <a href="<?= base_url("users/users_create") ?>" class="p-2 bg-add hover:bg-addHover rounded-md ease-in duration-100 flex justify-center items-center gap-1">
-      <img src="<?= base_url('assets/icons/add-line.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
-      <span class="font-medium text-white pr-2">Tambah User</span>
+<main class="container" id="main">
+  <header class="flex justify-between items-center flex-wrap gap-2">
+    <h2 class="text-2xl font-semibold text-primary">Daftar Pengguna</h2>
+    <a href="<?= base_url("users/users_create") ?>" class="flex justify-center items-center gap-1 buttonInfo p-2">
+      <img src="<?= base_url('assets/icons/add-line-white-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+      <img src="<?= base_url('assets/icons/add-line-blue-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+      <span class="font-medium pr-2">Tambah User</span>
     </a>
   </header>
-  <?php if (session()->getFlashdata('success')) : ?>
-    <div class="block w-full p-2 bg-green-600/20 mt-2">
-      <span class="text-lg font-semibold text-black/80 rounded-md">
-        <?= session()->getFlashdata('success') ?>
-      </span>
-    </div>
-  <?php endif; ?>
-  <?php if (session()->getFlashdata('failed')) : ?>
-    <div class="block w-full p-2 bg-red-600/20 mt-2">
-      <span class="text-lg font-semibold text-black/80 rounded-md">
-        <?= session()->getFlashdata('failed') ?>
-      </span>
-    </div>
-  <?php endif; ?>
-  <table class="table-auto w-full border my-2">
+  <?= $this->include('components/flash_message') ?>
+  <table class="table-auto w-full my-2">
     <thead>
       <tr>
-        <td class="border p-2 bg-pallet1 text-white font-semibold text-center w-[60px]">No</td>
-        <td class="border p-2 bg-pallet1 text-white font-semibold text-center">Username</td>
-        <td class="border p-2 bg-pallet1 text-white font-semibold text-center hidden md:table-cell">Role</td>
-        <td class="border p-2 bg-pallet1 text-white font-semibold text-center">Status</td>
-        <td class="border p-2 bg-pallet1 text-white font-semibold text-center hidden md:table-cell">Update</td>
-        <td class="border p-2 bg-pallet1 text-white font-semibold text-center">Action</td>
+        <td class="border p-2 bg-primary text-secondary font-semibold text-center w-[60px]">No</td>
+        <td class="border p-2 bg-primary text-secondary font-semibold text-center">
+          <h2 class="hidden md:block">Username</h2>
+          <h2 class="block md:hidden">Detail</h2>
+        </td>
+        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Role</td>
+        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Status</td>
+        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Terakhir Online</td>
+        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Aksi</td>
       </tr>
     </thead>
     <tbody>
@@ -40,40 +34,52 @@
       $i = 1;
       if ($user) {
         foreach ($user as $list) : ?>
-          <tr>
-            <td class="border p-2 bg-white text-black font-medium text-center">
+          <tr class="group">
+            <td class="border p-2 group-odd:bg-netral group-even:bg-light text-black font-medium text-center">
               <?= $i ?>
             </td>
-            <td class="border p-2 bg-white text-black font-medium"><?= $list['username'] ?></td>
-            <td class="border p-2 bg-white text-black font-medium text-center hidden md:table-cell"><?= $list['role'] ?></td>
-            <?php if ($list['status']) { ?>
-              <td class="border p-2 bg-white font-medium text-center">
-                <span class="block p-2 bg-green-600 rounded-md text-white w-max m-auto">Online</span>
-              </td>
-            <?php } else { ?>
-              <td class="border p-2 bg-white font-medium text-center">
-                <span class="block p-2 bg-red-600 rounded-md text-white w-max m-auto">Offline</span>
-              </td>
-            <?php } ?>
-            <td class="border p-2 bg-white text-black font-medium text-center hidden md:table-cell">
+            <td class="border p-2 group-odd:bg-netral group-even:bg-light text-primary font-medium text-center block md:table-cell"><?= $list['username'] ?></td>
+            <td class="border p-2 group-odd:bg-netral group-even:bg-light font-semibold inline-block w-[50%] md:w-max md:table-cell">
+              <?php if ($list['role'] == 'admin') { ?>
+                <span class="block bg-danger p-2 w-max rounded-md text-netral m-auto select-none">
+                  <?= $list['role'] ?>
+                </span>
+              <?php } ?>
+              <?php if ($list['role'] == 'gudang') { ?>
+                <span class="block bg-success p-2 w-max rounded-md text-netral m-auto select-none">
+                  <?= $list['role'] ?>
+                </span>
+              <?php } ?>
+              <?php if ($list['role'] == 'kasir') { ?>
+                <span class="block bg-info p-2 w-max rounded-md text-netral m-auto select-none">
+                  <?= $list['role'] ?>
+                </span>
+              <?php } ?>
+            </td>
+            <td class="border p-2 group-odd:bg-netral group-even:bg-light font-medium text-start md:text-center inline-block w-[50%] md:w-max md:table-cell">
+              <?php if ($list['status']) { ?>
+                <span class="block p-2 bg-success rounded-md text-netral w-max m-auto select-none">Online</span>
+              <?php } else { ?>
+                <span class="block p-2 bg-primary rounded-md text-netral w-max m-auto select-none">Offline</span>
+              <?php } ?>
+            </td>
+            <td class="border p-2 group-odd:bg-netral group-even:bg-light text-primary font-medium text-center block md:table-cell">
               <?= $list['updated_at'] ?>
             </td>
-            <td class="border p-2 bg-white">
-              <div class="flex w-full justify-center items-center gap-2">
-                <a href="<?= base_url("users/users_edit/" . $list['username']) ?>" class="p-2 bg-view hover:bg-viewHover rounded-md font-medium text-white ease-in duration-100 block w-max">
-                  <div class="w-[30px] h-[30px] block">
-                    <img src="<?= base_url('assets/icons/eye-line.svg') ?>" alt="eye" class="h-full w-full object-cover">
-                  </div>
+            <td class="border p-2 group-odd:bg-netral group-even:bg-light block md:table-cell">
+              <div class="flex w-full justify-center md:justify-center items-center gap-2">
+                <a href="<?= base_url("users/users_edit/" . $list['username']) ?>" class="buttonInfo p-2 font-medium text-netral block w-max">
+                  <img src="<?= base_url('assets/icons/user-line-details-white-1.svg') ?>" alt="user-detail" class="w-[30px] h-[30px] object-cover">
+                  <img src="<?= base_url('assets/icons/user-line-details-blue-1.svg') ?>" alt="user-detail" class="w-[30px] h-[30px] object-cover">
                 </a>
 
-                <?php if ($list['status']) { ?>
-                  <form action="<?= base_url('users/remove_access') ?>" method="post">
+                <?php if ($list['status'] && $list['username'] != $session['username']) { ?>
+                  <form action="<?= base_url('users/remove_access') ?>" method="post" id="form_hak_akses<?= $i ?>">
                     <? csrf_field() ?>
                     <input type="hidden" name="username" value="<?= $list['username'] ?>">
-                    <button type="submit" class="p-2 bg-red-600 hover:bg-deleteHover rounded-md" onclick="return confirm(`Apakah yakin ingin memotong akses <?= $list['username'] ?> ?`)">
-                      <div class="w-[30px] h-[30px] block">
-                        <img src="<?= base_url('assets/icons/user-forbid-line.svg') ?>" alt="eye" class="h-full w-full object-cover">
-                      </div>
+                    <button type="button" class="p-2 buttonDanger" onclick="messageConfirmation({ icons: 'user-line-block-black-1', title: 'Hapus Hak Akses', text: 'Anda yakin ingin menghapus hak akses user <?= $list['username'] ?>?', form: 'form_hak_akses<?= $i ?>' })">
+                      <img src="<?= base_url('assets/icons/user-line-block-white-1.svg') ?>" alt="user-block" class="w-[30px] h-[30px] object-cover">
+                      <img src="<?= base_url('assets/icons/user-line-block-red-1.svg') ?>" alt="user-block" class="w-[30px] h-[30px] object-cover">
                     </button>
                   </form>
                 <?php } ?>
