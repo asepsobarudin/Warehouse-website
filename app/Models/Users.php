@@ -37,11 +37,11 @@ class Users extends Model
         'username' => [
             'required' => 'Username tidak boleh kosong!',
             'is_unique' => 'Username sudah digunakan!',
-            'min_length' => 'Username harus lebih dari 4 karakter!'
+            'min_length' => 'Username harus lebih dari 4 karakter!',
         ],
         'password' => [
             'required' => 'Password tidak boleh kosong!',
-            'min_length' => 'Panjang password minimal 8 karakter!'
+            'min_length' => 'Panjang password minimal 8 karakter!',
         ],
         'role' => [
             'required' => 'Silahkan pilih role!'

@@ -10,4 +10,10 @@ class Home extends BaseController
             'title' => 'Dashboard'
         ]);
     }
+
+    public function menu () {
+        return view('pages/dashboard/menu_page', [
+            'title' => 'Menu'
+        ]);
+    }
 }

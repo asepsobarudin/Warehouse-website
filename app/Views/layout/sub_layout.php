@@ -11,7 +11,7 @@
   <title> <?= $title ?> </title>
 </head>
 
-<body class="flex flex-col justify-start items-center scrollBar scrollBarBg scrollBarColors relative overflow-x-hidden">
+<body class="flex flex-col justify-start items-center scrollBar scrollBarBg scrollBarColors relative" id="body">
   <dialog class="message_confirmation" id="message_confirmation">
   </dialog>
   <div class="fixed right-0 bg-transparent z-20">
@@ -37,10 +37,12 @@
   }
   $userRole = $session['role']
   ?>
+
   <script src="<?= base_url('/assets/js/components.js') ?>"></script>
+  <script src="<?= base_url('/assets/js/layout.js') ?>"></script>
   <script>
     const containerPage = document.getElementById('container_page');
-    const rsTable = document.getElementById('restock_list_goods');
+    const goodsTable = document.getElementById('goods_table');
     const dsTable = document.getElementById('distribution_list_goods');
     const price = document.getElementById('goods_price');
     const baseURL = '<?= base_url() ?>';
@@ -70,24 +72,26 @@
 
     const btnRestock = document.getElementById('restockButton');
     const lyRestock = document.getElementById('restock_cart');
-    const lbRestock = document.getElementById('labelButton');
-    if (btnRestock) {
-      btnRestock.addEventListener('click', () => {
-        openCart()
-      })
+    const body = document.getElementById('body');
+
+    function checkButton() {
+      if (!btnRestock.checked) {
+        btnRestock.checked = true;
+      } else {
+        btnRestock.checked = false;
+      }
+      openCart();
     }
 
     function openCart() {
       if (btnRestock.checked) {
-        lyRestock.classList.remove('nonActive')
-        lyRestock.classList.add('active')
-        lbRestock.classList.remove('nonActive')
-        lbRestock.classList.add('active')
+        lyRestock.classList.remove('nonActive');
+        lyRestock.classList.add('active');
+        body.classList.add('active')
       } else {
-        lyRestock.classList.remove('active')
-        lyRestock.classList.add('nonActive')
-        lbRestock.classList.remove('active')
-        lbRestock.classList.add('nonActive')
+        lyRestock.classList.remove('active');
+        lyRestock.classList.add('nonActive');
+        body.classList.remove('active')
       }
     }
 
@@ -119,7 +123,7 @@
         result = parseInt(setQty.value) - parseInt(setInput.value);
       }
 
-      if (result > 0) {
+      if (result >= 0) {
         setView.innerHTML = result;
         setQty.value = result;
       }

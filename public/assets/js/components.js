@@ -1,3 +1,4 @@
+// Function Smooth Back To Top
 function backToTop({ element }) {
   element.scrollTo({
     top: 0,
@@ -9,6 +10,7 @@ function backToTop({ element }) {
   });
 }
 
+// Show Error Message In Table
 function tableError({ col, code }) {
   return `
     <tr>
@@ -22,6 +24,7 @@ function tableError({ col, code }) {
   `;
 }
 
+// Show Loading In Tabel
 function tableLoading({ col, element }) {
   element.map((list) => {
     const tag = document.getElementById(list);
@@ -30,14 +33,14 @@ function tableLoading({ col, element }) {
   return `
   <tr>
     <td colspan="${col}">
-      <div class="tbLoading">
-        <img src="${baseURL}/assets/icons/loading.gif" alt="loading" class="spiner">
-        <p>Loading...</p>
+      <div class="table_loading">
+        <img src="${baseURL}assets/icons/loading-line-black-1.svg" alt="loading-line" />
       </div>
     </td>
   </tr>`;
 }
 
+// Function for running funtion first reload page
 function loadData({ text, fnc }) {
   var href = window.location.href;
   var getIndex = href.indexOf(text);
@@ -54,36 +57,38 @@ function paginateButton({ table, col, url }) {
     col: col,
     element: ["paginate_button", "paginate_text"],
   });
-  const searchInput = document.getElementById("cs_input_search");
+  const searchInput = document.getElementById("goods_input_search");
   const keyword = searchInput.value;
   if (keyword) {
-    csSearch({ url });
+    goodsSearch({ url });
   } else {
-    getGoods({ url });
+    goodsList({ url });
   }
   backToTop({ element: containerPage });
 }
 
+// Paginate Button
 function paginateBtn({ data, table, col }) {
   const btnBack = document.getElementById("paginate_button");
   const textPaginate = document.getElementById("paginate_text");
   if (data.backPage) {
-    btnBack.innerHTML += `<button onclick="paginateButton({table: '${table}', col: ${col}, url: '${data.backPage}'})" class="back">Back</button>`;
+    btnBack.innerHTML += `<button onclick="paginateButton({table: '${table}', col: ${col}, url: '${data.backPage}'})" class="back">Kembali</button>`;
   }
   if (data.nextPage) {
-    btnBack.innerHTML += `<button onclick="paginateButton({table: '${table}', col: ${col}, url: '${data.nextPage}'})" class="next">Next</button>`;
+    btnBack.innerHTML += `<button onclick="paginateButton({table: '${table}', col: ${col}, url: '${data.nextPage}'})" class="next">Berikutnya</button>`;
   }
   if (data.totalItems >= 1) {
     textPaginate.innerHTML = `
-        <span>Page</span>
+        <span>Halaman</span>
         <span>${data.currentPage}</span>
-        <span>of</span>
+        <span>dari</span>
         <span>${data.pageCount}</span>
         <span>(${data.totalItems} Barang)</span>
     `;
   }
 }
 
+// Copy And Message Copy Text
 function copyTextToClipboard({ copyText }) {
   const textArea = document.createElement("textarea");
   const messageCopy = document.getElementById("message_copy");
@@ -98,6 +103,7 @@ function copyTextToClipboard({ copyText }) {
   }, 3000);
 }
 
+// Confimation Message
 let messageTimeOut;
 function messageConfirmation({ icons, title, text, form }) {
   const messageConfirmation = document.getElementById("message_confirmation");
@@ -110,6 +116,7 @@ function messageConfirmation({ icons, title, text, form }) {
   messageConfirmation.show();
   messageConfirmation.innerHTML = `
   <div class="parent">
+    <div class="bg_parent"></div>
     <div class="child">
       <div>
         <img src="${baseURL}assets/icons/${icons}.svg" alt="icons">
@@ -119,7 +126,7 @@ function messageConfirmation({ icons, title, text, form }) {
       <h2>${text}</h2>
       <div>
         <button class="hoverCancle" onclick="closeConfirmation({element: 'message_confirmation'})" id="btnCancleMessage">Batal</button>
-        <button class="hoverContinue" onclick="formConfirmation({ form: '${form}' })" id="buttonLoading">Lanjutkan</button>
+        <button class="hoverContinue" onclick="confirmation({ form: '${form}' })" id="buttonLoading">Lanjutkan</button>
       </div>
     </div>
   </div>`;
@@ -129,27 +136,32 @@ function messageConfirmation({ icons, title, text, form }) {
   }, 5000);
 }
 
+// Close Dialog
 function closeConfirmation({ element }) {
   const messageConfirmation = document.getElementById(element);
   messageConfirmation.close();
 }
 
-function formConfirmation({ form }) {
+// Message Confimation Form
+function confirmation({ form }) {
   const formTag = document.getElementById(form);
-  const buttonLoading = document.getElementById('buttonLoading');
-  const btnCancleMessage = document.getElementById('btnCancleMessage');
-  
-  if(btnCancleMessage) {
+  const buttonLoading = document.getElementById("buttonLoading");
+  const btnCancleMessage = document.getElementById("btnCancleMessage");
+
+  if (btnCancleMessage) {
     btnCancleMessage.disabled = true;
-    btnCancleMessage.classList.remove('hoverCancle');
+    btnCancleMessage.classList.remove("hoverCancle");
   }
 
   buttonLoading.disabled = true;
-  buttonLoading.classList.remove('hoverContinue');
-  buttonLoading.innerHTML = "Loading...";
+  buttonLoading.classList.remove("hoverContinue");
+  buttonLoading.innerHTML = `
+    <img src="${baseURL}assets/icons/loading-line-black-1.svg" alt="loading-line" class="loading"/>
+  `;
   formTag.submit();
 }
 
+// Notification Message
 let notifTimeOut;
 function notification({ notif }) {
   const notificationMessage = document.getElementById("notification_message");

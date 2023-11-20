@@ -1,32 +1,40 @@
 <?php
 $menu = [
   [
-    'title' => 'User',
+    'title' => 'Pengguna',
     'link' => 'users',
-    'icons' => 'user-line'
+    'icons' => 'user-line-groups-gold-1',
   ],
   [
-    'title' => 'All Menu',
+    'title' => 'Lainya',
     'link' => 'menu',
-    'icons' => 'menu-4-line'
+    'icons' => 'menu-line-gold-1',
   ]
 ];
 
+$cout = 0;
 $session = session()->get('sessionData');
 $role = $session['role'];
 ?>
 
-<?php if ($role === 'admin') : ?>
-  <?php foreach ($menu as $list) : ?>
-    <a href="<?= $list['link'] ?>">
-      <div class="w-[30px] h-[30px]">
-        <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
-      </div>
-      <?php if ($title == $list['title']) { ?>
-        <span class="block w-full h-[2px] bg-white rounded-full mt-1"></span>
-      <?php } else { ?>
-        <span class="block mt-1"></span>
+<?php
+if ($role === "admin") {
+  foreach ($menu as $list) { ?>
+    <a href="<?= $list['link'] ?>" class="relative p-2 flex justify-center items-center w-max">
+      <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-[30px] h-[30px] object-cover">
+      <?php if ($list['title'] == $title) { ?>
+        <span class="block absolute w-full h-1 bg-secondary rounded-md bottom-0"></span>
       <?php } ?>
     </a>
-  <?php endforeach; ?>
-<?php endif; ?>
+    <?php $cout++;
+    if ($cout >= 3 || $role == "admin") { ?>
+      <a href="<?= base_url('menu') ?>" class="relative p-2 flex justify-center items-center w-max">
+        <img src="<?= base_url('assets/icons/menu-line-gold-1.svg') ?>" alt="icons" class="w-[30px] h-[30px] object-cover">
+        <?php if ("Menu" == $title) { ?>
+          <span class="block absolute w-full h-1 bg-secondary rounded-md bottom-0"></span>
+        <?php } ?>
+      </a>
+    <?php break;
+    } ?>
+<?php }
+} ?>

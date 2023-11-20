@@ -271,11 +271,11 @@ div.paginate_button {
   }
 }
 
-div.tbLoading {
+div.table_loading {
   @apply min-h-[70vh] flex justify-center items-center flex-col gap-2;
 
   & img {
-    @apply w-[40px] h-[40px] bg-transparent;
+    @apply w-[40px] h-[40px] block animate-spin;
   }
 
   & h2 {
@@ -306,8 +306,12 @@ dialog.message_confirmation {
   & div.parent {
     @apply w-full h-full flex justify-center items-center;
 
+    & div.bg_parent {
+      @apply absolute w-full h-full backdrop-blur-[2px] z-0;
+    }
+
     & div.child {
-      @apply flex flex-col gap-2 p-4 bg-netral rounded-md border-2 border-primary/10 w-max;
+      @apply flex flex-col gap-2 p-4 bg-netral rounded-md w-max md:max-w-[400px] relative z-10;
 
       & div:nth-child(1) {
         @apply flex justify-between items-center gap-2 after:block after:w-[30px];
@@ -333,19 +337,17 @@ dialog.message_confirmation {
         @apply flex justify-end items-center gap-2;
 
         & button:nth-child(1) {
-          @apply p-2 font-semibold bg-netral border-2 border-tersier text-tersier rounded-md transition-all ease-in-out duration-200;
-        }
-
-        & button:nth-child(1).hoverCancle {
-          @apply hover:bg-tersier hover:border-netral active:border-netral hover:text-secondary;
+          @apply p-2 font-semibold bg-netral border-2 border-tersier text-tersier hover:bg-tersier hover:border-tersier active:border-netral hover:text-secondary rounded-md transition-all ease-in-out duration-200;
         }
 
         & button:nth-child(2) {
-          @apply p-2 font-semibold bg-primary border-2 border-transparent  text-secondary rounded-md transition-all ease-in-out duration-200;
+          @apply p-2 font-semibold bg-primary border-2 border-primary hover:bg-netral hover:border-primary active:border-primary active:bg-netral hover:text-primary text-secondary rounded-md transition-all ease-in-out duration-200;
         }
 
-        & button:nth-child(2).hoverContinue {
-          @apply hover:bg-white hover:border-primary active:border-primary hover:text-primary;
+        & button:nth-child(2) {
+          & img.loading {
+            @apply w-[25px] h-[25px] animate-spin;
+          }
         }
       }
     }
@@ -359,7 +361,7 @@ dialog.message_confirmation {
     @apply w-full flex flex-col justify-center items-end p-2;
 
     & div.child {
-      @apply bg-white border-2 border-primary/10 rounded-md min-w-[300px] max-w-[400px];
+      @apply bg-white rounded-md min-w-[300px] max-w-[350px] border-2 border-primary/20;
 
       & div.last_child {
         @apply flex justify-between items-center p-2 gap-2;
@@ -370,6 +372,14 @@ dialog.message_confirmation {
 
         & h2 {
           @apply text-base text-start text-primary font-medium w-full h-max;
+
+          & ul {
+            @apply list-disc pl-4;
+
+            & li {
+              @apply text-danger;
+            }
+          }
         }
 
         & button {
@@ -384,7 +394,7 @@ dialog.message_confirmation {
   }
 }
 
-tbody.restock_list_goods {
+tbody.goods_list_restock {
   & tr:nth-child(odd) {
     & td {
       @apply bg-netral;
@@ -393,7 +403,7 @@ tbody.restock_list_goods {
 
   & tr:nth-child(even) {
     & td {
-      @apply bg-light;
+      @apply bg-dark;
     }
   }
 
@@ -444,14 +454,14 @@ tbody.restock_list_goods {
       @apply block md:table-cell;
 
       & button {
-        @apply flex justify-center items-center p-2 w-max after:block after:w-2 md:m-auto;
+        @apply flex justify-center items-center p-2 w-max md:m-auto;
 
         & img {
           @apply h-[30px] w-[30px] object-cover;
         }
 
         & h2 {
-          @apply font-semibold;
+          @apply block lg:hidden font-semibold;
         }
       }
     }
@@ -467,7 +477,7 @@ tbody.distribution_list_goods {
 
   & tr:nth-child(even) {
     & td {
-      @apply bg-light;
+      @apply bg-dark;
     }
   }
 
@@ -482,7 +492,7 @@ tbody.distribution_list_goods {
     }
 
     & td:nth-child(2) {
-      @apply max-w-full lg:max-w-[200px] text-start block md:table-cell;
+      @apply max-w-full md:max-w-[200px] text-start block md:table-cell;
     }
 
     & td:nth-child(3) {
@@ -493,14 +503,6 @@ tbody.distribution_list_goods {
 
         & span:nth-child(1) {
           @apply block lg:hidden;
-        }
-
-        & span:nth-child(2).high {
-          @apply bg-success py-1 px-2 text-netral rounded-md;
-        }
-
-        & span:nth-child(2).low {
-          @apply bg-danger py-1 px-2 text-netral rounded-md;
         }
       }
     }
@@ -518,10 +520,22 @@ tbody.distribution_list_goods {
     }
 
     & td:nth-child(5) {
-      @apply block md:table-cell;
+      @apply block lg:table-cell whitespace-nowrap bg-primary;
 
       & div {
-        @apply flex justify-center items-center gap-2;
+        @apply flex justify-start lg:justify-center items-center gap-2 text-netral font-semibold;
+
+        & span:nth-child(1) {
+          @apply block lg:hidden;
+        }
+      }
+    }
+
+    & td:nth-child(6) {
+      @apply block lg:table-cell;
+
+      & div {
+        @apply flex justify-center items-center gap-2 py-2;
         & input {
           @apply p-2 border-2 border-primary/20 hover:border-primary/30 focus:border-primary/30 outline-none rounded-md w-[150px];
         }
@@ -532,13 +546,13 @@ tbody.distribution_list_goods {
           }
 
           & img.loading {
-            @apply animate-spin;
+            @apply block w-[25px] h-[25px] animate-spin;
           }
         }
       }
     }
 
-    & td:nth-child(6) {
+    & td:nth-child(7) {
       @apply block md:table-cell text-center;
       & span {
         @apply block font-semibold text-primary;
@@ -552,7 +566,7 @@ tbody.distribution_list_goods {
 }
 
 .cart {
-  @apply w-[0px];
+  @apply w-[0px] overflow-hidden;
 }
 
 .cartOpen {
@@ -560,48 +574,22 @@ tbody.distribution_list_goods {
 }
 
 .restock_cart.active {
-  @apply w-full md:w-[50%] lg:w-[30%];
+  @apply w-full md:w-[50%] lg:w-[30%] lg:max-w-[500px];
 }
 
 .restock_cart.nonActive {
-  @apply w-[0%] md:w-[0%] lg:w-[30%];
+  @apply w-[0%] md:w-[0%] lg:w-[30%] lg:max-w-[500px];
 }
 
-.labelButton.active {
-  @apply left-2;
-
-  & img:nth-child(1) {
-    @apply hidden;
-  }
-
-  & img:nth-child(2) {
-    @apply hidden;
-  }
-
-  & img:nth-child(3) {
-    @apply block;
-  }
+body.active {
+  @apply overflow-hidden md:overflow-visible;
 }
 
-.labelButton.active:hover {
-  @apply left-2;
-
-  & img:nth-child(1) {
-    @apply block;
-  }
-
-  & img:nth-child(2) {
-    @apply hidden;
-  }
-
-  & img:nth-child(3) {
-    @apply hidden;
-  }
+.labelButton {
+  @apply block absolute z-10 top-2 right-2 lg:hidden h-[40px] w-[40px] p-1 rounded-md cursor-pointer;
 }
 
 .labelButton.nonActive {
-  @apply -left-[48px];
-
   & img:nth-child(1) {
     @apply block;
   }
@@ -616,8 +604,48 @@ tbody.distribution_list_goods {
 }
 
 .labelButton.nonActive:hover {
-  @apply -left-[48px];
+  & img:nth-child(1) {
+    @apply hidden;
+  }
 
+  & img:nth-child(2) {
+    @apply block;
+  }
+
+  & img:nth-child(3) {
+    @apply hidden;
+  }
+}
+
+.labelButton.active {
+  & img:nth-child(1) {
+    @apply hidden;
+  }
+
+  & img:nth-child(2) {
+    @apply hidden;
+  }
+
+  & img:nth-child(3) {
+    @apply block;
+  }
+}
+
+.labelButton.active:hover {
+  & img:nth-child(1) {
+    @apply block;
+  }
+
+  & img:nth-child(2) {
+    @apply hidden;
+  }
+
+  & img:nth-child(3) {
+    @apply hidden;
+  }
+}
+
+.labelButton.nonActive:hover {
   & img:nth-child(1) {
     @apply hidden;
   }
@@ -632,7 +660,7 @@ tbody.distribution_list_goods {
 }
 
 /* Cart Rerstock */
-div.cart_restock {
+div.card_cart_restock {
   @apply flex flex-col justify-center items-start gap-2 w-full p-2 rounded-md;
 
   & div:nth-child(1) {
@@ -664,12 +692,12 @@ div.cart_restock {
   }
 }
 
-div.cart_restock:nth-child(odd) {
-  @apply bg-netral border-2 border-light;
+div.card_cart_restock:nth-child(odd) {
+  @apply bg-netral border-2 border-dark;
 }
 
-div.cart_restock:nth-child(even) {
-  @apply bg-light border-2 border-transparent;
+div.card_cart_restock:nth-child(even) {
+  @apply bg-dark border-2 border-netral;
 }
 /* End Cart Rerstock */
 
@@ -687,4 +715,8 @@ label.password_view {
   & img.nonActive {
     @apply hidden;
   }
+}
+
+img.loading {
+  @apply w-[30px] h-[30px] block animate-spin;
 }

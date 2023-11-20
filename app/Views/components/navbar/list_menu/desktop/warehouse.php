@@ -3,12 +3,12 @@ $menu = [
   [
     'title' => 'Barang',
     'link' => 'goods',
-    'icons' => 'box-line-1'
+    'icons' => 'box-line-gold-1'
   ],
   [
     'title' => 'Distribusi',
     'link' => 'distribution',
-    'icons' => 'car-line-1'
+    'icons' => 'van-line-gold-1'
   ]
 ];
 
@@ -16,7 +16,7 @@ $session = session()->get('sessionData');
 $role = $session['role'];
 ?>
 
-<?php if ($role === 'gudang' || $role === 'admin') : ?>
+<?php if ($role === 'gudang') : ?>
   <div class="block my-2">
     <div class="w-full flex justify-between items-center head_menu mb-1">
       <span class="block font-semibold text-netral/80 text-xs ease-in-out duration-200">Gudang</span>

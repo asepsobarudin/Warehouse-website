@@ -35,6 +35,15 @@ $session = session()->get('sessionData');
         </label>
         <h2 class="w-full font-semibold text-base text-black/80 text-end px-2 pt-2" id="out_price">Rp. 0</h2>
       </div>
+      <label for="goods_min_stock" class="block w-full">
+        <div class="flex justify-between items-center w-full flex-wrap gap-1">
+          <span class="block font-medium text-primary/80 text-sm">Minimal Stok</span>
+          <?php if (isset($errors['goods_min_stock'])) : ?>
+            <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_min_stock'] ?>"</span>
+          <?php endif; ?>
+        </div>
+        <input type="number" id="goods_min_stock" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_min_stock" value="<?= old('goods_min_stock') ?>">
+      </label>
       <label for="goods_stock_shop" class="block w-full">
         <div class="flex justify-between items-center w-full flex-wrap gap-1">
           <span class="block font-medium text-primary/80 text-sm">Stok Toko</span>
@@ -52,15 +61,6 @@ $session = session()->get('sessionData');
           <?php endif; ?>
         </div>
         <input type="number" id="goods_stock_warehouse" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_stock_warehouse" value="<?= old('goods_stock_warehouse') ?>">
-      </label>
-      <label for="goods_min_stock" class="block w-full">
-        <div class="flex justify-between items-center w-full flex-wrap gap-1">
-          <span class="block font-medium text-primary/80 text-sm">Minimal Stok</span>
-          <?php if (isset($errors['goods_min_stock'])) : ?>
-            <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_min_stock'] ?>"</span>
-          <?php endif; ?>
-        </div>
-        <input type="number" id="goods_min_stock" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_min_stock" value="<?= old('goods_min_stock') ?>">
       </label>
       <div class="flex justify-end items-center w-full mt-4">
         <button class="buttonSuccess py-2 px-3 font-semibold text-white flex justify-center items-center gap-1">

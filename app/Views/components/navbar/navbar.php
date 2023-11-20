@@ -1,14 +1,13 @@
 <?php
-$list_menu = [
-  'all' => [
-    [
-      'title' => 'Dashboard',
-      'link' => '/dashboard',
-      'icons' => 'dashboard-line-1'
-    ],
+$menu = [
+  [
+    'title' => 'Dashboard',
+    'link' => '/dashboard',
+    'icons' => 'dashboard-line-gold-1',
   ],
 ];
 
+$session = session()->get('sessionData');
 $role = session()->get('role');
 ?>
 
@@ -30,7 +29,7 @@ $role = session()->get('role');
       <div class="my-2">
         <div class="block">
           <div class="flex flex-col justify-start items-center gap-1">
-            <?php foreach ($list_menu['all'] as $list) : ?>
+            <?php foreach ($menu as $list) : ?>
               <a href="<?= $list['link'] ?>" class="menu effectTrasition">
                 <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
                 <h2 class="tit_menu effectTrasition"><?= $list['title'] ?></h2>
@@ -47,8 +46,14 @@ $role = session()->get('role');
       </div>
     </div>
 
-    <div class="block">
-      <?php $session = session()->get('sessionData') ?>
+    <div class="flex flex-col justify-center items-center w-full gap-2">
+      <a href="<?= base_url('menu') ?>" class="menu effectTrasition">
+        <img src="<?= base_url('assets/icons/menu-line-gold-1.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+        <h2 class="tit_menu effectTrasition">Lainnya</h2>
+        <?php if ("Menu" == $title) : ?>
+          <span class="checkActive effectTrasition"></span>
+        <?php endif; ?>
+      </a>
       <form action="<?= site_url('/logout') ?>" method="post" class="bg-danger hover:bg-primary border-2 border-transparent hover:border-danger rounded-md flex justify-start items-center p-2 gap-1 btm_menu relative group effectTrasition" id="form_logout">
         <?= csrf_field() ?>
         <input type="hidden" name="username" value="<?= $session['username'] ?>">
@@ -64,16 +69,12 @@ $role = session()->get('role');
 
 <!-- Mobile -->
 <nav class="block lg:hidden w-full fixed bottom-0 z-10">
-  <div class="flex justify-evenly items-center h-[60px] bg-white rounded-md pb-4">
-    <?php foreach ($list_menu['all'] as $list) : ?>
-      <a href="<?= $list['link'] ?>">
-        <div class="w-[30px] h-[30px]">
-          <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-full h-full object-cover">
-        </div>
-        <?php if ($title == $list['title']) { ?>
-          <span class="block w-full h-[2px] bg-white rounded-full mt-1"></span>
-        <?php } else { ?>
-          <span class="block mt-1"></span>
+  <div class="flex justify-evenly items-center h-[60px] bg-primary p-2">
+    <?php foreach ($menu as $list) : ?>
+      <a href="<?= $list['link'] ?>" class="relative p-2 flex justify-center items-center w-max">
+        <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-[30px] h-[30px] object-cover">
+        <?php if ($list['title'] == $title) { ?>
+          <span class="block absolute w-full h-1 bg-secondary rounded-md bottom-0"></span>
         <?php } ?>
       </a>
     <?php endforeach; ?>

@@ -21,8 +21,7 @@ class Restocks extends Migration
                 'null' => false
             ],
             'status' => [
-                'type' => 'VARCHAR',
-                'constraint' => '255',
+                'type' => 'INT',
                 'null' => false
             ],
             'request_user_id' => [

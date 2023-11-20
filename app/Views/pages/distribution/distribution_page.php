@@ -1,14 +1,21 @@
 <?= $this->extend('layout/main') ?>
 
+<?php 
+$session = session()->get('sessionData')
+?>
+
 <?= $this->section('content'); ?>
 <main class="container p-2" id="main">
   <div class="flex justify-between items-center gap-2 flex-wrap mt-2 mb-4">
-    <h2 class="text-2xl text-primary font-semibold">Distribusi Barang</h2>
+    <div class="flex justify-center items-center gap-2 w-max">
+      <img src="<?= base_url('assets/icons/van-line-purple-1.svg') ?>" alt="van-line" class="w-[30px] h-[30px] object-cover">
+      <h2 class="text-2xl text-primary font-semibold">Distribusi</h2>
+    </div>
   </div>
   <table class="table border-collapse w-full my-2">
     <thead>
       <tr>
-        <td class="border p-2 font-medium text-center bg-primary text-secondary">No</td>
+        <td class="border p-2 font-medium text-center bg-primary text-secondary">#</td>
         <td class="border p-2 font-medium text-center bg-primary text-secondary">
           <span class="hidden md:block">Kode</span>
           <span class="block md:hidden">Restok</span>
@@ -18,7 +25,9 @@
           <span class="hidden lg:block">Pemesan</span>
           <span class="block lg:hidden">Detail</span>
         </td>
-        <td class="border p-2 font-medium text-center bg-primary text-secondary hidden lg:table-cell">Pengirim</td>
+        <?php if ($session['role'] == 'admin') : ?>
+          <td class="border p-2 font-medium text-center bg-primary text-secondary hidden lg:table-cell">Pengirim</td>
+        <?php endif; ?>
         <td class="border p-2 font-medium text-center bg-primary text-secondary hidden lg:table-cell">Tanggal</td>
         <td class="border p-2 font-medium text-center bg-primary text-secondary">Aksi</td>
       </tr>
@@ -31,8 +40,8 @@
           $restockCode = substr($list['restock_code'], 0, 5);
           ?>
           <tr class="group">
-            <td class="border p-2 font-medium text-center group-odd:bg-netral group-even:bg-light text-primary"><?= $i ?></td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-light text-primary font-medium text-center block md:table-cell">
+            <td class="border p-2 font-medium text-center group-odd:bg-netral group-even:bg-dark text-primary"><?= $i ?></td>
+            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block md:table-cell">
               <div class="flex justify-center items-center gap-2">
                 <?= $restockCode . '...' ?>
                 <button class="block p-2 border-2 border-primary/10 hover:border-primary/60 active:border-primary bg-netral rounded-md duration-200 ease-in-out" onclick="copyTextToClipboard({copyText: '<?= $list['restock_code'] ?>'})">
@@ -40,46 +49,48 @@
                 </button>
               </div>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-light font-medium block md:table-cell">
+            <td class="border p-2 group-odd:bg-netral group-even:bg-dark font-medium block md:table-cell">
               <div class="flex justify-center items-center">
-                <?php if ($list['status'] == 0) { ?>
-                  <span class="flex justify-center items-center rounded-md relative group/btn">
-                    <img src="<?= base_url('assets/icons/edit-line-black-1.svg') ?>" alt="edit-line" class="w-[30px] h-[30px] object-cover">
-                    <span class="hidden group-hover/btn:block absolute border-2 border-secondary p-2 w-max left-[35px] bg-netral rounded-md shadow-md">Belum Selesai</span>
-                  </span>
-                <?php } ?>
                 <?php if ($list['status'] == 1) { ?>
                   <span class="flex justify-center items-center rounded-md relative group/btn">
-                    <img src="<?= base_url('assets/icons/send-line-black-1.svg') ?>" alt="edit-line" class="w-[30px] h-[30px] object-cover">
-                    <span class="hidden group-hover/btn:block absolute border-2 border-secondary p-2 w-max left-[35px] bg-netral rounded-md shadow-md">Menunggu</span>
+                    <img src="<?= base_url('assets/icons/send-line-black-1.svg') ?>" alt="status" class="w-[30px] h-[30px] object-cover">
+                    <span class="hidden group-hover/btn:block absolute border-2 border-secondary p-2 w-max left-[35px] bg-netral rounded-md shadow-md">Terkirim</span>
                   </span>
                 <?php } ?>
                 <?php if ($list['status'] == 2) { ?>
                   <span class="flex justify-center items-center rounded-md relative group/btn">
-                    <img src="<?= base_url('assets/icons/van-line-black-1.svg') ?>" alt="edit-line" class="w-[30px] h-[30px] object-cover">
-                    <span class="hidden group-hover/btn:block absolute border-2 border-secondary p-2 w-max left-[35px] bg-netral rounded-md shadow-md">Dikirim</span>
+                    <img src="<?= base_url('assets/icons/box-line-black-1.svg') ?>" alt="status" class="w-[30px] h-[30px] object-cover">
+                    <span class="hidden group-hover/btn:block absolute border-2 border-secondary p-2 w-max left-[35px] bg-netral rounded-md shadow-md">Dikemas</span>
                   </span>
                 <?php } ?>
                 <?php if ($list['status'] == 3) { ?>
                   <span class="flex justify-center items-center rounded-md relative group/btn">
-                    <img src="<?= base_url('assets/icons/check-line-black-1.svg') ?>" alt="edit-line" class="w-[30px] h-[30px] object-cover">
+                    <img src="<?= base_url('assets/icons/van-line-black-1.svg') ?>" alt="status" class="w-[30px] h-[30px] object-cover">
                     <span class="hidden group-hover/btn:block absolute border-2 border-secondary p-2 w-max left-[35px] bg-netral rounded-md shadow-md">Dikirim</span>
+                  </span>
+                <?php } ?>
+                <?php if ($list['status'] == 4) { ?>
+                  <span class="flex justify-center items-center rounded-md relative group/btn">
+                    <img src="<?= base_url('assets/icons/check-line-black-1.svg') ?>" alt="status" class="w-[30px] h-[30px] object-cover">
+                    <span class="hidden group-hover/btn:block absolute border-2 border-secondary p-2 w-max left-[35px] bg-netral rounded-md shadow-md">Diterima</span>
                   </span>
                 <?php } ?>
               </div>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-light text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell"><?= $list['request_user_id'] ?></td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-light text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell">
-              <?php if (!$list['response_user_id']) { ?>
-                -
-              <?php } else { ?>
-                <?= $list['response_user_id'] ?>
-              <?php } ?>
-            </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-light text-primary font-medium text-center block lg:table-cell">
+            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell"><?= $list['request_user_id'] ?></td>
+            <?php if ($session['role'] == 'admin') : ?>
+              <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell">
+                <?php if (!$list['response_user_id']) { ?>
+                  -
+                <?php } else { ?>
+                  <?= $list['response_user_id'] ?>
+                <?php } ?>
+              </td>
+            <?php endif; ?>
+            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block lg:table-cell">
               <?= $list['created_at'] ?>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-light text-primary font-medium text-center">
+            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center">
               <div class="flex flex-col lg:flex-row justify-center items-center gap-2 w-full">
                 <a href="<?= base_url('distribution/get_restock/') . $list['restock_code'] ?>" class="buttonInfo p-2 font-medium text-white block w-max">
                   <div class="w-[30px] h-[30px] block">

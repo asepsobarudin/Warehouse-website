@@ -4,6 +4,11 @@
   $errors = session()->getFlashdata('_ci_validation_errors');
 endif; ?>
 
+<?php $open = '';
+if (session()->getFlashdata('open')) :
+  $open = session()->getFlashdata('open');
+endif; ?>
+
 <?php
 $session = session()->get('sessionData');
 ?>
@@ -14,7 +19,7 @@ $session = session()->get('sessionData');
   <div class="flex justify-center items-start gap-2 relative overflow-hidden rounded-md p-4 bg-netral">
     <img src="<?= base_url('assets/images/form_goods.jpg') ?>" alt="form_Goods" class="block absolute w-full h-full object-contain lg:relative lg:w-[50%]">
     <div class="w-full md:w-[80%] lg:w-[50%] h-full relative z-10">
-      <details class="py-2 px-4 bg-netral/80 rounded-md border-2 border-primary/5 accordion cursor-pointer">
+      <details <?= $open ?> class="py-2 px-4 bg-netral/80 rounded-md border-2 border-primary/5 accordion cursor-pointer">
         <summary class="text-base font-semibold select-none flex items-center gap-2">
           <img src="<?= base_url('assets/icons/arrow-line-2.svg') ?>" alt="arrow" class="w-[30px] effectTrasition rotate-90">
           <span class="text-primary">Data Barang</span>
@@ -24,7 +29,7 @@ $session = session()->get('sessionData');
             <form action="<?= base_url('goods/goods_delete') ?>" method="post" class="flex md:justify-between items-center flex-wrap gap-2" id="form_goods_delete">
               <?= csrf_field() ?>
               <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
-              <input type="text" name="goods_code" value="<?= $goods['goods_code'] ?>" class="p-2 rounded-md border-2 font-semibold bg-netral text-primary w-full md:w-[70%]" disabled>
+              <input type="text" value="<?= $goods['goods_code'] ?>" class="p-2 rounded-md border-2 border-primary/50 font-semibold bg-netral text-primary w-full md:w-[70%]" disabled>
               <button type="button" class="p-2 buttonDanger flex justify-center items-center gap-1" onclick="messageConfirmation({ icons: 'trash-line-black-1', title: 'Hapus Barang', text: 'Apakan anda yakin ingin menghapus \'<?= $goods['goods_name'] ?>\'?', form: 'form_goods_delete' })">
                 <img src="<?= base_url('assets/icons/trash-line-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <img src="<?= base_url('assets/icons/trash-line-red-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
@@ -32,7 +37,7 @@ $session = session()->get('sessionData');
               </button>
             </form>
           <?php } ?>
-          <form action="<?= base_url('goods/goods_update') ?>" method="post" class="flex flex-col gap-2 mt-2" id="form_goods_edit">
+          <form action="<?= base_url('goods/goods_update') ?>" method="post" class="flex flex-col gap-2 mt-4 md:mt-2" id="form_goods_edit">
             <?= csrf_field() ?>
             <div class="flex flex-col justify-center items-start gap-2 w-full">
               <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
@@ -104,12 +109,12 @@ $session = session()->get('sessionData');
                       <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_stock_shop'] ?>"</span>
                     <?php endif; ?>
                   </div>
-                  <div class="flex justify-center items-center gap-2">
+                  <div class="flex justify-center items-center gap-2 flex-wrap md:flex-nowrap">
                     <input type="hidden" id="goods_stock_shop" name="goods_stock_shop" value="<?= old('goods_stock_shop') ? old('goods_stock_shop') : $goods['goods_stock_shop'] ?>">
-                    <h2 id="view_stock_shop" class="p-2 border-2 w-[50%] block bg-white rounded-md">
+                    <h2 id="view_stock_shop" class="p-2 border-2 border-transparent w-full md:w-[50%] block bg-tersier font-semibold text-netral rounded-md">
                       <?= old('goods_stock_shop') ? old('goods_stock_shop') : $goods['goods_stock_shop'] ?>
                     </h2>
-                    <input type="number" id="input_stock_shop" class="p-2 rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-[50%]" placeholder="0">
+                    <input type="number" id="input_stock_shop" class="p-2 rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-full md:w-[50%]" placeholder="0">
                   </div>
                   <div class="flex justify-end items-center gap-2 mt-2">
                     <button type="button" class="buttonDanger p-2" onclick="addGoodsQty({getQty: 'goods_stock_shop', viewQty: 'view_stock_shop', inputQty: 'input_stock_shop', oprator: 'minus'})">
@@ -131,12 +136,12 @@ $session = session()->get('sessionData');
                       <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_stock_warehouse'] ?>"</span>
                     <?php endif; ?>
                   </div>
-                  <div class="flex justify-center items-center gap-2">
+                  <div class="flex justify-center items-center gap-2 flex-wrap md:flex-nowrap">
                     <input type="hidden" id="goods_stock_warehouse" name="goods_stock_warehouse" value="<?= old('goods_stock_warehouse') ? old('goods_stock_warehouse') : $goods['goods_stock_warehouse'] ?>">
-                    <h2 id="view_stock_warehouse" class="p-2 border-2 w-[50%] block bg-white rounded-md">
+                    <h2 id="view_stock_warehouse" class="p-2 border-2 border-transparent w-full md:w-[50%] block bg-tersier font-semibold text-netral rounded-md">
                       <?= old('goods_stock_warehouse') ? old('goods_stock_warehouse') : $goods['goods_stock_warehouse'] ?>
                     </h2>
-                    <input type="number" id="input_stock_warehouse" class="p-2 rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-[50%]" placeholder="0">
+                    <input type="number" id="input_stock_warehouse" class="p-2 rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-full md:w-[50%]" placeholder="0">
                   </div>
                   <div class="flex justify-end items-center gap-2 mt-2">
                     <button type="button" class="buttonDanger p-2" onclick="addGoodsQty({getQty: 'goods_stock_warehouse', viewQty: 'view_stock_warehouse', inputQty: 'input_stock_warehouse', oprator: 'minus'})">

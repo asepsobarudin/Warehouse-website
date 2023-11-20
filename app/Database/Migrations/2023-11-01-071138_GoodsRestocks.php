@@ -27,7 +27,19 @@ class GoodsRestocks extends Migration
                 'type' => 'INT',
                 'null' => false
             ],
-            'qty_response' => [
+            'qty_send' => [
+                'type' => 'INT',
+                'null' => true
+            ],
+            'qty_damaged' => [
+                'type' => 'INT',
+                'null' => true          
+            ],
+            'qty_excess' => [
+                'type' => 'INT',
+                'null' => true
+            ],
+            'qty_less' => [
                 'type' => 'INT',
                 'null' => true
             ],

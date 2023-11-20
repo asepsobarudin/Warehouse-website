@@ -17,7 +17,10 @@ class GoodsRestock extends Model
         'goods_id',
         'restock_id',
         'qty',
-        'qty_response'
+        'qty_send',
+        'qty_damaged',
+        'qty_excess',
+        'qty_less',
     ];
 
     // Dates
@@ -31,7 +34,11 @@ class GoodsRestock extends Model
     protected $validationRules      = [
         'goods_id' => 'required',
         'restock_id' => 'required',
-        'qty' => 'required|numeric|min_length[1]'
+        'qty' => 'required|numeric|min_length[1]',
+        'qty_send' => 'required|numeric|min_length[1]',
+        'qty_damaged' => 'numeric',
+        'qty_excess' => 'numeric',
+        'qty_less' => 'numeric',
     ];
     protected $validationMessages   = [
         'goods_id' => [
@@ -42,8 +49,23 @@ class GoodsRestock extends Model
         ],
         'qty' => [
             'required' => 'Silahkan masukan jumlah barang!',
-            'numeric' => 'Nilai harus berupa angka!'
-        ]
+            'numeric' => 'Nilai yang di masukan harus berupa angka!',
+            'min_length' => 'Nilai yang dimasukan tidak boleh 0!'
+        ],
+        'qty_send' => [
+            'required' => 'Silahkan masukan jumlah barang!',
+            'numeric' => 'Nilai yang di masukan harus berupa angka!',
+            'min_length' => 'Nilai yang dimasukan tidak boleh 0!'
+        ],
+        'qty_damaged' => [
+            'numeric' => 'Nilai yang di masukan harus berupa angka!'
+        ],
+        'qty_excess' => [
+            'numeric' => 'Nilai yang di masukan harus berupa angka!'
+        ],
+        'qty_less' => [
+            'numeric' => 'Nilai yang di masukan harus berupa angka!'
+        ],
     ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;

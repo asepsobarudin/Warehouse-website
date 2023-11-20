@@ -13,7 +13,7 @@
 
  <body class="flex justify-center items-start scrollBar scrollBarBg scrollBarColors overflow-x-hidden">
    <?= $this->include('components/navbar/navbar') ?>
-   <dialog class="py-2 px-4 rounded-md bg-netral outline-none font-medium fixed top-2 z-10 select-none" id="message_copy">
+   <dialog class="py-2 px-4 rounded-md bg-netral border-2 border-primary/30 outline-none font-medium fixed top-2 z-10 select-none" id="message_copy">
      Text berhasil di copy.
    </dialog>
    <div class="fixed right-0 z-20">
@@ -25,6 +25,7 @@
    <?= $this->renderSection('content'); ?>
 
    <script src="<?= base_url('/assets/js/components.js') ?>"></script>
+   <script src="<?= base_url('/assets/js/layout.js') ?>"></script>
    <script>
      const csTable = document.getElementById("cashier_list_table");
      const containerPage = document.getElementById('container_page');
@@ -69,7 +70,8 @@
      btn_nav.addEventListener('click', (e) => {
        openNav();
      })
-     window.addEventListener('load', (e) => {
+
+     window.addEventListener('load', () => {
        const windowWidth = window.innerWidth;
        if (windowWidth >= 768) {
          btn_nav.checked = true;
@@ -78,14 +80,14 @@
        }
        openNav();
      });
-     window.addEventListener('resize', (e) => {
+
+     window.addEventListener('resize', () => {
        const windowWidth = window.innerWidth;
        if (windowWidth >= 768) {
          btn_nav.checked = true;
        } else {
          btn_nav.checked = false;
        }
-       openNav();
      });
    </script>
    <script src="<?= base_url('/assets/js/api.js') ?>"></script>

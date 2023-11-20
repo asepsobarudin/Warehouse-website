@@ -11,7 +11,7 @@ async function get({ url }) {
     const result = await response.json();
     return result;
   } catch (error) {
-    console.log(error)
+    console.log("Error 500")
   }
 }
 
@@ -34,6 +34,6 @@ async function post({ url, data }) {
     const result = await response.json();
     return result;
   } catch (error) {
-    console.log(error)
+    console.log("Error 500")
   }
 }

@@ -8,17 +8,17 @@ $menu = [
   [
     'title' => 'Transaksi',
     'link' => 'transaction',
-    'icons' => 'bill-line-1'
+    'icons' => 'bill-line-gold-1'
   ],
   [
     'title' => 'Barang',
     'link' => 'goods',
-    'icons' => 'box-line-1'
+    'icons' => 'box-line-gold-1'
   ],
   [
     'title' => 'Restock',
     'link' => 'restock',
-    'icons' => 'box-line-2'
+    'icons' => 'restock-line-gold-1'
   ],
 ];
 
@@ -26,7 +26,7 @@ $session = session()->get('sessionData');
 $role = $session['role'];
 ?>
 
-<?php if ($role === 'kasir' || $role === 'admin') : ?>
+<?php if ($role === 'kasir') : ?>
   <div class="block my-2">
     <div class="w-full flex justify-between items-center head_menu mb-1">
       <span class="block font-semibold text-netral/80 text-xs">Kasir</span>

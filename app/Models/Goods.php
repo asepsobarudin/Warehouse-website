@@ -11,7 +11,7 @@ class Goods extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
         'goods_code',
@@ -21,7 +21,8 @@ class Goods extends Model
         'goods_stock_shop',
         'goods_stock_warehouse',
         'goods_min_stock',
-        'users_id'
+        'users_id',
+        'deleted_at'
     ];
 
     // Dates
@@ -54,11 +55,11 @@ class Goods extends Model
             'numeric' => 'Input Harus berupa angka!'
         ],
         'goods_stock_shop' => [
-            'min_length' => 'Stok toko minimal 1!',
+            'min_length' => 'Stok toko tidak boleh minus!',
             'numeric' => 'Input Harus berupa angka!'
         ],
         'goods_stock_warehouse' => [
-            'min_length' => 'Stok gudang minimal 1!',
+            'min_length' => 'Stok gudang tidak boleh minus!',
             'numeric' => 'Input Harus berupa angka!'
         ],
         'goods_min_stock' => [
@@ -85,6 +86,10 @@ class Goods extends Model
         return $this->orderBy('goods_name', 'ASC')->paginate(20);
     }
 
+    public function getSoftDelete ($id) {
+        return $this->delete();
+    }
+
     public function search($search)
     {
         $searchData = "";
@@ -98,6 +103,18 @@ class Goods extends Model
         return $searchData;
     }
 
+    public function searchAll($search) {
+        $searchData = "";
+        if ($search) {
+            $searchData = $this->like("goods_name", $search)->orderBy('goods_name', 'ASC')->findAll(5);
+        }
+
+        if ($searchData == null) {
+            $searchData = $this->like("goods_code", $search)->orderBy('goods_name', 'ASC')->findAll(5);
+        }
+        return $searchData;
+    }
+
     public function getOneData($code)
     {
         return $this->where('goods_code', $code)->first();
@@ -105,7 +122,8 @@ class Goods extends Model
 
     public function getDataById($id)
     {
-        return $this->where('id', $id)->first();
+        $result = $this->where('id', $id)->first();
+        return $result;
     }
 
     public function uniqueCode()

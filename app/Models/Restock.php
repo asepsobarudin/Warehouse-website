@@ -31,14 +31,23 @@ class Restock extends Model
     // Validation
     protected $validationRules = [
         'restock_code' => 'required|is_unique[restocks.restock_code]',
-        'status' => 'required',
+        'status' => 'required|numeric',
+        'request_user_id' => 'required',
+        'response_user_id' => 'required',
     ];
     protected $validationMessages = [
         'restock_code' => [
-            'required' => 'Restock Code tidak boleh kosong'
+            'required' => 'Restock Code tidak boleh kosong!'
         ],
         'status' => [
-            'required' => 'Status tidak boleh kosong'
+            'required' => 'Status tidak boleh kosong!',
+            'numeric' => 'Status harus berupa angka!'
+        ],
+        'request_user_id' => [
+            'required' => 'User tidak ditemukan!'
+        ],
+        'response_user_id' => [
+            'required' => 'User tidak ditemukan!'
         ],
     ];
     protected $skipValidation       = false;
