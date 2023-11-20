@@ -3763,6 +3763,10 @@ img.loading {
     display: none;
   }
 
+  .lg\:w-1\/2 {
+    width: 50%;
+  }
+
   .lg\:w-\[300px\] {
     width: 300px;
   }
@@ -3786,10 +3790,6 @@ img.loading {
   .lg\:w-max {
     width: -moz-max-content;
     width: max-content;
-  }
-
-  .lg\:w-1\/2 {
-    width: 50%;
   }
 
   .lg\:flex-row {

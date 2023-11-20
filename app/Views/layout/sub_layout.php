@@ -35,7 +35,10 @@
   if (isset($restock_code)) {
     $restockCode = $restock_code;
   }
-  $userRole = $session['role']
+  $userRole = '';
+  if (isset($session['role'])) {
+    $userRole = $session['role'];
+  }
   ?>
 
   <script src="<?= base_url('/assets/js/components.js') ?>"></script>
