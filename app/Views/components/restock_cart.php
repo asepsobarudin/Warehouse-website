@@ -20,11 +20,11 @@
         <textarea id="message" name="message" rows="4" class="block w-full mb-2 outline-none border-2 border-primary/20 focus:border-primary/50 rounded-md p-2 scrollBar scrollBarBg scrollBarColors" placeholder="Pesan..."><?php if (isset($message)) : ?><?= $message ?><?php endif; ?></textarea>
       </label>
       <?php if (!isset($status)) { ?>
-        <button class="buttonSuccess block w-full p-2 font-semibold" type="button" id="buttonLoading" onclick="messageConfirmation({ icons: 'send-line-black-1', title: 'Kirim Permintaan Barang', text: 'Apakah yakin ingin membuat permintaan?', form: 'form_add_restock' })">
+        <button class="buttonSuccess block w-full p-2 font-semibold" type="button" id="buttonLoading" onclick="messageConfirmation({ title: 'Kirim permintaan', text: 'Apakah yakin ingin membuat permintaan?', form: 'form_add_restock' })">
           Buat Permintaan
         </button>
       <?php } else { ?>
-        <button class="buttonWarning block w-full p-2 font-semibold" type="button" id="buttonLoading" onclick="messageConfirmation({ icons: 'update-line-black-1', title: 'Ubah Perminaan Barang', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_add_restock' })">
+        <button class="buttonWarning block w-full p-2 font-semibold" type="button" id="buttonLoading" onclick="messageConfirmation({ title: 'Edit permintaan', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_add_restock' })">
           Edit Permintaan
         </button>
       <?php } ?>

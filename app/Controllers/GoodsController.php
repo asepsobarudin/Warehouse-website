@@ -200,7 +200,7 @@ class GoodsController extends BaseController
             }
         } else {
             $data = [
-                'title' => 'Tambah Data Barang',
+                'title' => 'Tambah barang',
                 'link' => '/goods'
             ];
             return view('pages/goods/goods_create', $data);
@@ -218,7 +218,7 @@ class GoodsController extends BaseController
             $goods['goods_users'] = $users['username'];
 
             $data = [
-                'title' => "Edit Data Barang",
+                'title' => "Edit barang",
                 'link' => '/goods',
                 'goods' => $goods,
             ];

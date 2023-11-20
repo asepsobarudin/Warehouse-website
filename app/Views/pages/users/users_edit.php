@@ -73,7 +73,7 @@ $session = session()->get('sessionData');
           <input type="text" id="passwordConf" class="p-2 rounded-md font-medium outline-primary border-2 border-black/10 peer focus:border-black/30 w-full" name="passwordConf">
         </label>
         <div class="flex justify-end items-center">
-          <button type="button" class="buttonWarning py-2 px-3 font-semibold text-black flex justify-center items-center gap-1" onclick="messageConfirmation({ icons : 'user-line-edit-black-1', title: 'Edit User', text: 'Yakin ingin menyimpan perubahan?', form: 'form_user_edit' })">
+          <button type="button" class="buttonWarning py-2 px-3 font-semibold text-black flex justify-center items-center gap-1" onclick="messageConfirmation({title: 'Edit User', text: 'Yakin ingin menyimpan perubahan?', form: 'form_user_edit' })">
             <img src="<?= base_url('assets/icons/user-line-edit-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
             <img src="<?= base_url('assets/icons/user-line-edit-yellow-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
             <span class="pr-2">Edit</span>

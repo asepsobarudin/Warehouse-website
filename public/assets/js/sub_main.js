@@ -17,7 +17,7 @@ async function addCartRestock({ restock, value, btn }) {
         title: result.success,
       };
       btnLoading.disabled = false;
-      notification({ notif: notif });
+      notification({ notif: notif, status: 1 });
       listRestock({ restock: result.restock });
     }
 
@@ -26,14 +26,14 @@ async function addCartRestock({ restock, value, btn }) {
         title: result.errors,
       };
       btnLoading.disabled = false;
-      notification({ notif: notif });
+      notification({ notif: notif, status: 0 });
     }
   } else {
     var notif = {
       title: "Data barang gagal ditambahkan!",
     };
     btnLoading.disabled = false;
-    notification({ notif: notif });
+    notification({ notif: notif, status: 0 });
   }
 }
 
@@ -58,7 +58,7 @@ async function removeCartRestock({ restock, goods, no }) {
       title: result.success,
     };
     btnDelete.disabled = false;
-    notification({ notif: notif });
+    notification({ notif: notif, status: 1 });
     listRestock({ restock: restock });
   }
   if (result.errors) {
@@ -66,7 +66,7 @@ async function removeCartRestock({ restock, goods, no }) {
       title: result.errors,
     };
     btnDelete.disabled = false;
-    notification({ notif: notif });
+    notification({ notif: notif, status: 0 });
   }
 }
 
@@ -89,7 +89,7 @@ async function addCardRestockQty({ no, noGc, noRes }) {
       title: result.success,
     };
     getBtnQty.disabled = false;
-    notification({ notif: notif });
+    notification({ notif: notif, status: 1 });
     listRestock({ restock: restockCode });
   }
 
@@ -98,7 +98,7 @@ async function addCardRestockQty({ no, noGc, noRes }) {
       title: result.errors,
     };
     getBtnQty.disabled = false;
-    notification({ notif: notif });
+    notification({ notif: notif, status: 0 });
   }
 }
 
@@ -121,7 +121,7 @@ async function listRestock({ restock }) {
     var notif = {
       title: result.errors,
     };
-    notification({ notif: notif });
+    notification({ notif: notif, status: 0 });
   }
 
   if (result.data) {
@@ -281,7 +281,7 @@ async function getListRestock() {
     var notif = {
       title: result.errors,
     };
-    notification({ notif: notif });
+    notification({ notif: notif, status: 0 });
   }
 }
 
@@ -309,7 +309,7 @@ async function addDistributionQty({ itemInput, goods, oprator, btn, no }) {
         var notif = {
           title: result.success,
         };
-        notification({ notif: notif });
+        notification({ notif: notif, status: 1 });
         getListRestock();
       }
 
@@ -317,7 +317,7 @@ async function addDistributionQty({ itemInput, goods, oprator, btn, no }) {
         var notif = {
           title: result.errors,
         };
-        notification({ notif: notif });
+        notification({ notif: notif, status: 0 });
 
         if (btn == "btnPlush") {
           btnLoading.innerHTML = `
@@ -336,6 +336,6 @@ async function addDistributionQty({ itemInput, goods, oprator, btn, no }) {
     var notif = {
       title: "Silahkan tambahkan jumlah barang!",
     };
-    notification({ notif: notif });
+    notification({ notif: notif, status: 0 });
   }
 }

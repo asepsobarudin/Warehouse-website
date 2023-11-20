@@ -10,7 +10,7 @@ $session = session()->get('sessionData');
     <?= csrf_field() ?>
     <input type="hidden" name="username" value="<?= $session['username'] ?>">
     <h2 class="text-lg font-medium text-center mb-2">Nampaknya akun dengan username <span class="font-semibold">"<?= $session['username'] ?>"</span> sedang online!</h2>
-    <button type="button" class="buttonDanger p-2 flex justify-center items-center gap-2 w-max" onclick="messageConfirmation({ icons: 'log-in-line-black-1', title: 'User Online', text: 'Apa anda yakin untuk tetap masuk?', form: 'form_online' })">
+    <button type="button" class="buttonDanger p-2 flex justify-center items-center gap-2 w-max" onclick="messageConfirmation({ title: 'User online', text: 'Apa anda yakin untuk tetap masuk?', form: 'form_online' })">
       <img src="<?= base_url('assets/icons/log-in-line-white-1.svg') ?>" alt="log-in" class="w-[30px] h-[30px] object-cover">
       <img src="<?= base_url('assets/icons/log-in-line-red-1.svg') ?>" alt="log-in" class="w-[30px] h-[30px] object-cover">
       <h2 class="text-base font-medium">Tetap Masuk</h2>

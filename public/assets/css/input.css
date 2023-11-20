@@ -311,17 +311,17 @@ dialog.message_confirmation {
     }
 
     & div.child {
-      @apply flex flex-col gap-2 p-4 bg-netral rounded-md w-max md:max-w-[400px] relative z-10;
+      @apply flex flex-col gap-2 p-4 bg-netral rounded-md min-w-[350px] w-max md:max-w-[400px] relative z-10 shadow-md;
 
       & div:nth-child(1) {
         @apply flex justify-between items-center gap-2 after:block after:w-[30px];
 
         & img {
-          @apply w-[40px] h-[40px] object-cover;
+          @apply w-[30px] h-[30px] object-cover;
         }
 
         & h2 {
-          @apply font-semibold text-lg text-primary;
+          @apply font-medium text-lg text-primary;
         }
       }
 
@@ -330,14 +330,14 @@ dialog.message_confirmation {
       }
 
       & h2 {
-        @apply font-medium w-full text-primary/90 my-2;
+        @apply font-normal w-full text-primary/90 my-1;
       }
 
       & div:nth-child(4) {
         @apply flex justify-end items-center gap-2;
 
         & button:nth-child(1) {
-          @apply p-2 font-semibold bg-netral border-2 border-tersier text-tersier hover:bg-tersier hover:border-tersier active:border-netral hover:text-secondary rounded-md transition-all ease-in-out duration-200;
+          @apply p-2 font-semibold bg-netral border-2 border-transparent text-tersier hover:border-tersier active:border-netral rounded-md transition-all ease-in-out duration-200;
         }
 
         & button:nth-child(2) {
@@ -361,7 +361,7 @@ dialog.message_confirmation {
     @apply w-full flex flex-col justify-center items-end p-2;
 
     & div.child {
-      @apply bg-white rounded-md min-w-[300px] max-w-[350px] border-2 border-primary/20;
+      @apply bg-netral rounded-md min-w-[300px] max-w-[350px] drop-shadow-md shadow-md;
 
       & div.last_child {
         @apply flex justify-between items-center p-2 gap-2;
@@ -386,7 +386,7 @@ dialog.message_confirmation {
           @apply p-2 bg-white hover:bg-black/5 active:bg-black/10 rounded-md;
 
           & img {
-            @apply w-[20px] h-[20px] object-cover;
+            @apply w-[25px] h-[25px] object-cover;
           }
         }
       }

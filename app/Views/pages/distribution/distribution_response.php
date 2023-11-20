@@ -53,7 +53,7 @@
         <form action="<?= base_url('distribution/cancle_send') ?>" method="post" id="form_cancle_distribution">
           <?= csrf_field() ?>
           <input type="hidden" name="restock_code" value="<?= $restock_code ?>">
-          <button type="button" class="buttonDanger p-[11px] flex justify-center items-center gap-2" onclick="messageConfirmation({ icons: 'van-line-black-1', title: 'Kirim Barang', text: 'Apakah anda ingin melakukan pengiriman?', form: 'form_cancle_distribution' })">
+          <button type="button" class="buttonDanger p-[11px] flex justify-center items-center gap-2" onclick="messageConfirmation({ title: 'Batalkan pengiriman', text: 'Apakah anda ingin membatalkan pengiriman?', form: 'form_cancle_distribution' })">
             <img src="<?= base_url('assets/icons/cross-line-white-1.svg') ?>" alt="cross-line" class="w-[20px] h-[20px] object-cover">
             <img src="<?= base_url('assets/icons/cross-line-red-1.svg') ?>" alt="cross-line" class="w-[20px] h-[20px] object-cover">
             <h2 class="font-semibold">Batal</h2>
@@ -64,7 +64,7 @@
         <form action="<?= base_url('distribution/send_restock') ?>" method="post" id="form_send_distribution">
           <?= csrf_field() ?>
           <input type="hidden" name="restock_code" value="<?= $restock_code ?>">
-          <button type="button" class="buttonSuccess p-2 flex justify-center items-center gap-2" onclick="messageConfirmation({ icons: 'van-line-black-1', title: 'Kirim Barang', text: 'Apakah anda ingin melakukan pengiriman?', form: 'form_send_distribution' })">
+          <button type="button" class="buttonSuccess p-2 flex justify-center items-center gap-2" onclick="messageConfirmation({ title: 'Kirim barang', text: 'Apakah anda ingin melakukan pengiriman?', form: 'form_send_distribution' })">
             <img src="<?= base_url('assets/icons/van-line-white-1.svg') ?>" alt="van-line" class="w-[30px] h-[30px] object-cover">
             <img src="<?= base_url('assets/icons/van-line-green-1.svg') ?>" alt="van-line" class="w-[30px] h-[30px] object-cover">
             <h2 class="font-semibold">Kirim Barang</h2>

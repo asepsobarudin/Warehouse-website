@@ -156,7 +156,7 @@ class UserController extends BaseController
         unset($users['password']);
 
         $data = [
-            'title' => 'Update Password dan Role',
+            'title' => 'Edit user',
             'link' => '/users',
             'users' => $users
         ];

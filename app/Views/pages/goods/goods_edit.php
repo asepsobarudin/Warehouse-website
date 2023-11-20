@@ -30,7 +30,7 @@ $session = session()->get('sessionData');
               <?= csrf_field() ?>
               <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
               <input type="text" value="<?= $goods['goods_code'] ?>" class="p-2 rounded-md border-2 border-primary/50 font-semibold bg-netral text-primary w-full md:w-[70%]" disabled>
-              <button type="button" class="p-2 buttonDanger flex justify-center items-center gap-1" onclick="messageConfirmation({ icons: 'trash-line-black-1', title: 'Hapus Barang', text: 'Apakan anda yakin ingin menghapus \'<?= $goods['goods_name'] ?>\'?', form: 'form_goods_delete' })">
+              <button type="button" class="p-2 buttonDanger flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Hapus barang', text: 'Apakan anda yakin ingin menghapus \'<?= $goods['goods_name'] ?>\'?', form: 'form_goods_delete' })">
                 <img src="<?= base_url('assets/icons/trash-line-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <img src="<?= base_url('assets/icons/trash-line-red-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <span class="font-semibold">Hapus</span>
@@ -82,7 +82,7 @@ $session = session()->get('sessionData');
               <h2 class="text-sm font-medium p-2 bg-primary/5 rounded-md w-max">Terakhir di ubah oleh : <?= $goods['goods_users'] ?></h2>
             </div>
             <div class="flex justify-end items-center">
-              <button type="button" class="buttonWarning p-2 flex justify-center items-center gap-1" onclick="messageConfirmation({ icons: 'edit-line-black-1', title: 'Edit Barang', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_goods_edit' })">
+              <button type="button" class="buttonWarning p-2 flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Edit barang', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_goods_edit' })">
                 <img src="<?= base_url('assets/icons/edit-line-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <img src="<?= base_url('assets/icons/edit-line-yellow-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <span class="font-semibold">Edit</span>
@@ -157,7 +157,7 @@ $session = session()->get('sessionData');
               <?php } ?>
             </div>
             <div class="flex justify-end items-center w-full mt-4">
-              <button type="button" class="buttonWarning py-2 px-3 font-semibold text-netral flex justify-center items-center gap-1" onclick="messageConfirmation({ icons: 'update-line-black-1', title: 'Perbaharui Stok', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_goods_stok' })">
+              <button type="button" class="buttonWarning py-2 px-3 font-semibold text-netral flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Perbaharui stok', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_goods_stok' })">
                 <img src="<?= base_url('assets/icons/update-line-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <img src="<?= base_url('assets/icons/update-line-yellow-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <span>Perbaharui Stok</span>

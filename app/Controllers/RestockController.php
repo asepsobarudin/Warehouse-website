@@ -119,7 +119,7 @@ class RestockController extends BaseController
             }
         } else {
             $data = [
-                'title' => 'Buat Permintaan Barang',
+                'title' => 'Buat permintaan',
                 'link' => '/restock',
                 'restock_code' => $this->Restock->uniqueCode()
             ];
@@ -416,7 +416,7 @@ class RestockController extends BaseController
 
         if ($users['id'] === $restock['request_user_id'] || $decoded->role === "admin") {
             $data = [
-                'title' => 'Edit Permintaan Barang',
+                'title' => 'Edit permintaan',
                 'link' => '/restock',
                 'message' => $restock['message'],
                 'status' => $restock['status'],
@@ -557,7 +557,7 @@ class RestockController extends BaseController
             }
 
             $data = [
-                'title' => 'Detail Permintaan Barang',
+                'title' => 'Detail permintaan',
                 'link' => '/restock',
                 'restock' => $restock['restock_code'],
                 'message' => $restock['message'],

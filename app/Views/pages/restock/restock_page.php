@@ -124,7 +124,7 @@ $session = session()->get('sessionData');
                   <form action="<?= base_url('restock/restock_cancle') ?>" method="post" id="form_restock_cancle<?= $i ?>">
                     <?= csrf_field() ?>
                     <input type="hidden" value="<?= $list['restock_code'] ?>" name="restock">
-                    <button type="button" class="buttonWarning block p-2" onclick="messageConfirmation({ icons: 'send-line-cancle-black-1', title: 'Batalkan Permintaan Restock', text: 'Apakah yakin ingin membatalkan permintaan restock \'<?= $list['restock_code'] ?>\'?', form: 'form_restock_cancle<?= $i ?>' })">
+                    <button type="button" class="buttonWarning block p-2" onclick="messageConfirmation({ title: 'Batalkan permintaan', text: 'Apakah yakin ingin membatalkan permintaan restock?', form: 'form_restock_cancle<?= $i ?>' })">
                       <img src="<?= base_url('assets/icons/send-line-cancle-white-1.svg') ?>" alt="send-line-1" class="w-[30px] h-[30px] object-cover">
                       <img src="<?= base_url('assets/icons/send-line-cancle-yellow-1.svg') ?>" alt="send-line-1" class="w-[30px] h-[30px] object-cover">
                     </button>
@@ -134,7 +134,7 @@ $session = session()->get('sessionData');
                   <form action="<?= base_url('restock/restock_delete') ?>" method="post" id="form_restock_delete<?= $i ?>">
                     <?= csrf_field() ?>
                     <input type="hidden" value="<?= $list['restock_code'] ?>" name="restock">
-                    <button type="button" class="buttonDanger block p-2" onclick="messageConfirmation({ icons: 'trash-line-black-1', title: 'Hapus Permintaan Restock', text: 'Apakah yakin ingin menghapus permintaan restock \'<?= $list['restock_code'] ?>\'?', form: 'form_restock_delete<?= $i ?>' })">
+                    <button type="button" class="buttonDanger block p-2" onclick="messageConfirmation({ title: 'Hapus permintaan', text: 'Apakah yakin ingin menghapus permintaan restock?', form: 'form_restock_delete<?= $i ?>' })">
                       <img src="<?= base_url('assets/icons/trash-line-white-1.svg') ?>" alt="trash-line-1" class="w-[30px] h-[30px] object-cover">
                       <img src="<?= base_url('assets/icons/trash-line-red-1.svg') ?>" alt="trash-line-1" class="w-[30px] h-[30px] object-cover">
                     </button>

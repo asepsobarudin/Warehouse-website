@@ -105,7 +105,7 @@ function copyTextToClipboard({ copyText }) {
 
 // Confimation Message
 let messageTimeOut;
-function messageConfirmation({ icons, title, text, form }) {
+function messageConfirmation({ title, text, form }) {
   const messageConfirmation = document.getElementById("message_confirmation");
 
   if (messageConfirmation.open) {
@@ -119,7 +119,7 @@ function messageConfirmation({ icons, title, text, form }) {
     <div class="bg_parent"></div>
     <div class="child">
       <div>
-        <img src="${baseURL}assets/icons/${icons}.svg" alt="icons">
+        <img src="${baseURL}assets/icons/confirm-line-black-1.svg" alt="icons">
         <h2>${title}</h2>
       </div>
       <div></div>
@@ -163,7 +163,7 @@ function confirmation({ form }) {
 
 // Notification Message
 let notifTimeOut;
-function notification({ notif }) {
+function notification({ notif, status }) {
   const notificationMessage = document.getElementById("notification_message");
   if (notificationMessage.open) {
     closeConfirmation({ element: "notification_message" });
@@ -175,7 +175,7 @@ function notification({ notif }) {
     <div class="parent">
       <div class="child">
         <div class="last_child">
-          <img src="${baseURL}assets/icons/bell-line-black-1.svg" alt="notification-line-1">
+          <img src="${baseURL}assets/icons/info-line-black-1.svg" alt="notification-line-1">
           <h2>${notif.title}</h2>
           <button type="button" onclick="closeConfirmation({element: 'notification_message'})">
             <img src="${baseURL}assets/icons/close-line-1.svg" alt="close-line-1">

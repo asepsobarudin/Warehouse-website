@@ -13,7 +13,7 @@
 
  <body class="flex justify-center items-start scrollBar scrollBarBg scrollBarColors overflow-x-hidden">
    <?= $this->include('components/navbar/navbar') ?>
-   <dialog class="py-2 px-4 rounded-md bg-netral border-2 border-primary/30 outline-none font-medium fixed top-2 z-10 select-none" id="message_copy">
+   <dialog class="py-2 px-4 rounded-md bg-netral shadow-md outline-none font-medium fixed top-2 z-10 select-none" id="message_copy">
      Text berhasil di copy.
    </dialog>
    <div class="fixed right-0 z-20">

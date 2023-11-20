@@ -115,7 +115,7 @@ class AuthController extends BaseController
     public function online()
     {
         $data = [
-            'title' => 'User Online',
+            'title' => 'User online',
             'link' => 'back'
         ];
         return view('pages/login/online_page', $data);

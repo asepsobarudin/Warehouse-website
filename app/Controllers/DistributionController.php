@@ -77,7 +77,7 @@ class DistributionController extends BaseController
             }
 
             $data = [
-                'title' => 'List Permintaan Barang',
+                'title' => 'List permintaan',
                 'link' => 'distribution',
                 'restock_code' => $restock['restock_code'],
                 'restock_status' => $restock['status'],

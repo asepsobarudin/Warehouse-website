@@ -12,7 +12,7 @@ $session = session()->get('sessionData');
   <?= $this->include('components/flash_message') ?>
   <div class="flex justify-center items-center w-full bg-netral rounded-md p-4 relative overflow-hidden">
     <img src="<?= base_url('assets/images/form_goods.jpg') ?>" alt="form_Goods" class="block absolute w-full h-full object-contain lg:relative lg:w-[50%]">
-    <form action="<?= base_url('goods/goods_create') ?>" method="post" class="w-full h-full md:w-[80%] lg:w-[50%] flex flex-col gap-2 relative z-10 bg-netral/80">
+    <form action="<?= base_url('goods/goods_create') ?>" method="post" class="w-full h-full md:w-[80%] lg:w-[50%] flex flex-col gap-2 relative z-10 bg-netral/80" id="form_goods_create">
       <?= csrf_field() ?>
       <label for="goods_name" class="block w-full">
         <div class="flex justify-between items-center w-full flex-wrap gap-1">
@@ -63,7 +63,7 @@ $session = session()->get('sessionData');
         <input type="number" id="goods_stock_warehouse" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_stock_warehouse" value="<?= old('goods_stock_warehouse') ?>">
       </label>
       <div class="flex justify-end items-center w-full mt-4">
-        <button class="buttonSuccess py-2 px-3 font-semibold text-white flex justify-center items-center gap-1">
+        <button type="button" class="buttonSuccess py-2 px-3 font-semibold text-white flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Tambah barang', text: 'Apakah anda yakin ingin menyimpan barang?', form: 'form_goods_create' })">
           <img src="<?= base_url('assets/icons/save-line-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
           <img src="<?= base_url('assets/icons/save-line-green-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
           <span>Simpan</span>
