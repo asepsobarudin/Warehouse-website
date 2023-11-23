@@ -27,18 +27,17 @@ $session = session()->get('sessionData')
         </button>
       </div>
       <div class="block h-max">
-        <table class="table border-collapse rounded-md w-full table-auto">
+        <table class="table rounded-md w-full table-auto">
           <thead>
             <tr>
-              <td class="bg-primary text-secondary font-medium p-2 text-center border">#</td>
-              <td class="bg-primary text-secondary font-medium p-2 text-center border">
+              <td class="bg-primary text-secondary font-medium p-2 text-center">#</td>
+              <td class="bg-primary text-secondary font-medium p-2 text-center">
                 <span class="hidden lg:block">Nama</span>
                 <span class="block lg:hidden">Detail</span>
               </td>
-              <td class="bg-primary text-secondary font-medium p-2 text-center border hidden lg:table-cell">Min</td>
-              <td class="bg-primary text-secondary font-medium p-2 text-center border hidden lg:table-cell">Stok Toko</td>
-              <td class="bg-primary text-secondary font-medium p-2 text-center border hidden lg:table-cell">Stok Gudang</td>
-              <td class="bg-primary text-secondary font-medium p-2 text-center border hidden md:table-cell">Aksi</td>
+              <td class="bg-primary text-secondary font-medium p-2 text-center hidden lg:table-cell">Min</td>
+              <td class="bg-primary text-secondary font-medium p-2 text-center hidden lg:table-cell">Stok Toko</td>
+              <td class="bg-primary text-secondary font-medium p-2 text-center hidden md:table-cell">Aksi</td>
             </tr>
           </thead>
           <tbody class="goods_list_restock" id="goods_table">

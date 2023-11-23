@@ -11,7 +11,7 @@
   <title> <?= $title ?> </title>
 </head>
 
-<body class="flex flex-col justify-start items-center scrollBar scrollBarBg scrollBarColors relative" id="body">
+<body class="flex flex-col justify-start items-center scrollBar scrollBarBg scrollBarColors relative scroll-smooth" id="body">
   <dialog class="message_confirmation" id="message_confirmation">
   </dialog>
   <div class="fixed right-0 bg-transparent z-20">

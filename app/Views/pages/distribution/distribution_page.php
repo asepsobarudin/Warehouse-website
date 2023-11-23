@@ -12,24 +12,24 @@ $session = session()->get('sessionData')
       <h2 class="text-2xl text-primary font-semibold">Distribusi</h2>
     </div>
   </div>
-  <table class="table border-collapse w-full my-2">
+  <table class="table w-full my-2">
     <thead>
       <tr>
-        <td class="border p-2 font-medium text-center bg-primary text-secondary">#</td>
-        <td class="border p-2 font-medium text-center bg-primary text-secondary">
+        <td class="p-2 font-semibold text-center bg-primary text-secondary">#</td>
+        <td class="p-2 font-semibold text-center bg-primary text-secondary">
           <span class="hidden md:block">Kode</span>
           <span class="block md:hidden">Restok</span>
         </td>
-        <td class="border p-2 font-medium text-center bg-primary text-secondary hidden md:table-cell">Status</td>
-        <td class="border p-2 font-medium text-center bg-primary text-secondary hidden md:table-cell">
+        <td class="p-2 font-semibold text-center bg-primary text-secondary hidden md:table-cell">Status</td>
+        <td class="p-2 font-semibold text-center bg-primary text-secondary hidden md:table-cell">
           <span class="hidden lg:block">Pemesan</span>
           <span class="block lg:hidden">Detail</span>
         </td>
         <?php if ($session['role'] == 'admin') : ?>
-          <td class="border p-2 font-medium text-center bg-primary text-secondary hidden lg:table-cell">Pengirim</td>
+          <td class="p-2 font-semibold text-center bg-primary text-secondary hidden lg:table-cell">Pengirim</td>
         <?php endif; ?>
-        <td class="border p-2 font-medium text-center bg-primary text-secondary hidden lg:table-cell">Tanggal</td>
-        <td class="border p-2 font-medium text-center bg-primary text-secondary">Aksi</td>
+        <td class="p-2 font-semibold text-center bg-primary text-secondary hidden lg:table-cell">Tanggal</td>
+        <td class="p-2 font-semibold text-center bg-primary text-secondary">Aksi</td>
       </tr>
     </thead>
     <tbody>
@@ -40,8 +40,8 @@ $session = session()->get('sessionData')
           $restockCode = substr($list['restock_code'], 0, 5);
           ?>
           <tr class="group">
-            <td class="border p-2 font-medium text-center group-odd:bg-netral group-even:bg-dark text-primary"><?= $i ?></td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block md:table-cell">
+            <td class="p-2 font-medium text-center group-odd:bg-netral group-even:bg-dark text-primary"><?= $i ?></td>
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block md:table-cell">
               <div class="flex justify-center items-center gap-2">
                 <?= $restockCode . '...' ?>
                 <button class="block p-2 border-2 border-primary/10 hover:border-primary/60 active:border-primary bg-netral rounded-md duration-200 ease-in-out" onclick="copyTextToClipboard({copyText: '<?= $list['restock_code'] ?>'})">
@@ -49,7 +49,7 @@ $session = session()->get('sessionData')
                 </button>
               </div>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark font-medium block md:table-cell">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark font-medium block md:table-cell">
               <div class="flex justify-center items-center">
                 <?php if ($list['status'] == 1) { ?>
                   <span class="flex justify-center items-center rounded-md relative group/btn">
@@ -77,9 +77,9 @@ $session = session()->get('sessionData')
                 <?php } ?>
               </div>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell"><?= $list['request_user_id'] ?></td>
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell"><?= $list['request_user_id'] ?></td>
             <?php if ($session['role'] == 'admin') : ?>
-              <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell">
+              <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell">
                 <?php if (!$list['response_user_id']) { ?>
                   -
                 <?php } else { ?>
@@ -87,10 +87,10 @@ $session = session()->get('sessionData')
                 <?php } ?>
               </td>
             <?php endif; ?>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block lg:table-cell">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block lg:table-cell">
               <?= $list['created_at'] ?>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center">
               <div class="flex flex-col lg:flex-row justify-center items-center gap-2 w-full">
                 <a href="<?= base_url('distribution/get_restock/') . $list['restock_code'] ?>" class="buttonInfo p-2 font-medium text-white block w-max">
                   <div class="w-[30px] h-[30px] block">
@@ -107,7 +107,7 @@ $session = session()->get('sessionData')
         <tr>
           <td colspan="7" class="bg-white h-[500px]">
             <div class="flex justify-center items-center">
-              <h2 class="text-lg font-semibold">List Distribusi Barang Kosong.</h2>
+              <h2 class="text-lg font-medium">Tabel kosong</h2>
             </div>
           </td>
         </tr>

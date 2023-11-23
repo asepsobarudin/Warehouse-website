@@ -15,6 +15,9 @@ module.exports = {
         'danger': '#df5338',
         'info': '#599afe',
       },
+      fontFamily : {
+        'Poppins' : ['sans-serif', 'Poppins']
+      }
     },
   },
   plugins: [],

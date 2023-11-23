@@ -63,7 +63,7 @@ class Users extends Model
 
     public function getAllUser()
     {
-        return $this->orderBy('updated_at', 'desc')->paginate(20);
+        return $this->orderBy('updated_at', 'desc')->findAll(20);
     }
 
     public function getUserId($id)

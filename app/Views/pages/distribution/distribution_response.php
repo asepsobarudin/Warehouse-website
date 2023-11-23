@@ -13,7 +13,7 @@
         </h2>
       </div>
       <?php if ($message) : ?>
-        <details class="py-2 px-4 bg-netral/80 rounded-md border-2 border-primary/5 accordion cursor-pointer w-full md:w-[300px] lg:w-[400px]">
+        <details class="py-2 px-4 bg-netral/80 rounded-md accordion cursor-pointer w-full md:w-[300px] lg:w-[400px] border-2">
           <summary class="text-base font-semibold select-none flex items-center gap-2">
             <img src="<?= base_url('assets/icons/arrow-line-2.svg') ?>" alt="arrow" class="w-[30px] effectTrasition rotate-90">
             <span class="text-primary">Pesan</span>
@@ -26,22 +26,22 @@
         </details>
       <?php endif; ?>
     </div>
-    <table class="table-auto w-full border my-2">
+    <table class="table-auto w-full my-2">
       <thead class="hidden md:table-header-group">
         <tr>
-          <td class="border p-2 bg-primary text-secondary font-semibold text-center">
+          <td class="p-2 bg-primary text-secondary font-semibold text-center">
             <span class="hidden md:block">No</span>
             <span class="block md:hidden">Restok Barang</span>
           </td>
-          <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Nama Barang</td>
-          <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">
+          <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Nama Barang</td>
+          <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">
             <span class="hidden lg:block">Stok Gudang</span>
             <span class="block lg:hidden">Qty</span>
           </td>
-          <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden lg:table-cell">Permintaan</td>
-          <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden lg:table-cell">Jumlah Kirim</td>
-          <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden lg:table-cell">Masukan</td>
-          <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Status</td>
+          <td class="p-2 bg-primary text-secondary font-semibold text-center hidden lg:table-cell">Permintaan</td>
+          <td class="p-2 bg-primary text-secondary font-semibold text-center hidden lg:table-cell">Jumlah Kirim</td>
+          <td class="p-2 bg-primary text-secondary font-semibold text-center hidden lg:table-cell">Masukan</td>
+          <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Status</td>
         </tr>
       </thead>
       <tbody class="distribution_list_goods" id="distribution_list_goods">

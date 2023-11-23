@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply bg-light;
+  @apply bg-light font-Poppins;
 }
 
 /* ScrollBar */
@@ -89,10 +91,10 @@ body {
 
 /* Navbar */
 nav.navbar {
-  @apply hidden lg:block bg-primary h-screen rounded-r-md fixed top-0 left-0 z-10 shadow-md shadow-black/20;
+  @apply hidden bg-primary lg:block h-screen rounded-r-md fixed top-0 left-0 z-10 drop-shadow-xl;
 
   & a.menu {
-    @apply flex justify-start items-center gap-2 rounded-md p-1 relative border-2 border-primary bg-primary;
+    @apply flex justify-start items-center gap-2 rounded-md p-1 border-2 border-transparent relative bg-primary;
   }
   & a.menu:hover {
     @apply border-secondary bg-tersier;
@@ -110,19 +112,19 @@ nav.navbar {
 nav.active {
   @apply w-[180px];
 
-  & .nav_btn_image {
-    @apply rotate-180;
+  & .btn_nav_label > img {
+      @apply rotate-180;
   }
 
   & div.profile {
     @apply w-[150px];
   }
   & h2.tit_company {
-    @apply w-[80px] opacity-100;
+    @apply w-[100px] opacity-100;
   }
 
   & div.head_menu {
-    @apply w-full;
+    @apply block w-full opacity-100 delay-300;
 
     & span:nth-child(1) {
       @apply text-start pl-1 w-full;
@@ -133,7 +135,7 @@ nav.active {
     @apply w-[150px] delay-75;
   }
   & h2.tit_menu {
-    @apply relative opacity-100 delay-100;
+    @apply relative opacity-100;
   }
   & span.checkActive {
     @apply right-1 w-[4px];
@@ -150,8 +152,8 @@ nav.active {
 nav.not_active {
   @apply w-[80px];
 
-  & .nav_btn_image {
-    @apply rotate-0;
+  & .btn_nav_label > img {
+      @apply rotate-0;
   }
 
   & div.profile {
@@ -162,7 +164,7 @@ nav.not_active {
   }
 
   & div.head_menu {
-    @apply w-full;
+    @apply block h-1 w-full opacity-0;
 
     & span:nth-child(1) {
       @apply text-center w-full;
@@ -409,7 +411,7 @@ tbody.goods_list_restock {
 
   & tr {
     & td {
-      @apply border p-2 text-primary font-medium text-center;
+      @apply p-2 text-primary font-medium text-center;
     }
 
     & td:nth-child(2) {
@@ -439,18 +441,6 @@ tbody.goods_list_restock {
     }
 
     & td:nth-child(5) {
-      @apply inline-block w-[33.3%] lg:w-auto lg:table-cell;
-
-      & span:nth-child(1) {
-        @apply inline-block whitespace-nowrap lg:hidden;
-      }
-
-      & span:nth-child(2) {
-        @apply inline-block whitespace-nowrap;
-      }
-    }
-
-    & td:nth-child(6) {
       @apply block md:table-cell;
 
       & button {
@@ -482,9 +472,8 @@ tbody.distribution_list_goods {
   }
 
   & tr {
-    @apply border-2;
     & td {
-      @apply font-medium text-primary border-0 md:border p-2;
+      @apply font-medium text-primary p-2 md:p-1 lg:p-2;
     }
 
     & td:nth-child(1) {
@@ -520,10 +509,10 @@ tbody.distribution_list_goods {
     }
 
     & td:nth-child(5) {
-      @apply block lg:table-cell whitespace-nowrap bg-primary;
+      @apply block lg:table-cell whitespace-nowrap;
 
       & div {
-        @apply flex justify-start lg:justify-center items-center gap-2 text-netral font-semibold;
+        @apply flex justify-start lg:justify-center items-center gap-2 font-semibold;
 
         & span:nth-child(1) {
           @apply block lg:hidden;

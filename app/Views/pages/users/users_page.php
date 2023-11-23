@@ -31,15 +31,15 @@ $session = session()->get('sessionData');
   <table class="table-auto w-full my-2">
     <thead>
       <tr>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center w-[60px]">#</td>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center">
+        <td class="p-2 bg-primary text-secondary font-semibold text-center w-[60px]">#</td>
+        <td class="p-2 bg-primary text-secondary font-semibold text-center">
           <h2 class="hidden md:block">Username</h2>
           <h2 class="block md:hidden">Detail</h2>
         </td>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Role</td>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Status</td>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Terakhir Online</td>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Aksi</td>
+        <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Role</td>
+        <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Status</td>
+        <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Terakhir Online</td>
+        <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Aksi</td>
       </tr>
     </thead>
     <tbody>
@@ -48,11 +48,11 @@ $session = session()->get('sessionData');
       if ($user && $user != null) {
         foreach ($user as $list) : ?>
           <tr class="group">
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-black font-medium text-center">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-black font-medium text-center">
               <?= $i ?>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block md:table-cell"><?= $list['username'] ?></td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark font-semibold inline-block w-[50%] md:w-max md:table-cell">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block md:table-cell"><?= $list['username'] ?></td>
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark font-semibold inline-block w-[50%] md:w-max md:table-cell">
               <?php if ($list['role'] == 'admin') { ?>
                 <span class="block bg-danger p-2 w-max rounded-md text-netral m-auto select-none">
                   <?= $list['role'] ?>
@@ -69,30 +69,32 @@ $session = session()->get('sessionData');
                 </span>
               <?php } ?>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark font-medium text-start md:text-center inline-block w-[50%] md:w-max md:table-cell">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark font-medium text-start md:text-center inline-block w-[50%] md:w-max md:table-cell">
               <?php if ($list['status']) { ?>
                 <span class="block p-2 bg-success rounded-md text-netral w-max m-auto select-none">Online</span>
               <?php } else { ?>
                 <span class="block p-2 bg-primary rounded-md text-netral w-max m-auto select-none">Offline</span>
               <?php } ?>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block md:table-cell">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block md:table-cell">
               <?= $list['updated_at'] ?>
             </td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark block md:table-cell">
-              <div class="flex w-full justify-center md:justify-center items-center gap-2">
-                <a href="<?= base_url("users/users_edit/" . $list['username']) ?>" class="buttonInfo p-2 font-medium text-netral block w-max">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark block md:table-cell">
+              <div class="flex w-full flex-wrap justify-center md:justify-center items-center gap-2">
+                <a href="<?= base_url("users/users_edit/" . $list['username']) ?>" class="buttonInfo p-2 w-full md:w-max flex justify-center items-center gap-2">
                   <img src="<?= base_url('assets/icons/user-line-details-white-1.svg') ?>" alt="user-detail" class="w-[30px] h-[30px] object-cover">
                   <img src="<?= base_url('assets/icons/user-line-details-blue-1.svg') ?>" alt="user-detail" class="w-[30px] h-[30px] object-cover">
+                  <h2 class="font-semibold block md:hidden">Detail</h2>
                 </a>
 
                 <?php if ($list['status'] && $list['username'] != $session['username']) { ?>
-                  <form action="<?= base_url('users/remove_access') ?>" method="post" id="form_hak_akses<?= $i ?>">
+                  <form action="<?= base_url('users/remove_access') ?>" method="post" id="form_hak_akses<?= $i ?>" class="w-full md:w-max">
                     <? csrf_field() ?>
                     <input type="hidden" name="username" value="<?= $list['username'] ?>">
-                    <button type="button" class="p-2 buttonDanger" onclick="messageConfirmation({ icons: 'user-line-block-black-1', title: 'Hapus Hak Akses', text: 'Anda yakin ingin menghapus hak akses user <?= $list['username'] ?>?', form: 'form_hak_akses<?= $i ?>' })">
+                    <button type="button" class="p-2 buttonDanger w-full flex justify-center items-center gap-2" onclick="messageConfirmation({ icons: 'user-line-block-black-1', title: 'Hapus Hak Akses', text: 'Anda yakin ingin menghapus hak akses user <?= $list['username'] ?>?', form: 'form_hak_akses<?= $i ?>' })">
                       <img src="<?= base_url('assets/icons/user-line-block-white-1.svg') ?>" alt="user-block" class="w-[30px] h-[30px] object-cover">
                       <img src="<?= base_url('assets/icons/user-line-block-red-1.svg') ?>" alt="user-block" class="w-[30px] h-[30px] object-cover">
+                      <h2 class="font-semibold block md:hidden">Akses</h2>
                     </button>
                   </form>
                 <?php } ?>
@@ -106,7 +108,7 @@ $session = session()->get('sessionData');
         <tr>
           <td colspan="7">
             <div class="table_loading bg-netral">
-              <h2>Tidak ada user!</h2>
+              <h2>Tabel kosong</h2>
             </div>
           </td>
         </tr>

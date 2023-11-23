@@ -210,7 +210,7 @@ class GoodsController extends BaseController
     public function edit($slug)
     {
         $goods = $this->Goods->getOneData($slug);
-        if($goods) {
+        if ($goods) {
             unset($goods['id']);
             $goods['created_at'] = Time::parse($goods['created_at'], 'Asia/Jakarta', 'id-ID')->humanize();
             $goods['updated_at'] = Time::parse($goods['updated_at'], 'Asia/Jakarta', 'id-ID')->humanize();
@@ -222,10 +222,10 @@ class GoodsController extends BaseController
                 'link' => '/goods',
                 'goods' => $goods,
             ];
-    
+
             return view('pages/goods/goods_edit', $data);
         } else {
-            session()->setFlashdata('errors','Data barang tidak ditemukan!');
+            session()->setFlashdata('errors', 'Data barang tidak ditemukan!');
             return redirect()->back();
         }
     }
@@ -392,16 +392,113 @@ class GoodsController extends BaseController
     public function delete()
     {
         $body = $this->request->getPost();
+        $session = session()->get('sessionData');
+        $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
+
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
+
+        if ($body && isset($body['goods_code']) && isset($decoded->username)) {
+            $goods = $this->Goods->getOneData($body['goods_code']);
+            $users = $this->Users->getUser($decoded->username);
+            if ($goods && $users) {
+                $this->Goods->update($goods['id'], ['users_id' => $users['id']]);
+                $this->Goods->delete($goods['id']);
+                session()->setFlashdata('success', 'Barang berhasil di hapus.');
+                return redirect()->to('/goods');
+            } else {
+                session()->setFlashdata('errors', 'Barang tidak ditemukan!');
+                return redirect()->back();
+            }
+        } else {
+            session()->setFlashdata('errors', 'Barang tidak ditemukan!');
+            return redirect()->back();
+        }
+    }
+
+    public function trash()
+    {
+        $getGoods = $this->Goods->getListDeleted();
+        $setGoods = [];
+        foreach ($getGoods as $goods) {
+            unset($goods['id']);
+            $users = $this->Users->getUserId($goods['users_id']);
+            $goods['users_id'] = $users['username'];
+            $setGoods = array_merge($setGoods, [$goods]);
+        }
+
+        $data = [
+            'title' => 'Trash',
+            'link' => '/menu',
+            'goods' => $setGoods
+        ];
+
+        return view('pages/goods/goods_trash', $data);
+    }
+
+    public function restore()
+    {
+        $body = $this->request->getPost();
 
         if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
             $body = null;
         }
 
         if ($body && isset($body['goods_code'])) {
-            $goods = $this->Goods->getOneData($body['goods_code']);
-            $this->Goods->delete($goods['id']);
-            session()->setFlashdata('success', 'Barang berhasil di hapus.');
-            return redirect()->to('/goods');
+            $goods = $this->Goods->onlyDeleted()->where('goods_code', $body['goods_code'])->first();
+            $data = [
+                'id' => $goods['id'],
+                'deleted_at' => null
+            ];
+
+            if ($goods && $this->Goods->onlyDeleted()->save($data)) {
+                session()->setFlashdata('success', 'Barang berhasil di kembalikan.');
+                return redirect()->back();
+            } else {
+                session()->setFlashdata('errors', 'Data barang gagal di kembalikan!');
+                return redirect()->back();
+            }
+        } else {
+            session()->setFlashdata('errors', 'Barang tidak ditemukan!');
+            return redirect()->back();
+        }
+    }
+
+    public function deleteTrash()
+    {
+        $body = $this->request->getPost();
+
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
+
+        if ($body && isset($body['goods_code'])) {
+            $goods = $this->Goods->onlyDeleted()->where('goods_code', $body['goods_code'])->first();
+            if ($goods && $this->Goods->onlyDeleted()->delete($goods['id'], true)) {
+                session()->setFlashdata('success', 'Barang berhasil di hapus secara permanen.');
+                return redirect()->back();
+            } else {
+                session()->setFlashdata('errors', 'Data barang gagal di hapus!');
+                return redirect()->back();
+            }
+        } else {
+            session()->setFlashdata('errors', 'Barang tidak ditemukan!');
+            return redirect()->back();
+        }
+    }
+
+    public function deleteAllTrash()
+    {
+        $body = $this->request->getPost();
+
+        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
+            $body = null;
+        }
+
+        if ($body && $this->Goods->onlyDeleted()->purgeDeleted()) {
+            session()->setFlashdata('success', 'Semua data barang berhasil di hapus secara permanen.');
+            return redirect()->back();
         } else {
             session()->setFlashdata('errors', 'Barang tidak ditemukan!');
             return redirect()->back();

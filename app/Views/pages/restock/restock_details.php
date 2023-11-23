@@ -23,19 +23,19 @@
       </details>
     <?php endif; ?>
   </div>
-  <table class="table-auto w-full border my-2">
+  <table class="table-auto w-full my-2">
     <thead>
       <tr>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center">
+        <td class="p-2 bg-primary text-secondary font-semibold text-center">
           #
         </td>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center">
+        <td class="p-2 bg-primary text-secondary font-semibold text-center">
           <span class="hidden md:block">Nama Barang</span>
           <span class="block md:hidden">Barang</span>
         </td>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Permintaan</td>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Dikirm</td>
-        <td class="border p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Status</td>
+        <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Permintaan</td>
+        <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Dikirm</td>
+        <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Status</td>
       </tr>
     </thead>
     <tbody class="">
@@ -43,11 +43,11 @@
         $no = 1;
         foreach ($goods as $list) : ?>
           <tr class="group">
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center"><?= $no ?></td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium block md:table-cell"><?= $list['goods_name'] ?></td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium block md:table-cell text-center"><?= $list['qty'] ?></td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium block md:table-cell text-center"><?= $list['qty_send'] ?></td>
-            <td class="border p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium block md:table-cell text-center">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center"><?= $no ?></td>
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium block md:table-cell"><?= $list['goods_name'] ?></td>
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium block md:table-cell text-center"><?= $list['qty'] ?></td>
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium block md:table-cell text-center"><?= $list['qty_send'] ?></td>
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium block md:table-cell text-center">
               <?php
               $qty_send = (int)$list['qty_send'];
               $qty = (int)$list['qty'];

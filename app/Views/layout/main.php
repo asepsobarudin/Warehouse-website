@@ -11,7 +11,7 @@
    <title><?= $title ?></title>
  </head>
 
- <body class="flex justify-center items-start scrollBar scrollBarBg scrollBarColors overflow-x-hidden">
+ <body class="flex justify-center items-start scrollBar scrollBarBg scrollBarColors overflow-x-hidden scroll-smooth">
    <?= $this->include('components/navbar/navbar') ?>
    <dialog class="py-2 px-4 rounded-md bg-netral shadow-md outline-none font-medium fixed top-2 z-10 select-none" id="message_copy">
      Text berhasil di copy.
@@ -57,12 +57,10 @@
        if (btn_nav.checked == true) {
          navbar.classList.remove('not_active');
          navbar.classList.add('active');
-         btn_nav_label.classList.add('rotate-180')
          main.classList.add('active')
        } else {
          navbar.classList.remove('active');
          navbar.classList.add('not_active');
-         btn_nav_label.classList.remove('rotate-180')
          main.classList.remove('active')
        }
      }

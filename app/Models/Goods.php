@@ -86,8 +86,8 @@ class Goods extends Model
         return $this->orderBy('goods_name', 'ASC')->paginate(20);
     }
 
-    public function getSoftDelete ($id) {
-        return $this->delete();
+    public function getListDeleted () {
+        return $this->onlyDeleted()->findAll();
     }
 
     public function search($search)

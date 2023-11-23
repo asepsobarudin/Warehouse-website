@@ -101,7 +101,7 @@ class RestockController extends BaseController
             unset($rules['restock_code'], $rules['response_user_id']);
             $this->Restock->setValidationRules($rules);
 
-            if ($users['id'] != $restock['request_user_id']) {
+            if (isset($users['id']) != isset($restock['request_user_id'])) {
                 $data = array_merge($data, ['request_user_id' => $users['id']]);
             }
 

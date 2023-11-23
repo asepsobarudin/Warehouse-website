@@ -12,10 +12,6 @@ function tableGoods({no, value, restockCode}) {
         <span>${value.goods_stock_shop}</span>
       </td>
       <td>
-        <span>Toko : </span>
-        <span>${value.goods_stock_warehouse}</span>
-      </td>
-      <td>
         <button class="buttonInfo" onclick='addCartRestock({restock: "${restockCode}", value: ${JSON.stringify(value)}, btn: ${no} })' id="addCartRestock${no}">
           <img src="${baseURL}assets/icons/add-line-white-1.svg" alt="add-line">
           <img src="${baseURL}assets/icons/add-line-blue-1.svg" alt="add-line">

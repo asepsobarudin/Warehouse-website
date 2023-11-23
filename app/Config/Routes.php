@@ -32,6 +32,10 @@ $routes->get('/goods/goods_edit/(:segment)', 'GoodsController::edit/$1', ['filte
 $routes->post('/goods/goods_update', 'GoodsController::update', ['filter' => 'auth:gudang,kasir,admin']);
 $routes->post('/goods/goods_stock', 'GoodsController::updateStock', ['filter' => 'auth:gudang,kasir,admin']);
 $routes->post('/goods/goods_delete', 'GoodsController::delete', ['filter' => 'auth:gudang,admin']);
+$routes->get('/goods/goods_trash', 'GoodsController::trash', ['filter' => 'auth:gudang,admin']);
+$routes->post('/goods/goods_restore', 'GoodsController::restore', ['filter' => 'auth:gudang,admin']);
+$routes->post('/goods/goods_delete_trash', 'GoodsController::deleteTrash', ['filter' => 'auth:gudang,admin']);
+$routes->post('/goods/goods_delete_all_trash', 'GoodsController::deleteAllTrash', ['filter' => 'auth:gudang,admin']);
 
 // Json Response
 $routes->get('/goods/goods_list', 'GoodsController::goodsList', ['filter' => 'auth:gudang,kasir,admin']);
