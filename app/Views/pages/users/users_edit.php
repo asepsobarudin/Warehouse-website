@@ -15,7 +15,7 @@ $session = session()->get('sessionData');
     <img src="<?= base_url('assets/images/form_register.jpg') ?>" alt="form_register" class="h-full w-auto lg:w-[40%] object-cover absolute lg:relative top-0">
     <div class="block p-4 bg-netral/80 rounded-md h-full w-full md:w-[60%] lg:w-[50%] relative z-10">
       <?php if ($session['username'] != $users['username'] && !$users['status']) : ?>
-        <form action="<?= base_url('users/users_delete') ?>" method="post" class="w-full flex justify-start items-center mb-4" id="form_user_delete">
+        <form action="<?= site_url() ?>/users/delete" method="post" class="w-full flex justify-start items-center mb-4" id="form_user_delete">
           <?= csrf_field() ?>
           <input type="hidden" value="<?= $users['username'] ?>" name="username">
           <button type="button" class="buttonDanger py-2 px-3 font-semibold flex justify-center items-center gap-1" onclick="messageConfirmation({ icons: 'user-line-delete-black-1', title: 'Hapus User', text: 'Apakan anda yakin ingin menghapus user \'<?= $users['username'] ?>\'?', form: 'form_user_delete' })">
@@ -26,7 +26,7 @@ $session = session()->get('sessionData');
         </form>
       <?php endif; ?>
 
-      <form action="<?= base_url('users/users_update') ?>" method="post" class="flex flex-col gap-2 w-full" id="form_user_edit">
+      <form action="<?= site_url() ?>/users/update" method="post" class="flex flex-col gap-2 w-full" id="form_user_edit">
         <?= csrf_field() ?>
         <label for="username" class="block w-full">
           <div class="flex justify-between items-center w-full flex-wrap gap-2">

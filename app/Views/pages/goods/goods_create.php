@@ -12,7 +12,7 @@ $session = session()->get('sessionData');
   <?= $this->include('components/flash_message') ?>
   <div class="flex justify-center items-center w-full bg-netral rounded-md p-4 relative overflow-hidden">
     <img src="<?= base_url('assets/images/form_goods.jpg') ?>" alt="form_Goods" class="block absolute w-full h-full object-contain lg:relative lg:w-[50%]">
-    <form action="<?= base_url('goods/goods_create') ?>" method="post" class="w-full h-full md:w-[80%] lg:w-[50%] flex flex-col gap-2 relative z-10 bg-netral/80" id="form_goods_create">
+    <form action="<?= base_url('goods/create') ?>" method="post" class="w-full h-full md:w-[80%] lg:w-[50%] flex flex-col gap-2 relative z-10 bg-netral/80" id="form_goods_create">
       <?= csrf_field() ?>
       <label for="goods_name" class="block w-full">
         <div class="flex justify-between items-center w-full flex-wrap gap-1">

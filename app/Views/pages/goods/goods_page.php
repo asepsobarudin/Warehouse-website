@@ -24,7 +24,7 @@ $role = $session['role'];
       </button>
     </form>
     <?php if ($role === 'gudang' || $role === 'admin') { ?>
-      <a href="<?= base_url("goods/goods_create") ?>" class="p-2 buttonInfo flex justify-center items-center gap-1">
+      <a href="<?= base_url("goods/create") ?>" class="p-2 buttonInfo flex justify-center items-center gap-1">
         <img src="<?= base_url('assets/icons/add-line-white-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
         <img src="<?= base_url('assets/icons/add-line-blue-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
         <span class="font-medium">Tambah Barang</span>
@@ -84,7 +84,7 @@ $role = $session['role'];
             </td>
             <td class="p-2 group-odd:bg-netral group-even:bg-dark block md:table-cell">
               <div class="flex justify-center items-center">
-                <a href="<?= base_url("goods/goods_edit/" . $list['goods_code']) ?>" class="buttonInfo p-2 font-medium w-full md:w-max flex justify-center items-center gap-2">
+                <a href="<?= site_url("/goods/edit/" . $list['goods_code']) ?>" class="buttonInfo p-2 font-medium w-full md:w-max flex justify-center items-center gap-2">
                   <img src="<?= base_url('assets/icons/details-line-white-1.svg') ?>" alt="eye" class="w-[30px] h-[30px] object-cover">
                   <img src="<?= base_url('assets/icons/details-line-blue-1.svg') ?>" alt="eye" class="w-[30px] h-[30px] object-cover">
                   <h2 class="font-semibold block md:hidden">Detail</h2>

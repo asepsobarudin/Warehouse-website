@@ -5,21 +5,6 @@ $menu = [
     'link' => 'cashier',
     'icons' => 'cashier-line-1',
   ],
-  [
-    'title' => 'Barang',
-    'link' => 'goods',
-    'icons' => 'box-line-gold-1',
-  ],
-  [
-    'title' => 'Restock',
-    'link' => 'restock',
-    'icons' => 'restock-line-gold-1'
-  ],
-  [
-    'title' => 'Transaksi',
-    'link' => 'transaction',
-    'icons' => 'bill-line-gold-1',
-  ],
 ];
 
 $cout = 0;
@@ -36,15 +21,11 @@ if ($role === "kasir") {
         <span class="block absolute w-full h-1 bg-secondary rounded-md bottom-0"></span>
       <?php } ?>
     </a>
-    <?php $cout++;
-    if ($cout >= 3) { ?>
-      <a href="<?= base_url('menu') ?>" class="relative p-2 flex justify-center items-center w-max">
-        <img src="<?= base_url('assets/icons/menu-line-gold-1.svg') ?>" alt="icons" class="w-[30px] h-[30px] object-cover">
-        <?php if ($title == "Menu") { ?>
-          <span class="block absolute w-full h-1 bg-secondary rounded-md bottom-0"></span>
-        <?php } ?>
-      </a>
-    <?php break;
-    } ?>
-<?php }
-} ?>
+  <?php } ?>
+  <a href="<?= base_url('menu') ?>" class="relative p-2 flex justify-center items-center w-max">
+    <img src="<?= base_url('assets/icons/menu-line-gold-1.svg') ?>" alt="icons" class="w-[30px] h-[30px] object-cover">
+    <?php if ($title == "Menu") { ?>
+      <span class="block absolute w-full h-1 bg-secondary rounded-md bottom-0"></span>
+    <?php } ?>
+  </a>
+<?php } ?>

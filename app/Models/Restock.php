@@ -11,14 +11,15 @@ class Restock extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
         'restock_code',
         'status',
         'request_user_id',
         'response_user_id',
-        'message'
+        'message',
+        'deleted_at'
     ];
 
     // Dates

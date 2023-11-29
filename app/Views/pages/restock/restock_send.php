@@ -27,13 +27,13 @@
       <?php endif; ?>
     </div>
     <table class="table-auto w-full my-2">
-      <thead class="hidden md:table-header-group">
+      <thead>
         <tr>
+          <td class="p-2 bg-primary text-secondary font-semibold text-center min-w-[40px]">#</td>
           <td class="p-2 bg-primary text-secondary font-semibold text-center">
-            <span class="hidden md:block">No</span>
-            <span class="block md:hidden">Restok Barang</span>
+            <span class="hidden md:block">Nama Barang</span>
+            <span class="block md:hidden">Detail</span>
           </td>
-          <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Nama Barang</td>
           <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">
             <span class="hidden lg:block">Stok Gudang</span>
             <span class="block lg:hidden">Qty</span>
@@ -50,7 +50,7 @@
     </table>
     <div class="flex justify-end items-center w-full mb-4 gap-2">
       <?php if ($restock_status >= 2 && $restock_status <= 3) : ?>
-        <form action="<?= base_url('distribution/cancle_send') ?>" method="post" id="form_cancle_distribution">
+        <form action="<?= base_url('restock/cancle_send') ?>" method="post" id="form_cancle_distribution">
           <?= csrf_field() ?>
           <input type="hidden" name="restock_code" value="<?= $restock_code ?>">
           <button type="button" class="buttonDanger p-[11px] flex justify-center items-center gap-2" onclick="messageConfirmation({ title: 'Batalkan pengiriman', text: 'Apakah anda ingin membatalkan pengiriman?', form: 'form_cancle_distribution' })">
@@ -60,8 +60,8 @@
           </button>
         </form>
       <?php endif ?>
-      <?php if ($restock_status >= 1 && $restock_status <=2) : ?>
-        <form action="<?= base_url('distribution/send_restock') ?>" method="post" id="form_send_distribution">
+      <?php if ($restock_status >= 1 && $restock_status <= 2) : ?>
+        <form action="<?= base_url('restock/send_restock') ?>" method="post" id="form_send_distribution">
           <?= csrf_field() ?>
           <input type="hidden" name="restock_code" value="<?= $restock_code ?>">
           <button type="button" class="buttonSuccess p-2 flex justify-center items-center gap-2" onclick="messageConfirmation({ title: 'Kirim barang', text: 'Apakah anda ingin melakukan pengiriman?', form: 'form_send_distribution' })">

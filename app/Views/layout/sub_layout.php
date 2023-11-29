@@ -4,10 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+  <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/style.css') ?>">
   <link rel="shortcut icon" type="image/png" href="<?= base_url('assets/images/icons.png') ?>">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
   <title> <?= $title ?> </title>
 </head>
 
@@ -19,12 +18,12 @@
     </dialog>
   </div>
   </div>
-  <nav class="w-full h-[60px] bg-primary flex justify-center items-center">
+  <nav class="w-full h-[60px] bg-netral flex justify-center items-center shadow-sm shadow-primary/10 hide-on-print">
     <div class="container flex justify-between items-center gap-2 after:contents-[''] after:block after:w-[40px] px-2">
-      <a href="<?= base_url($link) ?>" class="p-1 w-[40px] h-[40px] block rounded-md bg-primary hover:bg-tersier border-2 border-transparent hover:border-secondary efectTrasition">
-        <img src="<?= base_url('assets/icons/arrow-line-1.svg') ?>" alt="arrow" class="w-full h-full object-cover rotate-180">
+      <a href="<?= base_url($link) ?>" class="p-1 w-[40px] h-[40px] block rounded-md bg-netral  hover:bg-primary/10 efectTrasition">
+        <img src="<?= base_url('assets/icons/arrow-line-2.svg') ?>" alt="arrow" class="w-full h-full object-cover rotate-180">
       </a>
-      <h2 class="text-lg font-medium text-secondary"><?= $title ?></h2>
+      <h2 class="text-lg font-medium text-primary"><?= $title ?></h2>
     </div>
   </nav>
   <?= $this->renderSection('content'); ?>
@@ -52,6 +51,10 @@
     const csrfToken = document.getElementsByName('<?= csrf_token() ?>')[0];
     const restockCode = '<?= $restockCode  ?>';
     const userRole = '<?= $userRole ?>';
+
+    function PrintPDF() {
+      window.print()
+    }
 
     $(document).ready(function() {
       const price = $("#goods_price");

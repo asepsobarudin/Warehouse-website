@@ -1,14 +1,26 @@
 <?php
 $menu = [
-  [
-    'title' => 'Dashboard',
-    'link' => '/dashboard',
-    'icons' => 'dashboard-line-gold-1',
+  'all' => [
+    [
+      'title' => 'Dashboard',
+      'link' => '/dashboard',
+      'icons' => 'dashboard-line-gold-1',
+    ],
+    [
+      'title' => 'Barang',
+      'link' => '/goods',
+      'icons' => 'box-line-gold-1',
+    ],
+    [
+      'title' => 'Restock',
+      'link' => '/restock',
+      'icons' => 'restock-line-gold-1'
+    ],
   ],
 ];
 
 $session = session()->get('sessionData');
-$role = session()->get('role');
+$role = $session['role'];
 ?>
 
 <nav class="navbar active effectTrasition" id="navbar">
@@ -21,22 +33,25 @@ $role = session()->get('role');
   <div class="container py-2 px-4 flex flex-col justify-between items-center h-full w-full overflow-hidden">
     <div class="block">
       <div class="profile flex justify-start items-center gap-2 rounded-full overflow-hidden h-[55px] effectTrasition">
-        <div class="w-[40px] h-[40px] rounded-full overflow-hidden block shadow-md">
-          <img src="<?= base_url("assets/images/icons.png") ?>" alt="image1" class="w-full h-full object-cover">
-        </div>
+        <img src="<?= base_url("assets/images/icons.png") ?>" alt="image1" class="w-[40px] h-[40px] object-cover rounded-full overflow-hidden block shadow-md">
         <h2 class="tit_company text-sm font-semibold overflow-hidden text-secondary effectTrasition">TB SALUYU MEKAR</h2>
       </div>
       <div class="my-2">
         <div class="block">
           <div class="flex flex-col justify-start items-center gap-1">
-            <?php foreach ($menu as $list) : ?>
-              <a href="<?= $list['link'] ?>" class="menu effectTrasition">
-                <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
-                <h2 class="tit_menu effectTrasition"><?= $list['title'] ?></h2>
-                <?php if ($list['title'] == $title) : ?>
+            <?php foreach ($menu['all'] as $list) : ?>
+              <?php if ($list['title'] == $title) { ?>
+                <a href="<?= site_url() . $list['link'] ?>" class="menu effectTrasition shadow-black shadow-inner">
+                  <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+                  <h2 class="tit_menu effectTrasition"><?= $list['title'] ?></h2>
                   <span class="checkActive effectTrasition"></span>
-                <?php endif; ?>
-              </a>
+                </a>
+              <?php } else { ?>
+                <a href="<?= site_url() . $list['link'] ?>" class="menu effectTrasition not_active">
+                  <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+                  <h2 class="tit_menu effectTrasition"><?= $list['title'] ?></h2>
+                </a>
+              <?php } ?>
             <?php endforeach; ?>
           </div>
         </div>
@@ -47,14 +62,16 @@ $role = session()->get('role');
     </div>
 
     <div class="flex flex-col justify-center items-center w-full gap-2">
-      <a href="<?= base_url('menu') ?>" class="menu effectTrasition">
-        <img src="<?= base_url('assets/icons/menu-line-gold-1.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
-        <h2 class="tit_menu effectTrasition">Lainnya</h2>
-        <?php if ("Menu" == $title) : ?>
-          <span class="checkActive effectTrasition"></span>
-        <?php endif; ?>
-      </a>
-      <form action="<?= site_url('/logout') ?>" method="post" class="bg-danger hover:bg-primary border-2 border-transparent hover:border-danger rounded-md flex justify-start items-center p-2 gap-1 btm_menu relative group effectTrasition" id="form_logout">
+      <?php if ($role != 'kasir') : ?>
+        <a href="<?= site_url() ?>/menu" class="menu effectTrasition p-2">
+          <img src="<?= base_url('assets/icons/menu-line-gold-1.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+          <h2 class="tit_menu effectTrasition">Menu</h2>
+          <?php if ("Menu" == $title) : ?>
+            <span class="checkActive effectTrasition"></span>
+          <?php endif; ?>
+        </a>
+      <?php endif; ?>
+      <form action="<?= site_url() ?>/logout" method="post" class="bg-danger hover:bg-primary border-2 border-transparent hover:border-danger rounded-md flex justify-start items-center p-2 gap-1 btm_menu relative group effectTrasition" id="form_logout">
         <?= csrf_field() ?>
         <input type="hidden" name="username" value="<?= $session['username'] ?>">
         <button type="button" class="flex justify-start items-center gap-1" onclick="messageConfirmation({ icons: 'log-out-line-black-1', title: 'Log Out', text: 'Apakah anda yakin ingin keluar?', form: 'form_logout' })">
@@ -70,7 +87,7 @@ $role = session()->get('role');
 <!-- Mobile -->
 <nav class="block lg:hidden w-full fixed bottom-0 z-10">
   <div class="flex justify-evenly items-center h-[60px] bg-primary p-2">
-    <?php foreach ($menu as $list) : ?>
+    <?php foreach ($menu['all'] as $list) : ?>
       <a href="<?= $list['link'] ?>" class="relative p-2 flex justify-center items-center w-max">
         <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="w-[30px] h-[30px] object-cover">
         <?php if ($list['title'] == $title) { ?>

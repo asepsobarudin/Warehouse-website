@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply bg-light font-Poppins;
+  @apply bg-netral font-Poppins;
 }
 
 /* ScrollBar */
@@ -94,9 +94,10 @@ nav.navbar {
   @apply hidden bg-primary lg:block h-screen rounded-r-md fixed top-0 left-0 z-10 drop-shadow-xl;
 
   & a.menu {
-    @apply flex justify-start items-center gap-2 rounded-md p-1 border-2 border-transparent relative bg-primary;
+    @apply flex justify-start items-center gap-2 rounded-md border-2 border-transparent relative bg-primary;
   }
-  & a.menu:hover {
+
+  & a.not_active:hover {
     @apply border-secondary bg-tersier;
   }
 
@@ -113,14 +114,14 @@ nav.active {
   @apply w-[180px];
 
   & .btn_nav_label > img {
-      @apply rotate-180;
+    @apply rotate-180;
   }
 
   & div.profile {
-    @apply w-[150px];
+    @apply w-full delay-300 overflow-hidden;
   }
   & h2.tit_company {
-    @apply w-[100px] opacity-100;
+    @apply absolute left-[65px] w-[100px] opacity-100 delay-100;
   }
 
   & div.head_menu {
@@ -132,7 +133,7 @@ nav.active {
   }
 
   & a.menu {
-    @apply w-[150px] delay-75;
+    @apply w-[150px] delay-75 p-2;
   }
   & h2.tit_menu {
     @apply relative opacity-100;
@@ -153,11 +154,11 @@ nav.not_active {
   @apply w-[80px];
 
   & .btn_nav_label > img {
-      @apply rotate-0;
+    @apply rotate-0;
   }
 
   & div.profile {
-    @apply w-max relative;
+    @apply w-max relative left-1;
   }
   & h2.tit_company {
     @apply absolute left-[50px] -z-10 overflow-hidden opacity-0;
@@ -172,7 +173,7 @@ nav.not_active {
   }
 
   & a.menu {
-    @apply w-[40px] relative;
+    @apply w-[40px] relative p-1;
   }
   & h2.tit_menu {
     @apply w-[0px] absolute left-[50px] -z-10 overflow-hidden opacity-0;
@@ -339,16 +340,34 @@ dialog.message_confirmation {
         @apply flex justify-end items-center gap-2;
 
         & button:nth-child(1) {
-          @apply p-2 font-semibold bg-netral border-2 border-transparent text-tersier hover:border-tersier active:border-netral rounded-md transition-all ease-in-out duration-200;
+          @apply p-2 font-semibold bg-danger text-netral hover:bg-white hover:text-danger border-2 border-danger hover:border-transparent shadow-inner rounded-md transition-all ease-in-out duration-200;
         }
 
         & button:nth-child(2) {
-          @apply p-2 font-semibold bg-primary border-2 border-primary hover:bg-netral hover:border-primary active:border-primary active:bg-netral hover:text-primary text-secondary rounded-md transition-all ease-in-out duration-200;
+          @apply p-2 font-semibold bg-netral border-2 border-transparent text-info hover:text-white hover:bg-info hover:border-info shadow-md rounded-md transition-all ease-in-out duration-200;
         }
 
         & button:nth-child(2) {
           & img.loading {
-            @apply w-[25px] h-[25px] animate-spin;
+            @apply w-[25px] h-[25px] animate-spin transition-all duration-200 ease-in-out;
+          }
+        }
+
+        & button:nth-child(2) {
+          & img.loading:nth-child(1) {
+            @apply absolute opacity-0;
+          }
+          & img.loading:nth-child(2) {
+            @apply relative opacity-100;
+          }
+        }
+
+        & button:nth-child(2):hover {
+          & img.loading:nth-child(1) {
+            @apply relative opacity-100;
+          }
+          & img.loading:nth-child(2) {
+            @apply absolute opacity-0;
           }
         }
       }
@@ -477,7 +496,7 @@ tbody.distribution_list_goods {
     }
 
     & td:nth-child(1) {
-      @apply hidden md:table-cell text-center;
+      @apply text-center;
     }
 
     & td:nth-child(2) {
@@ -708,4 +727,95 @@ label.password_view {
 
 img.loading {
   @apply w-[30px] h-[30px] block animate-spin;
+}
+
+#table_print {
+  & thead {
+    & tr {
+      @apply border-2 border-primary;
+
+      & td {
+        @apply p-2 bg-primary text-secondary font-semibold text-center;
+      }
+
+      & td:nth-last-child(1){
+        @apply bg-white;
+      }
+
+      & td:nth-child(n + 3) {
+        @apply hidden md:table-cell;
+      }
+
+      & img {
+        @apply w-[30px] h-[30px] object-cover;
+      }
+    }
+  }
+
+  & tbody {
+    & tr {
+      & td {
+        @apply p-2 text-primary font-medium text-center;
+      }
+
+      & td:nth-child(2) {
+        @apply text-start;
+      }
+
+      & td:nth-child(n + 2) {
+        @apply block md:table-cell;
+      }
+    }
+  }
+}
+
+#header_print {
+  @apply hidden;
+}
+
+@media print {
+  .hide-on-print {
+    display: none !important;
+  }
+
+  #table_print {
+    @apply text-xs;
+    & thead {
+      & tr {
+        @apply border-none;
+        
+        & td {
+          @apply p-2 text-black font-semibold text-center border-[1px] border-black/50;
+        }
+
+        & td:nth-child(n + 3) {
+          @apply table-cell;
+        }
+      }
+
+      & img {
+        @apply w-[18px] h-[18px] object-cover;
+      }
+    }
+
+    & tbody {
+      & tr {
+        & td {
+          @apply p-2 text-black font-medium text-center border-[1px] border-black/50;
+        }
+
+        & td:nth-child(2) {
+          @apply text-start;
+        }
+
+        & td:nth-child(n + 2) {
+          @apply table-cell;
+        }
+      }
+    }
+  }
+
+  #header_print {
+    @apply block;
+  }
 }

@@ -22,7 +22,7 @@ $session = session()->get('sessionData');
         <img src="<?= base_url('assets/icons/search-line-blue-1.svg') ?>" alt="" class="w-[30px] h-[30px] object-cover">
       </button>
     </form>
-    <a href="<?= base_url("users/users_create") ?>" class="p-2 buttonInfo flex justify-center items-center gap-1">
+    <a href="<?= site_url() ?>/users/create" class="p-2 buttonInfo flex justify-center items-center gap-1">
       <img src="<?= base_url('assets/icons/add-line-white-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
       <img src="<?= base_url('assets/icons/add-line-blue-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
       <span class="font-medium pr-2">Tambah User</span>
@@ -81,14 +81,14 @@ $session = session()->get('sessionData');
             </td>
             <td class="p-2 group-odd:bg-netral group-even:bg-dark block md:table-cell">
               <div class="flex w-full flex-wrap justify-center md:justify-center items-center gap-2">
-                <a href="<?= base_url("users/users_edit/" . $list['username']) ?>" class="buttonInfo p-2 w-full md:w-max flex justify-center items-center gap-2">
+                <a href="<?= site_url("/users/edit/" . $list['username']) ?>" class="buttonInfo p-2 w-full md:w-max flex justify-center items-center gap-2">
                   <img src="<?= base_url('assets/icons/user-line-details-white-1.svg') ?>" alt="user-detail" class="w-[30px] h-[30px] object-cover">
                   <img src="<?= base_url('assets/icons/user-line-details-blue-1.svg') ?>" alt="user-detail" class="w-[30px] h-[30px] object-cover">
                   <h2 class="font-semibold block md:hidden">Detail</h2>
                 </a>
 
                 <?php if ($list['status'] && $list['username'] != $session['username']) { ?>
-                  <form action="<?= base_url('users/remove_access') ?>" method="post" id="form_hak_akses<?= $i ?>" class="w-full md:w-max">
+                  <form action="<?= site_url() ?>/users/remove_access" method="post" id="form_hak_akses<?= $i ?>" class="w-full md:w-max">
                     <? csrf_field() ?>
                     <input type="hidden" name="username" value="<?= $list['username'] ?>">
                     <button type="button" class="p-2 buttonDanger w-full flex justify-center items-center gap-2" onclick="messageConfirmation({ icons: 'user-line-block-black-1', title: 'Hapus Hak Akses', text: 'Anda yakin ingin menghapus hak akses user <?= $list['username'] ?>?', form: 'form_hak_akses<?= $i ?>' })">

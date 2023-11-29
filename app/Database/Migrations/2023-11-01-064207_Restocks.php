@@ -41,6 +41,10 @@ class Restocks extends Migration
             ],
             'updated_at' => [
                 'type' => 'DATETIME',
+            ],
+            'deleted_at' => [
+                'type' => 'DATETIME',
+                'null' => true
             ]
         ]);
 

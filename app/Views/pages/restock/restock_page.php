@@ -2,6 +2,7 @@
 
 <?php
 $session = session()->get('sessionData');
+$role = $session['role'];
 ?>
 
 <?= $this->section('content') ?>
@@ -12,30 +13,44 @@ $session = session()->get('sessionData');
       <img src="<?= base_url('assets/icons/restock-line-purple-1.svg') ?>" alt="van-line" class="w-[30px] h-[30px] object-cover">
       <h2 class="text-2xl text-primary font-semibold w-max">Restock</h2>
     </div>
-    <a href="<?= base_url('restock/restock_create') ?>" class="buttonInfo p-2 flex justify-center items-center gap-1">
-      <img src="<?= base_url('assets/icons/add-line-white-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
-      <img src="<?= base_url('assets/icons/add-line-blue-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
-      <span class="font-semibold pr-2">Buat Permintaan</span>
-    </a>
   </div>
-  <table class="table w-full">
+  <div class="flex justify-end md:justify-between items-center gap-2 flex-wrap-reverse">
+    <form action="<?= base_url('goods') ?>" method="post" class="flex justify-center md:justify-end items-center min-w-full md:min-w-[350px] gap-2">
+      <?= csrf_field() ?>
+      <input type="text" name="search_goods" id="search_goods" class="p-2 w-[90%] bg-netral border-2 border-primary/10 focus:border-primary/30 rounded-md outline-none font-semibold text-primary/80" placeholder="restock code...">
+      <button type="submit" class="buttonInfo p-1 w-max">
+        <img src="<?= base_url('assets/icons/search-line-white-1.svg') ?>" alt="" class="w-[30px] h-[30px] object-cover">
+        <img src="<?= base_url('assets/icons/search-line-blue-1.svg') ?>" alt="" class="w-[30px] h-[30px] object-cover">
+      </button>
+    </form>
+    <?php if ($role === 'kasir' || $role === 'admin') { ?>
+      <a href="<?= site_url() ?>/restock/create" class="buttonInfo p-2 flex justify-center items-center gap-1">
+        <img src="<?= base_url('assets/icons/add-line-white-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+        <img src="<?= base_url('assets/icons/add-line-blue-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+        <span class="font-semibold pr-2">Buat Permintaan</span>
+      </a>
+    <?php } ?>
+  </div>
+  <table class="table w-full my-2">
     <thead>
       <tr>
         <td class="p-2 font-medium text-center bg-primary text-secondary">#</td>
         <td class="p-2 font-medium text-center bg-primary text-secondary">
           <span class="hidden md:block">Kode</span>
-          <span class="block md:hidden">Restok</span>
+          <span class="block md:hidden">Restock</span>
         </td>
         <td class="p-2 font-medium text-center bg-primary text-secondary hidden md:table-cell">Status</td>
-        <?php if ($session['role'] == 'admin') : ?>
+        <?php if ($role == 'gudang' || $role == 'admin') : ?>
           <td class="p-2 font-medium text-center bg-primary text-secondary hidden md:table-cell">
-            <span class="hidden lg:block">Pemesan</span>
+            <span class="hidden lg:block">Pemesan / Penerima</span>
             <span class="block lg:hidden">Detail</span>
           </td>
         <?php endif; ?>
-        <td class="p-2 font-medium text-center bg-primary text-secondary hidden lg:table-cell">Pengirim</td>
+        <?php if ($role == 'kasir' || $role == 'admin') : ?>
+          <td class="p-2 font-medium text-center bg-primary text-secondary hidden lg:table-cell">Pengirim</td>
+        <?php endif; ?>
         <td class="p-2 font-medium text-center bg-primary text-secondary hidden lg:table-cell">Tanggal</td>
-        <td class="p-2 font-medium text-center bg-primary text-secondary">Aksi</td>
+        <td class="p-2 font-medium text-center bg-primary text-secondary hidden lg:table-cell">Aksi</td>
       </tr>
     </thead>
     <tbody>
@@ -89,39 +104,41 @@ $session = session()->get('sessionData');
                 <?php } ?>
               </div>
             </td>
-            <?php if ($session['role'] == 'admin') : ?>
-              <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell"><?= $list['request_user_id'] ?></td>
+            <?php if ($role == 'gudang' || $role == 'admin') : ?>
+              <td class="p-2 group-odd:bg-netral group-even:bg-dark text-danger font-semibold text-center inline-block w-1/2 md:block md:w-auto lg:table-cell"><?= $list['request_user_id'] ?></td>
             <?php endif; ?>
-            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center inline-block w-1/2 md:block md:w-auto lg:table-cell">
-              <?php if (!$list['response_user_id']) { ?>
-                -
-              <?php } else { ?>
-                <?= $list['response_user_id'] ?>
-              <?php } ?>
-            </td>
+            <?php if ($role == 'kasir' || $role == 'admin') : ?>
+              <td class="p-2 group-odd:bg-netral group-even:bg-dark text-success font-semibold text-center inline-block w-1/2 md:block md:w-auto lg:table-cell">
+                <?php if (!$list['response_user_id']) { ?>
+                  -
+                <?php } else { ?>
+                  <?= $list['response_user_id'] ?>
+                <?php } ?>
+              </td>
+            <?php endif ?>
             <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block lg:table-cell">
               <?= $list['created_at'] ?>
             </td>
-            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center">
-              <div class="flex flex-col lg:flex-row justify-center items-center gap-2 w-full">
-                <?php if ($list['status'] == 0) : ?>
-                  <a href="<?= base_url('restock/restock_edit/') . $list['restock_code'] ?>" class="buttonInfo p-2 font-medium text-white block w-max">
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block lg:table-cell">
+              <div class="flex justify-center items-center gap-2 w-full">
+                <?php if ($list['status'] == 0 && ($role === 'kasir' || $role === 'admin')) : ?>
+                  <a href="<?= site_url('/restock/edit/') . $list['restock_code'] ?>" class="buttonWarning p-2 font-medium text-white block w-max">
+                    <div class="w-[30px] h-[30px] block">
+                      <img src="<?= base_url('assets/icons/edit-line-white-1.svg') ?>" alt="details-line" class="h-full w-full object-cover">
+                      <img src="<?= base_url('assets/icons/edit-line-yellow-1.svg') ?>" alt="details-line" class="h-full w-full object-cover">
+                    </div>
+                  </a>
+                <?php endif; ?>
+                <?php if ($list['status'] >= 1 && ($role === 'kasir' || $role === 'admin')) : ?>
+                  <a href="<?= site_url('/restock/details/') . $list['restock_code'] ?>" class="buttonInfo p-2 font-medium text-white block w-max">
                     <div class="w-[30px] h-[30px] block">
                       <img src="<?= base_url('assets/icons/details-line-white-1.svg') ?>" alt="details-line" class="h-full w-full object-cover">
                       <img src="<?= base_url('assets/icons/details-line-blue-1.svg') ?>" alt="details-line" class="h-full w-full object-cover">
                     </div>
                   </a>
                 <?php endif; ?>
-                <?php if ($list['status'] >= 1) : ?>
-                  <a href="<?= base_url('restock/restock_details/') . $list['restock_code'] ?>" class="buttonInfo p-2 font-medium text-white block w-max">
-                    <div class="w-[30px] h-[30px] block">
-                      <img src="<?= base_url('assets/icons/details-line-white-1.svg') ?>" alt="details-line" class="h-full w-full object-cover">
-                      <img src="<?= base_url('assets/icons/details-line-blue-1.svg') ?>" alt="details-line" class="h-full w-full object-cover">
-                    </div>
-                  </a>
-                <?php endif; ?>
-                <?php if ($list['status'] == 1) : ?>
-                  <form action="<?= base_url('restock/restock_cancle') ?>" method="post" id="form_restock_cancle<?= $no ?>">
+                <?php if ($list['status'] == 1 && ($role === 'kasir' || $role === 'admin')) : ?>
+                  <form action="<?= site_url() ?>/restock/cancle" method="post" id="form_restock_cancle<?= $no ?>">
                     <?= csrf_field() ?>
                     <input type="hidden" value="<?= $list['restock_code'] ?>" name="restock">
                     <button type="button" class="buttonWarning block p-2" onclick="messageConfirmation({ title: 'Batalkan Permintaan', text: 'Apakah yakin ingin membatalkan permintaan restock?', form: 'form_restock_cancle<?= $no ?>' })">
@@ -130,8 +147,16 @@ $session = session()->get('sessionData');
                     </button>
                   </form>
                 <?php endif; ?>
-                <?php if ($list['status'] < 1 || $session['role'] == 'admin') : ?>
-                  <form action="<?= base_url('restock/restock_delete') ?>" method="post" id="form_restock_delete<?= $no ?>">
+                <?php if ($list['status'] >= 1 && ($role === 'gudang' || $role === 'admin')) : ?>
+                  <a href="<?= base_url('restock/get_restock/') . $list['restock_code'] ?>" class="buttonSuccess p-2 font-medium text-white block w-max">
+                    <div class="w-[30px] h-[30px] block">
+                      <img src="<?= base_url('assets/icons/van-line-white-1.svg') ?>" alt="eye" class="h-full w-full object-cover">
+                      <img src="<?= base_url('assets/icons/van-line-green-1.svg') ?>" alt="eye" class="h-full w-full object-cover">
+                    </div>
+                  </a>
+                <?php endif ?>
+                <?php if (($list['status'] < 1 || $list['status'] == 5) || $session['role'] == 'admin') : ?>
+                  <form action="<?= site_url() ?>/restock/delete" method="post" id="form_restock_delete<?= $no ?>">
                     <?= csrf_field() ?>
                     <input type="hidden" value="<?= $list['restock_code'] ?>" name="restock">
                     <button type="button" class="buttonDanger block p-2" onclick="messageConfirmation({ title: 'Hapus Permintaan', text: 'Apakah yakin ingin menghapus permintaan restock?', form: 'form_restock_delete<?= $no ?>' })">

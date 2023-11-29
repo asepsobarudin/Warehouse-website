@@ -15,7 +15,7 @@
   endif; ?>
 
   <main class="container flex justify-center items-center h-screen">
-    <div class="w-[80%] h-[80%] bg-netral flex justify-between flex-col lg:flex-row items-center gap-2 rounded-md px-4 relative overflow-hidden">
+    <div class="w-[100%] md:w-[80%] h-[80%] bg-netral flex justify-between flex-col lg:flex-row items-center gap-2 rounded-md px-4 relative overflow-hidden">
       <img src="<?= base_url('assets/images/login.jpg') ?>" alt="wellcome" class="block w-auto h-full object-contain absolute lg:relative top-0">
       <form action="<?= base_url('auth') ?>" method="post" class="w-full md:w-[80%] lg:w-[40%] h-full flex flex-col justify-between items-center gap-4 p-4 after:block relative z-10 bg-netral/80" id="form_login">
         <?= csrf_field() ?>
@@ -81,6 +81,7 @@
     const eyeHide = document.getElementById('eye_hide');
     const buttonLoading = document.getElementById('buttonLoading');
     const formLogin = document.getElementById('form_login');
+    const baseURL = '<?= base_url() ?>'
 
     passwordView.addEventListener('click', () => {
       if (passwordView.checked == true) {
@@ -110,7 +111,10 @@
 
     buttonLoading.addEventListener('click', () => {
       buttonLoading.disabled = true;
-      buttonLoading.innerHTML = "Loading...";
+      buttonLoading.innerHTML = `
+      <img src="${baseURL}assets/icons/loading-line-white-1.svg" alt="loading-line" class="loading"/>
+      <img src="${baseURL}assets/icons/loading-line-black-1.svg" alt="loading-line" class="loading"/>
+      `;
       formLogin.submit();
     })
   </script>

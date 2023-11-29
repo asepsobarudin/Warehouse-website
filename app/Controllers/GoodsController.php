@@ -429,7 +429,7 @@ class GoodsController extends BaseController
         }
 
         $data = [
-            'title' => 'Trash',
+            'title' => 'Trash Barang',
             'link' => '/menu',
             'goods' => $setGoods
         ];

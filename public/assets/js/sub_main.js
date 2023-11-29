@@ -103,7 +103,7 @@ async function addCardRestockQty({ no, noGc, noRes }) {
 }
 
 loadData({
-  text: "restock_edit/",
+  text: "restock/edit",
   fnc: `listRestock({ restock: '${restockCode}' })`,
 });
 
@@ -152,14 +152,15 @@ async function listRestock({ restock }) {
 }
 
 loadData({
-  text: "restock_create",
+  text: "restock/create",
   fnc: `goodsList({url: '${baseURL}goods/goods_list'})`,
 });
 
 loadData({
-  text: "restock_edit",
+  text: "restock/edit",
   fnc: `goodsList({url: '${baseURL}goods/goods_list'})`,
 });
+
 
 async function goodsList({ url }) {
   goodsTable.innerHTML = tableLoading({
@@ -167,6 +168,7 @@ async function goodsList({ url }) {
     element: ["paginate_button", "paginate_text"],
   });
   const result = await get({ url: url });
+  console.log(result)
 
   if (result.code) {
     goodsTable.innerHTML = tableError({ col: 6, code: result.code });
@@ -249,7 +251,7 @@ async function goodsSearch({ url }) {
   }
 }
 
-// Distribution
+// Restock Send
 loadData({
   text: "get_restock",
   fnc: `getListRestock()`,
@@ -259,8 +261,9 @@ async function getListRestock() {
   const data = {
     restock: restockCode,
   };
-  const url = `${baseURL}distribution/restock_list`;
+  const url = `${baseURL}restock/restock_list`;
   const result = await post({ url: url, data: data });
+
   if (result.data) {
     dsTable.innerHTML = "";
     var no = 1;
@@ -293,7 +296,7 @@ async function addDistributionQty({ itemInput, goods, oprator, btn, no }) {
   getValue = parseInt(addValue);
 
   if (getValue && getValue > 0) {
-    const url = `${baseURL}distribution/add_send`;
+    const url = `${baseURL}restock/add_send`;
     const data = {
       restock: restockCode,
       goods: goods,

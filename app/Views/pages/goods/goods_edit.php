@@ -26,7 +26,7 @@ $session = session()->get('sessionData');
         </summary>
         <div class="block w-full mt-4">
           <?php if ($session['role'] === 'gudang' || $session['role'] === 'admin') { ?>
-            <form action="<?= base_url('goods/goods_delete') ?>" method="post" class="flex md:justify-between items-center flex-wrap gap-2" id="form_goods_delete">
+            <form action="<?= site_url() ?>/goods/delete" method="post" class="flex md:justify-between items-center flex-wrap gap-2" id="form_goods_delete">
               <?= csrf_field() ?>
               <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
               <input type="text" value="<?= $goods['goods_code'] ?>" class="p-2 rounded-md border-2 border-primary/50 font-semibold bg-netral text-primary w-full md:w-[70%]" disabled>
@@ -37,7 +37,7 @@ $session = session()->get('sessionData');
               </button>
             </form>
           <?php } ?>
-          <form action="<?= base_url('goods/goods_update') ?>" method="post" class="flex flex-col gap-2 mt-4 md:mt-2" id="form_goods_edit">
+          <form action="<?= site_url() ?>/goods/update" method="post" class="flex flex-col gap-2 mt-4 md:mt-2" id="form_goods_edit">
             <?= csrf_field() ?>
             <div class="flex flex-col justify-center items-start gap-2 w-full">
               <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
@@ -97,7 +97,7 @@ $session = session()->get('sessionData');
           <span class="text-primary">Perbaharui Stok</span>
         </summary>
         <div class="py-2 flex flex-col gap-4">
-          <form action="<?= base_url('goods/goods_stock') ?>" method="post" class="mt-2" id="form_goods_stok">
+          <form action="<?= site_url() ?>/goods/stock" method="post" class="mt-2" id="form_goods_stok">
             <?= csrf_field() ?>
             <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
             <div class="flex flex-col gap-4 w-full">

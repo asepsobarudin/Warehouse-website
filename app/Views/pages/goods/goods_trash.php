@@ -1,11 +1,11 @@
 <?= $this->extend('layout/sub_layout') ?>
 
 <?= $this->section('content'); ?>
-<main class="container p-2 block">
+<main class="container px-2 py-4 block">
   <?= $this->include('components/flash_message') ?>
   <?php if ($goods) : ?>
-    <div class="flex justify-end items-center pb-2 px-2 w-full">
-      <form action="<?= base_url() ?>/goods/goods_delete_all_trash" method="post" id="form_goods_delete_trash">
+    <div class="flex justify-end items-center w-full mb-2">
+      <form action="<?= site_url() ?>/goods/delete_all_trash" method="post" id="form_goods_delete_trash">
         <?= csrf_field() ?>
         <button type="button" class="p-2 buttonDanger flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Hapus Semua', text: 'Apakah yakin ingin menghapus semua data barang secara permanen?', form: 'form_goods_delete_trash' })">
           <img src="<?= base_url() ?>/assets/icons/trash-line-x-white-1.svg" alt="restore" class="w-[30px] h-[30px] object-cover">
@@ -36,12 +36,12 @@
           <tr class="group">
             <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center max-w-[60px]"><?= $no ?></td>
             <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell md:max-w-[200px]"><?= $list['goods_code'] ?></td>
-            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell md:max-w-[200px]"><?= $list['goods_name'] ?></td>
+            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-start block md:table-cell md:max-w-[200px]"><?= $list['goods_name'] ?></td>
             <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell md:max-w-[100px]"><?= $list['users_id'] ?></td>
             <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell"><?= $list['deleted_at'] ?></td>
             <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block md:table-cell">
               <div class="flex justify-center items-center gap-2">
-                <form action="<?= base_url() ?>/goods/goods_restore" method="post" id="form_goods_restore<?= $no ?>">
+                <form action="<?= site_url() ?>/goods/restore" method="post" id="form_goods_restore<?= $no ?>">
                   <?= csrf_field() ?>
                   <input type="hidden" name="goods_code" value="<?= $list['goods_code'] ?>">
                   <button type="button" class="p-2 buttonInfo flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Restore Barang', text: 'Apakah yakin ingin merestore barang?', form: 'form_goods_restore<?= $no ?>' })">
@@ -50,7 +50,7 @@
                     <h2 class="font-semibold block md:hidden">Restore</h2>
                   </button>
                 </form>
-                <form action="<?= base_url() ?>/goods/goods_delete_trash" method="post" id="form_goods_delete_trash<?= $no ?>">
+                <form action="<?= site_url() ?>/goods/delete_trash" method="post" id="form_goods_delete_trash<?= $no ?>">
                   <?= csrf_field() ?>
                   <input type="hidden" name="goods_code" value="<?= $list['goods_code'] ?>">
                   <button type="button" class="p-2 buttonDanger flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Hapus Permanen', text: 'Apakah yakin ingin menghapus barang secara permanen?', form: 'form_goods_delete_trash<?= $no ?>' })">

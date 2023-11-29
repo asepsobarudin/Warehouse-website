@@ -156,6 +156,7 @@ function confirmation({ form }) {
   buttonLoading.disabled = true;
   buttonLoading.classList.remove("hoverContinue");
   buttonLoading.innerHTML = `
+    <img src="${baseURL}assets/icons/loading-line-white-1.svg" alt="loading-line" class="loading"/>
     <img src="${baseURL}assets/icons/loading-line-black-1.svg" alt="loading-line" class="loading"/>
   `;
   formTag.submit();

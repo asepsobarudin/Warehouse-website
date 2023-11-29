@@ -13,7 +13,7 @@
     <div class="flex flex-col items-center justify-start gap-2 min-h-[340px] md:overflow-y-scroll scroll-smooth scrollBar scrollBarBg scrollBarColors overflow-hidden" id="restock_list_cart">
       <!-- List Cart Restock -->
     </div>
-    <form action="<?= base_url('restock/restock_create') ?>" method="post" class="block w-full mt-2 h-max pb-2" id="form_add_restock">
+    <form action="<?= base_url('restock/create') ?>" method="post" class="block w-full mt-2 h-max pb-2" id="form_add_restock">
       <?= csrf_field() ?>
       <input type="hidden" name="restock_code" value="<?= $restock_code ?>">
       <label for="message">
