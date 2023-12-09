@@ -27,8 +27,8 @@ class UserController extends BaseController
             if (isset($body['search_users'])) {
                 $users = $this->Users->getUser($body['search_users']);
                 $setUsers = [];
-                if (isset($users['status'])) {
-                    $users['status'] = 'online';
+                if (isset($users["online_status"])) {
+                    $users["online_status"] = 'online';
                 }
                 unset($users['id']);
                 unset($users['password']);
@@ -57,18 +57,18 @@ class UserController extends BaseController
                 $time =  new DateTime();
 
                 $loginTime = $lastLogin->diff($time)->h;
-                if ($loginTime >= 1 && $user['status']) {
+                if ($loginTime >= 1 && $user["online_status"]) {
                     $dt = [
-                        'status' => null
+                        "online_status" => null
                     ];
                     $this->Users->update($user['id'], $dt);
-                    $user['status'] = $dt['status'];
+                    $user["online_status"] = $dt["online_status"];
                 }
 
-                if ($user['status']) {
-                    $user['status'] = 'online';
+                if ($user["online_status"]) {
+                    $user["online_status"] = 'online';
                 } else {
-                    $user['status'] = null;
+                    $user["online_status"] = null;
                 }
 
                 unset($user['id']);
@@ -99,7 +99,7 @@ class UserController extends BaseController
                 $body['role'] = null;
             }
 
-            if ($body['role'] != 'kasir' && $body['role'] != 'gudang' && $body['role'] != 'admin') {
+            if ($body['role'] != 'gudang' && $body['role'] != 'admin') {
                 $body['role'] = null;
             }
 
@@ -198,7 +198,7 @@ class UserController extends BaseController
                     $body['role'] = null;
                 }
 
-                if (isset($body['role']) && $body['role'] != 'kasir' && $body['role'] != 'gudang' && $body['role'] != 'admin') {
+                if (isset($body['role']) && $body['role'] != 'gudang' && $body['role'] != 'admin') {
                     $body['role'] = null;
                 }
 
@@ -231,13 +231,13 @@ class UserController extends BaseController
                     if ($session['username'] === $users['username']) {
                         $data = [
                             'password' => $password,
-                            'status' => null
+                            "online_status" => null
                         ];
                     } else {
                         $data = [
                             'password' => $password,
                             'role' => $body['role'],
-                            'status' => null
+                            "online_status" => null
                         ];
                     }
 
@@ -298,7 +298,7 @@ class UserController extends BaseController
                 return redirect()->back();
             } else {
                 $data = [
-                    'status' => null
+                    "online_status" => null
                 ];
 
                 if ($this->Users->update($users['id'], $data)) {

@@ -34,12 +34,12 @@
         $no = 1;
         foreach ($goods as $list) : ?>
           <tr class="group">
-            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center max-w-[60px]"><?= $no ?></td>
-            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell md:max-w-[200px]"><?= $list['goods_code'] ?></td>
-            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-start block md:table-cell md:max-w-[200px]"><?= $list['goods_name'] ?></td>
-            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell md:max-w-[100px]"><?= $list['users_id'] ?></td>
-            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell"><?= $list['deleted_at'] ?></td>
-            <td class="p-2 group-odd:bg-netral group-even:bg-dark text-primary font-medium text-center block md:table-cell">
+            <td class="p-2 group-odd:bg-white group-even:bg-dark text-primary font-medium text-center max-w-[60px]"><?= $no ?></td>
+            <td class="p-2 group-odd:bg-white group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell md:max-w-[200px]"><?= $list['goods_code'] ?></td>
+            <td class="p-2 group-odd:bg-white group-even:bg-dark text-primary font-medium text-start block md:table-cell md:max-w-[200px]"><?= $list['goods_name'] ?></td>
+            <td class="p-2 group-odd:bg-white group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell md:max-w-[100px]"><?= $list['users_id'] ?></td>
+            <td class="p-2 group-odd:bg-white group-even:bg-dark text-primary font-medium text-start md:text-center block md:table-cell"><?= $list['deleted_at'] ?></td>
+            <td class="p-2 group-odd:bg-white group-even:bg-dark text-primary font-medium text-center block md:table-cell">
               <div class="flex justify-center items-center gap-2">
                 <form action="<?= site_url() ?>/goods/restore" method="post" id="form_goods_restore<?= $no ?>">
                   <?= csrf_field() ?>

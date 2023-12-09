@@ -11,10 +11,10 @@ $session = session()->get('sessionData');
 
 <main class="container mt-2 p-2">
   <?= $this->include('components/flash_message') ?>
-  <div class="flex justify-center items-center gap-2 relative w-full rounded-md bg-netral overflow-hidden">
+  <div class="flex justify-center items-center gap-2 relative w-full rounded-md bg-white overflow-hidden">
     <img src="<?= base_url('assets/images/form_register.jpg') ?>" alt="form_register" class="h-full w-auto lg:w-[40%] object-cover absolute lg:relative top-0">
-    <div class="block p-4 bg-netral/80 rounded-md h-full w-full md:w-[60%] lg:w-[50%] relative z-10">
-      <?php if ($session['username'] != $users['username'] && !$users['status']) : ?>
+    <div class="block p-4 bg-white/80 rounded-md h-full w-full md:w-[60%] lg:w-[50%] relative z-10">
+      <?php if ($session['username'] != $users['username'] && !$users['online_status']) : ?>
         <form action="<?= site_url() ?>/users/delete" method="post" class="w-full flex justify-start items-center mb-4" id="form_user_delete">
           <?= csrf_field() ?>
           <input type="hidden" value="<?= $users['username'] ?>" name="username">
@@ -48,7 +48,6 @@ $session = session()->get('sessionData');
             </div>
             <select name="role" id="role" class="py-3 px-2 bg-white outline-primary w-full border-2 rounded-md font-medium">
               <option value="0">--Pilih Role--</option>
-              <option value="kasir" <?php if ($users['role'] == 'kasir') { ?> selected <?php } ?>>Kasir</option>
               <option value="gudang" <?php if ($users['role'] == 'gudang') { ?> selected <?php } ?>>Gudang</option>
               <option value="admin" <?php if ($users['role'] == 'admin') { ?> selected <?php } ?>>Admin</option>
             </select>

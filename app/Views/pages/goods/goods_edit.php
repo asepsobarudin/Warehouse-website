@@ -16,10 +16,10 @@ $session = session()->get('sessionData');
 <?= $this->section('content') ?>
 <main class="container mt-2 p-2 block">
   <?= $this->include('components/flash_message') ?>
-  <div class="flex justify-center items-start gap-2 relative overflow-hidden rounded-md p-4 bg-netral">
+  <div class="flex justify-center items-start gap-2 relative overflow-hidden rounded-md p-4 bg-white">
     <img src="<?= base_url('assets/images/form_goods.jpg') ?>" alt="form_Goods" class="block absolute w-full h-full object-contain lg:relative lg:w-[50%]">
     <div class="w-full md:w-[80%] lg:w-[50%] h-full relative z-10">
-      <details <?= $open ?> class="py-2 px-4 bg-netral/80 rounded-md border-2 border-primary/5 accordion cursor-pointer">
+      <details open <?= $open ?> class="py-2 px-4 bg-white/80 rounded-md border-2 border-primary/5 accordion cursor-pointer">
         <summary class="text-base font-semibold select-none flex items-center gap-2">
           <img src="<?= base_url('assets/icons/arrow-line-2.svg') ?>" alt="arrow" class="w-[30px] effectTrasition rotate-90">
           <span class="text-primary">Data Barang</span>
@@ -29,11 +29,11 @@ $session = session()->get('sessionData');
             <form action="<?= site_url() ?>/goods/delete" method="post" class="flex md:justify-between items-center flex-wrap gap-2" id="form_goods_delete">
               <?= csrf_field() ?>
               <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
-              <input type="text" value="<?= $goods['goods_code'] ?>" class="p-2 rounded-md border-2 border-primary/50 font-semibold bg-netral text-primary w-full md:w-[70%]" disabled>
-              <button type="button" class="p-2 buttonDanger flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Hapus Barang', text: 'Apakan anda yakin ingin menghapus \'<?= $goods['goods_name'] ?>\'?', form: 'form_goods_delete' })">
+              <input type="text" value="<?= $goods['goods_code'] ?>" class="p-1 border-b-2 border-primary/50 font-semibold bg-white text-primary w-[80%]" disabled>
+              <button type="button" class="p-1 lg:p-2 buttonDanger flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Hapus Barang', text: 'Apakan anda yakin ingin menghapus \'<?= $goods['goods_name'] ?>\'?', form: 'form_goods_delete' })">
                 <img src="<?= base_url('assets/icons/trash-line-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <img src="<?= base_url('assets/icons/trash-line-red-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
-                <span class="font-semibold">Hapus</span>
+                <span class="font-semibold hidden lg:block">Hapus</span>
               </button>
             </form>
           <?php } ?>
@@ -79,10 +79,10 @@ $session = session()->get('sessionData');
                 <span class="block p-2 bg-primary/10 w-max rounded-md">Di tambahkan : <?= $goods['created_at'] ?></span>
                 <span class="block p-2 bg-primary/10 w-max rounded-md">Terakhir di ubah : <?= $goods['updated_at'] ?></span>
               </div>
-              <h2 class="text-sm font-medium p-2 bg-primary/5 rounded-md w-max">Terakhir di ubah oleh : <?= $goods['goods_users'] ?></h2>
+              <h2 class="text-sm font-medium p-2 bg-primary/5 rounded-md w-max">Terakhir di ubah oleh : <?= $goods['users_id'] ?></h2>
             </div>
             <div class="flex justify-end items-center">
-              <button type="button" class="buttonWarning p-2 flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Edit Barang', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_goods_edit' })">
+              <button type="button" class="buttonWarning p-1 lg:p-2 flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Edit Barang', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_goods_edit' })">
                 <img src="<?= base_url('assets/icons/edit-line-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <img src="<?= base_url('assets/icons/edit-line-yellow-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <span class="font-semibold">Edit</span>
@@ -91,7 +91,7 @@ $session = session()->get('sessionData');
           </form>
         </div>
       </details>
-      <details open class="py-2 px-4 bg-netral/80 rounded-md border-2 border-primary/5 accordion cursor-pointer mt-4">
+      <details class="py-2 px-4 bg-white/80 rounded-md border-2 border-primary/5 accordion cursor-pointer mt-4">
         <summary class="text-base font-semibold select-none flex items-center gap-2">
           <img src="<?= base_url('assets/icons/arrow-line-2.svg') ?>" alt="arrow" class="w-[30px] effectTrasition rotate-90">
           <span class="text-primary">Perbaharui Stok</span>
@@ -101,66 +101,37 @@ $session = session()->get('sessionData');
             <?= csrf_field() ?>
             <input type="hidden" name="goods_code" value="<?= $goods['goods_code'] ?>">
             <div class="flex flex-col gap-4 w-full">
-              <?php if ($session['role'] === 'kasir' || $session['role'] === 'admin') { ?>
-                <label for="goods_stock_shop" class="block w-full">
-                  <div class="flex justify-between items-center w-full flex-wrap gap-2">
-                    <span class="block font-medium text-primary/80 text-sm">Stok Toko</span>
-                    <?php if (isset($errors['goods_stock_shop'])) : ?>
-                      <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_stock_shop'] ?>"</span>
-                    <?php endif; ?>
-                  </div>
-                  <div class="flex justify-center items-center gap-2 flex-wrap md:flex-nowrap">
-                    <input type="hidden" id="goods_stock_shop" name="goods_stock_shop" value="<?= old('goods_stock_shop') ? old('goods_stock_shop') : $goods['goods_stock_shop'] ?>">
-                    <h2 id="view_stock_shop" class="p-2 border-2 border-transparent w-full md:w-[50%] block bg-tersier font-semibold text-netral rounded-md">
-                      <?= old('goods_stock_shop') ? old('goods_stock_shop') : $goods['goods_stock_shop'] ?>
-                    </h2>
-                    <input type="number" id="input_stock_shop" class="p-2 rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-full md:w-[50%]" placeholder="0">
-                  </div>
-                  <div class="flex justify-end items-center gap-2 mt-2">
-                    <button type="button" class="buttonDanger p-2" onclick="addGoodsQty({getQty: 'goods_stock_shop', viewQty: 'view_stock_shop', inputQty: 'input_stock_shop', oprator: 'minus'})">
-                      <img src="<?= base_url('assets/icons/minus-line-white-1.svg') ?>" alt="minus-line" class="w-[20px] h-[20px] object-cover">
-                      <img src="<?= base_url('assets/icons/minus-line-red-1.svg') ?>" alt="minus-line" class="w-[20px] h-[20px] object-cover">
-                    </button>
-                    <button type="button" class="buttonInfo p-2" onclick="addGoodsQty({getQty: 'goods_stock_shop', viewQty: 'view_stock_shop', inputQty: 'input_stock_shop', oprator: 'plus'})">
-                      <img src="<?= base_url('assets/icons/plus-line-white-1.svg') ?>" alt="plus-line" class="w-[20px] h-[20px] object-cover">
-                      <img src="<?= base_url('assets/icons/plus-line-blue-1.svg') ?>" alt="plus-line" class="w-[20px] h-[20px] object-cover">
-                    </button>
-                  </div>
-                </label>
-              <?php } ?>
-              <?php if ($session['role'] === 'gudang' || $session['role'] === 'admin') { ?>
-                <label for="goods_stock_warehouse" class="block w-full">
-                  <div class="flex justify-between items-center w-full flex-wrap gap-2">
-                    <span class="block font-medium text-primary/80 text-sm">Stok Gudang</span>
-                    <?php if (isset($errors['goods_stock_warehouse'])) : ?>
-                      <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_stock_warehouse'] ?>"</span>
-                    <?php endif; ?>
-                  </div>
-                  <div class="flex justify-center items-center gap-2 flex-wrap md:flex-nowrap">
-                    <input type="hidden" id="goods_stock_warehouse" name="goods_stock_warehouse" value="<?= old('goods_stock_warehouse') ? old('goods_stock_warehouse') : $goods['goods_stock_warehouse'] ?>">
-                    <h2 id="view_stock_warehouse" class="p-2 border-2 border-transparent w-full md:w-[50%] block bg-tersier font-semibold text-netral rounded-md">
-                      <?= old('goods_stock_warehouse') ? old('goods_stock_warehouse') : $goods['goods_stock_warehouse'] ?>
-                    </h2>
-                    <input type="number" id="input_stock_warehouse" class="p-2 rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-full md:w-[50%]" placeholder="0">
-                  </div>
-                  <div class="flex justify-end items-center gap-2 mt-2">
-                    <button type="button" class="buttonDanger p-2" onclick="addGoodsQty({getQty: 'goods_stock_warehouse', viewQty: 'view_stock_warehouse', inputQty: 'input_stock_warehouse', oprator: 'minus'})">
-                      <img src="<?= base_url('assets/icons/minus-line-white-1.svg') ?>" alt="minus-line" class="w-[20px] h-[20px] object-cover">
-                      <img src="<?= base_url('assets/icons/minus-line-red-1.svg') ?>" alt="minus-line" class="w-[20px] h-[20px] object-cover">
-                    </button>
-                    <button type="button" class="buttonInfo p-2" onclick="addGoodsQty({getQty: 'goods_stock_warehouse', viewQty: 'view_stock_warehouse', inputQty: 'input_stock_warehouse', oprator: 'plus'})">
-                      <img src="<?= base_url('assets/icons/plus-line-white-1.svg') ?>" alt="plus-line" class="w-[20px] h-[20px] object-cover">
-                      <img src="<?= base_url('assets/icons/plus-line-blue-1.svg') ?>" alt="plus-line" class="w-[20px] h-[20px] object-cover">
-                    </button>
-                  </div>
-                </label>
-              <?php } ?>
+              <label for="goods_stock_warehouse" class="block w-full">
+                <div class="flex justify-between items-center w-full flex-wrap gap-2">
+                  <span class="block font-medium text-primary/80 text-sm">Stok Gudang</span>
+                  <?php if (isset($errors['goods_stock_warehouse'])) : ?>
+                    <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_stock_warehouse'] ?>"</span>
+                  <?php endif; ?>
+                </div>
+                <div class="flex justify-center items-center gap-2 flex-wrap md:flex-nowrap">
+                  <input type="hidden" id="goods_stock_warehouse" name="goods_stock_warehouse" value="<?= old('goods_stock_warehouse') ? old('goods_stock_warehouse') : $goods['goods_stock_warehouse'] ?>">
+                  <h2 id="view_stock_warehouse" class="p-1 lg:p-2 border-2 border-transparent w-full md:w-[50%] block bg-primary font-semibold text-white rounded-md">
+                    <?= old('goods_stock_warehouse') ? old('goods_stock_warehouse') : $goods['goods_stock_warehouse'] ?>
+                  </h2>
+                  <input type="number" id="input_stock_warehouse" class="p-1 lg:p-2 rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-full md:w-[50%]" placeholder="0">
+                </div>
+                <div class="flex justify-end items-center gap-2 mt-2">
+                  <button type="button" class="buttonDanger p-1 lg:p-2" onclick="addGoodsQty({getQty: 'goods_stock_warehouse', viewQty: 'view_stock_warehouse', inputQty: 'input_stock_warehouse', oprator: 'minus'})">
+                    <img src="<?= base_url('assets/icons/minus-line-white-1.svg') ?>" alt="minus-line" class="w-[20px] h-[20px] object-cover">
+                    <img src="<?= base_url('assets/icons/minus-line-red-1.svg') ?>" alt="minus-line" class="w-[20px] h-[20px] object-cover">
+                  </button>
+                  <button type="button" class="buttonInfo p-1 lg:p-2" onclick="addGoodsQty({getQty: 'goods_stock_warehouse', viewQty: 'view_stock_warehouse', inputQty: 'input_stock_warehouse', oprator: 'plus'})">
+                    <img src="<?= base_url('assets/icons/plus-line-white-1.svg') ?>" alt="plus-line" class="w-[20px] h-[20px] object-cover">
+                    <img src="<?= base_url('assets/icons/plus-line-blue-1.svg') ?>" alt="plus-line" class="w-[20px] h-[20px] object-cover">
+                  </button>
+                </div>
+              </label>
             </div>
             <div class="flex justify-end items-center w-full mt-4">
-              <button type="button" class="buttonWarning py-2 px-3 font-semibold text-netral flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Perbaharui Stok', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_goods_stok' })">
+              <button type="button" class="buttonWarning p-1 lg:p-2 font-semibold text-white flex justify-center items-center gap-1" onclick="messageConfirmation({ title: 'Perbaharui Stok', text: 'Apakah anda yakin ingin menyimpan perubahan?', form: 'form_goods_stok' })">
                 <img src="<?= base_url('assets/icons/update-line-white-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
                 <img src="<?= base_url('assets/icons/update-line-yellow-1.svg') ?>" alt="save" class="w-[30px] h-[30px]">
-                <span>Perbaharui Stok</span>
+                <span>Perbaharui</span>
               </button>
             </div>
           </form>

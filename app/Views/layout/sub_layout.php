@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
   <meta charset="UTF-8">
@@ -18,9 +18,9 @@
     </dialog>
   </div>
   </div>
-  <nav class="w-full h-[60px] bg-netral flex justify-center items-center shadow-sm shadow-primary/10 hide-on-print">
+  <nav class="w-full h-[60px] bg-white flex justify-center items-center shadow-sm shadow-primary/10 hide-on-print">
     <div class="container flex justify-between items-center gap-2 after:contents-[''] after:block after:w-[40px] px-2">
-      <a href="<?= base_url($link) ?>" class="p-1 w-[40px] h-[40px] block rounded-md bg-netral  hover:bg-primary/10 efectTrasition">
+      <a href="<?= base_url($link) ?>" class="p-1 w-[40px] h-[40px] block rounded-md bg-white  hover:bg-primary/10 efectTrasition">
         <img src="<?= base_url('assets/icons/arrow-line-2.svg') ?>" alt="arrow" class="w-full h-full object-cover rotate-180">
       </a>
       <h2 class="text-lg font-medium text-primary"><?= $title ?></h2>
@@ -43,18 +43,14 @@
   <script src="<?= base_url('/assets/js/components.js') ?>"></script>
   <script src="<?= base_url('/assets/js/layout.js') ?>"></script>
   <script>
-    const containerPage = document.getElementById('container_page');
-    const goodsTable = document.getElementById('goods_table');
-    const dsTable = document.getElementById('distribution_list_goods');
-    const price = document.getElementById('goods_price');
     const baseURL = '<?= base_url() ?>';
-    const csrfToken = document.getElementsByName('<?= csrf_token() ?>')[0];
+    const siteURL = '<?= site_url() ?>';
     const restockCode = '<?= $restockCode  ?>';
     const userRole = '<?= $userRole ?>';
 
-    function PrintPDF() {
-      window.print()
-    }
+    const containerPage = document.getElementById('container_page');
+    const price = document.getElementById('goods_price');
+    const csrfToken = document.getElementsByName('<?= csrf_token() ?>')[0];
 
     $(document).ready(function() {
       const price = $("#goods_price");
@@ -66,7 +62,7 @@
     })
 
     loadData({
-      text: "goods/",
+      text: "/goods/edit/",
       fnc: 'getPrice()'
     });
 

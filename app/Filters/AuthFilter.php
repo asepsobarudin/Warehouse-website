@@ -43,7 +43,7 @@ class AuthFilter implements FilterInterface
             try {
                 $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
                 $user = $this->Users->getStatus($decoded->username);
-                if ($decoded && $user['status'] === $decoded->unique) {
+                if ($decoded && $user["online_status"] === $decoded->unique) {
                     $role = $decoded->role;
                     $this->SessionHelpers->setSession('role', $role);
                     $this->SessionHelpers->setSession('username', $decoded->username);
@@ -65,7 +65,7 @@ class AuthFilter implements FilterInterface
                             'exp' => $exp
                         ];
 
-                        if ($this->Users->update($user['id'], ['status' => $dataToken['unique']])) {
+                        if ($this->Users->update($user['id'], ["online_status" => $dataToken['unique']])) {
                             $refreshToken = $this->JwtHelpers->generateToken($dataToken);
                             $this->SessionHelpers->setSession('jwt_token', $refreshToken);
                         }
@@ -98,7 +98,7 @@ class AuthFilter implements FilterInterface
                 if ($username) {
                     $user = $this->Users->getUser($username);
                     $this->Users->update($user['id'], [
-                        'status' => null
+                        "online_status" => null
                     ]);
                 }
                 $this->SessionHelpers->deleteSession();

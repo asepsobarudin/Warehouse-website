@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class GoodsRestock extends Model
+class GoodsHistory extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'goods_restocks';
+    protected $table            = 'goods_history';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -15,12 +15,8 @@ class GoodsRestock extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'goods_id',
-        'restock_id',
-        'qty',
-        'qty_send',
-        'qty_damaged',
-        'qty_excess',
-        'qty_less',
+        'user_id',
+        'qty'
     ];
 
     // Dates
@@ -32,22 +28,23 @@ class GoodsRestock extends Model
 
     // Validation
     protected $validationRules      = [
-        'goods_id' => 'required',
-        'restock_id' => 'required',
-        'qty' => 'required|numeric|min_length[1]',
+        'goods_id' => 'required|numeric',
+        'user_id' => 'required|numeric',
+        'qty' => 'required|numeric'
     ];
     protected $validationMessages   = [
         'goods_id' => [
-            'required' => 'Kode barang harus dimasukan'
+            'required' => 'Data barang tidak ditemukan!',
+            'numeric' => 'Input yang dimasukan harus berupa nomor!'
         ],
-        'restock_id' => [
-            'required' => 'Restock code tidak boleh kosong'
+        'user_id' => [
+            'required' => 'Data user tidak ditemukan',
+            'numeric' => 'Input yang dimasukan harus berupa nomor!'
         ],
         'qty' => [
-            'required' => 'Silahkan masukan jumlah barang!',
-            'numeric' => 'Nilai yang di masukan harus berupa angka!',
-            'min_length' => 'Nilai yang dimasukan tidak boleh 0!'
-        ],
+            'required' => 'Masukan jumlah barang!',
+            'numeric' => 'Input yang dimasukan harus berupa nomor!'
+        ]
     ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -64,28 +61,11 @@ class GoodsRestock extends Model
     protected $afterDelete    = [];
 
     public function listGoods () {
-        $listRestock = $this->orderBy('created_at', 'DESC')->paginate(15, 'group1');
-        return $listRestock;
+        $listGoods = $this->orderBy('created_at', 'DESC')->paginate(15, 'group2');
+        return $listGoods;
     }
 
-    public function searchListGoods($date) {
+    public function searchListGoods ($date) {
         return $this->like('created_at', $date)->findAll(200);
-    }
-
-    public function listRestock($id)
-    {
-        return $this->where('restock_id', $id)->findAll();
-    }
-
-    public function checkList($restock_id, $goods_id)
-    {
-        $listRestock = $this->like('restock_id', $restock_id)->findAll();
-        $result = [];
-        foreach ($listRestock as $list) {
-            if (isset($list['goods_id']) && $list['goods_id'] === $goods_id) {
-                $result = $list;
-            }
-        }
-        return $result;
     }
 }

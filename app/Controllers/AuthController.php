@@ -85,19 +85,18 @@ class AuthController extends BaseController
 
                 $lastLogin = new DateTime($user['updated_at']);
                 $time =  new DateTime();
-
                 $loginTime = $lastLogin->diff($time)->h;
                 if ($loginTime >= 1) {
                     $data = [
-                        'status' => null
+                        "online_status" => null
                     ];
                     $this->Users->update($user['id'], $data);
-                    $user['status'] = $data['status'];
+                    $user["online_status"] = $data["online_status"];
                 }
 
-                if ($token && !$user['status']) {
+                if ($token && !$user["online_status"]) {
                     $data = [
-                        'status' => $unique
+                        "online_status" => $unique
                     ];
                     $this->Users->update($user['id'], $data);
                     return redirect()->to('/dashboard');
@@ -138,7 +137,7 @@ class AuthController extends BaseController
                 $sessionToken = str_replace('Bearer ', '', $session['jwt_token']);
                 $token = $this->JwtHelpers->decodeToken($sessionToken);
                 $body = [
-                    'status' => $token->unique
+                    "online_status" => $token->unique
                 ];
 
                 if ($this->Users->update($users['id'], $body)) {
@@ -173,7 +172,7 @@ class AuthController extends BaseController
 
             if ($user) {
                 $this->Users->update($user['id'], [
-                    'status' => null
+                    "online_status" => null
                 ]);
                 session()->destroy();
                 return redirect()->to('/');

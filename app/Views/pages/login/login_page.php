@@ -15,9 +15,9 @@
   endif; ?>
 
   <main class="container flex justify-center items-center h-screen">
-    <div class="w-[100%] md:w-[80%] h-[80%] bg-netral flex justify-between flex-col lg:flex-row items-center gap-2 rounded-md px-4 relative overflow-hidden">
+    <div class="w-[100%] md:w-[80%] h-[80%] bg-white flex justify-between flex-col lg:flex-row items-center gap-2 rounded-md px-4 relative overflow-hidden">
       <img src="<?= base_url('assets/images/login.jpg') ?>" alt="wellcome" class="block w-auto h-full object-contain absolute lg:relative top-0">
-      <form action="<?= base_url('auth') ?>" method="post" class="w-full md:w-[80%] lg:w-[40%] h-full flex flex-col justify-between items-center gap-4 p-4 after:block relative z-10 bg-netral/80" id="form_login">
+      <form action="<?= base_url('auth') ?>" method="post" class="w-full md:w-[80%] lg:w-[40%] h-full flex flex-col justify-between items-center gap-4 p-4 after:block relative z-10 bg-white/80" id="form_login">
         <?= csrf_field() ?>
         <div class="flex justify-end items-center w-full gap-1">
           <img src="<?= base_url('assets/images/icons.png') ?>" alt="icons" class="w-[30px] h-[30px] object-cover rounded-full">
@@ -30,7 +30,7 @@
           </div>
           <?php if (session()->getFlashdata('errors')) : ?>
             <div class="block w-full mb-2">
-              <span class="text-sm font-medium p-2 bg-danger/80 text-netral w-full block">
+              <span class="text-sm font-medium p-2 bg-danger/80 text-white w-full block">
                 <?= session()->getFlashdata('errors') ?>
               </span>
             </div>
@@ -44,7 +44,7 @@
                     <span class="block text-danger text-xs font-medium">"<?= $errors['username'] ?>"</span>
                   <?php endif; ?>
                 </div>
-                <input type="text" id="username" class="p-2 rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-full" name="username" value="<?= old('username') ?>" placeholder="Masukan username anda" required>
+                <input type="text" id="username" class="p-2 rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-full" name="username" value="<?= old('username') ?>" placeholder="Masukan username anda" required autocomplete="current-password">
               </label>
             </div>
             <div class="block w-full">
@@ -55,7 +55,7 @@
                     <span class="block text-danger text-xs font-medium">"<?= $errors['password'] ?>"</span>
                   <?php endif; ?>
                 </div>
-                <input type="password" id="password" class="pl-2 py-2 pr-[40px] rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-[100%]" name="password" placeholder="Masukan password anda" required>
+                <input type="password" id="password" class="pl-2 py-2 pr-[40px] rounded-md font-medium outline-none border-2 border-primary/10 peer focus:border-primary/30 w-[100%]" name="password" placeholder="Masukan password anda" autocomplete="current-password">
                 <label class="password_view" for="password_view">
                   <input type="checkbox" id="password_view" class="hidden">
                   <img src="<?= base_url('assets/icons/eye/eye-line-1.svg') ?>" alt="eye-line-1" class="active" id="eye_view">

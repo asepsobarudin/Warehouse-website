@@ -10,9 +10,9 @@ $session = session()->get('sessionData');
 <?= $this->section('content') ?>
 <main class="container mt-2 p-2 block">
   <?= $this->include('components/flash_message') ?>
-  <div class="flex justify-center items-center w-full bg-netral rounded-md p-4 relative overflow-hidden">
+  <div class="flex justify-center items-center w-full bg-white rounded-md p-4 relative overflow-hidden">
     <img src="<?= base_url('assets/images/form_goods.jpg') ?>" alt="form_Goods" class="block absolute w-full h-full object-contain lg:relative lg:w-[50%]">
-    <form action="<?= base_url('goods/create') ?>" method="post" class="w-full h-full md:w-[80%] lg:w-[50%] flex flex-col gap-2 relative z-10 bg-netral/80" id="form_goods_create">
+    <form action="<?= base_url('goods/create') ?>" method="post" class="w-full h-full md:w-[80%] lg:w-[50%] flex flex-col gap-2 relative z-10 bg-white/80" id="form_goods_create">
       <?= csrf_field() ?>
       <label for="goods_name" class="block w-full">
         <div class="flex justify-between items-center w-full flex-wrap gap-1">
@@ -43,15 +43,6 @@ $session = session()->get('sessionData');
           <?php endif; ?>
         </div>
         <input type="number" id="goods_min_stock" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_min_stock" value="<?= old('goods_min_stock') ?>">
-      </label>
-      <label for="goods_stock_shop" class="block w-full">
-        <div class="flex justify-between items-center w-full flex-wrap gap-1">
-          <span class="block font-medium text-primary/80 text-sm">Stok Toko</span>
-          <?php if (isset($errors['goods_stock_shop'])) : ?>
-            <span class="block text-danger text-sm font-medium whitespace-nowrap">"<?= $errors['goods_stock_shop'] ?>"</span>
-          <?php endif; ?>
-        </div>
-        <input type="number" id="goods_stock_shop" class="p-2 rounded-md font-medium outline-none border-2 border-black/10 peer focus:border-black/30 w-full" placeholder="0" name="goods_stock_shop" value="<?= old('goods_stock_shop') ?>">
       </label>
       <label for="goods_stock_warehouse" class="block w-full">
         <div class="flex justify-between items-center w-full flex-wrap gap-1">

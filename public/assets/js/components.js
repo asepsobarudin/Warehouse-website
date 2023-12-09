@@ -26,18 +26,30 @@ function tableError({ col, code }) {
 
 // Show Loading In Tabel
 function tableLoading({ col, element }) {
-  element.map((list) => {
+  element?.map((list) => {
     const tag = document.getElementById(list);
     tag.innerHTML = "";
   });
-  return `
-  <tr>
-    <td colspan="${col}">
-      <div class="table_loading">
-        <img src="${baseURL}assets/icons/loading-line-black-1.svg" alt="loading-line" />
-      </div>
-    </td>
-  </tr>`;
+
+  let td = [];
+  for (i = 1; i <= col; i++) {
+    td.push(`
+      <td>
+        <div></div>
+      </td>`);
+  }
+
+  let tabel = [];
+  let TD = td.join(',');
+  for (i = 1; i <= 5; i++) {
+    tabel.push(`
+      <tr class="loading">
+        ${TD.replace(/,/g, "</td>")}
+      </tr>`);
+  }
+  let TABEl = tabel.join(',')
+
+  return TABEl.replace(/,/g, "</td>");
 }
 
 // Function for running funtion first reload page
@@ -45,46 +57,10 @@ function loadData({ text, fnc }) {
   var href = window.location.href;
   var getIndex = href.indexOf(text);
   var link = href.slice(getIndex, getIndex + text.length);
-  if (link == text) {
+  if (link == text && !href.includes('/', getIndex + text.length)) {
     window.addEventListener("load", () => {
       eval(fnc);
     });
-  }
-}
-
-function paginateButton({ table, col, url }) {
-  table.innerHTML = tableLoading({
-    col: col,
-    element: ["paginate_button", "paginate_text"],
-  });
-  const searchInput = document.getElementById("goods_input_search");
-  const keyword = searchInput.value;
-  if (keyword) {
-    goodsSearch({ url });
-  } else {
-    goodsList({ url });
-  }
-  backToTop({ element: containerPage });
-}
-
-// Paginate Button
-function paginateBtn({ data, table, col }) {
-  const btnBack = document.getElementById("paginate_button");
-  const textPaginate = document.getElementById("paginate_text");
-  if (data.backPage) {
-    btnBack.innerHTML += `<button onclick="paginateButton({table: '${table}', col: ${col}, url: '${data.backPage}'})" class="back">Kembali</button>`;
-  }
-  if (data.nextPage) {
-    btnBack.innerHTML += `<button onclick="paginateButton({table: '${table}', col: ${col}, url: '${data.nextPage}'})" class="next">Berikutnya</button>`;
-  }
-  if (data.totalItems >= 1) {
-    textPaginate.innerHTML = `
-        <span>Halaman</span>
-        <span>${data.currentPage}</span>
-        <span>dari</span>
-        <span>${data.pageCount}</span>
-        <span>(${data.totalItems} Barang)</span>
-    `;
   }
 }
 

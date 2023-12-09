@@ -18,10 +18,10 @@ $session = session()->get('sessionData')
   <div class="flex justify-center lg:justify-between items-start gap-2 w-full">
     <div class="w-full lg:w-[69%] h-full lg:after:block">
       <div class="flex justify-end items-center gap-2 w-full mb-2 px-2">
-        <label for="goods_input_search" class="flex justify-center items-center relative w-full md:w-max">
-          <input type="text" id="goods_input_search" name="cs_input_search" class="p-2 outline-none rounded-md border-2 border-primary/20 w-full md:w-[250px] lg:w-[300px] focus:border-primary/50 bg-netral" placeholder="Cari barang...">
+        <label for="input_search" class="flex justify-center items-center relative w-full md:w-max">
+          <input type="text" id="input_search" name="input_search" class="p-2 outline-none rounded-md border-2 border-primary/20 w-full md:w-[250px] lg:w-[300px] focus:border-primary/50 bg-white" placeholder="Cari barang...">
         </label>
-        <button class="p-1 buttonInfo" type="button" id="btn_search" onclick="goodsSearch({url: '<?= base_url('goods/goods_search') ?>'})">
+        <button class="p-1 buttonInfo" type="button" id="btn_search" onclick="SEARCH({url: '<?= base_url('goods/goods_search') ?>'})">
           <img src="<?= base_url('assets/icons/search-line-white-1.svg') ?>" alt="filter" class="w-[30px] h-[30px] object-cover">
           <img src="<?= base_url('assets/icons/search-line-blue-1.svg') ?>" alt="filter" class="w-[30px] h-[30px] object-cover">
         </button>
@@ -36,7 +36,7 @@ $session = session()->get('sessionData')
                 <span class="block lg:hidden">Detail</span>
               </td>
               <td class="bg-primary text-secondary font-medium p-2 text-center hidden lg:table-cell">Min</td>
-              <td class="bg-primary text-secondary font-medium p-2 text-center hidden lg:table-cell">Stok Toko</td>
+              <td class="bg-primary text-secondary font-medium p-2 text-center hidden lg:table-cell">Gudang</td>
               <td class="bg-primary text-secondary font-medium p-2 text-center hidden md:table-cell">Aksi</td>
             </tr>
           </thead>

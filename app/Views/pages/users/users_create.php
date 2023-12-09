@@ -11,7 +11,7 @@ $session = session()->get('sessionData');
 
 <main class="container mt-2 p-2">
   <?= $this->include('components/flash_message') ?>
-  <div class="flex justify-center items-center gap-2 bg-netral rounded-md overflow-hidden relative">
+  <div class="flex justify-center items-center gap-2 bg-white rounded-md overflow-hidden relative">
     <img src="<?= base_url('assets/images/form_register.jpg') ?>" alt="form_register" class=" h-full w-auto lg:w-[40%] object-cover absolute lg:relative top-0">
     <form action="<?= site_url() ?>/users/create" method="post" class="p-4 bg-white/80 rounded-md flex flex-col gap-2 h-full w-full md:w-[60%] lg:w-[50%] relative z-10" id="form_user_create">
       <?= csrf_field() ?>
@@ -33,7 +33,6 @@ $session = session()->get('sessionData');
         </div>
         <select name="role" id="role" class="py-3 px-2 bg-white outline-none w-full border-2 rounded-md font-medium">
           <option value="0">--Pilih Role--</option>
-          <option value="kasir">Kasir</option>
           <option value="gudang">Gudang</option>
           <option value="admin">Admin</option>
         </select>

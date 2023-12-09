@@ -16,8 +16,7 @@ class Restock extends Model
     protected $allowedFields    = [
         'restock_code',
         'status',
-        'request_user_id',
-        'response_user_id',
+        'user_id',
         'message',
         'deleted_at'
     ];
@@ -33,8 +32,7 @@ class Restock extends Model
     protected $validationRules = [
         'restock_code' => 'required|is_unique[restocks.restock_code]',
         'status' => 'required|numeric',
-        'request_user_id' => 'required',
-        'response_user_id' => 'required',
+        'user_id' => 'required',
     ];
     protected $validationMessages = [
         'restock_code' => [
@@ -44,10 +42,7 @@ class Restock extends Model
             'required' => 'Status tidak boleh kosong!',
             'numeric' => 'Status harus berupa angka!'
         ],
-        'request_user_id' => [
-            'required' => 'User tidak ditemukan!'
-        ],
-        'response_user_id' => [
+        'user_id' => [
             'required' => 'User tidak ditemukan!'
         ],
     ];
@@ -65,9 +60,25 @@ class Restock extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+
+    protected $Users;
+    public function __construct()
+    {
+        parent::__construct();
+        $this->Users = new Users();
+    }
+
     public function getPaginate()
     {
-        return $this->orderBy('created_at', 'DESC')->paginate(20);
+        $restockList = $this->orderBy('created_at', 'DESC')->paginate(20);
+        $restock = [];
+        foreach ($restockList as $list) {
+            $users = $this->Users->getUserId($list['user_id']);
+            $list['user_id'] = $users['username'];
+            unset($users);
+            $restock = array_merge($restock, [$list]);
+        }
+        return $restock;
     }
 
     public function getOneData($code)
@@ -75,8 +86,9 @@ class Restock extends Model
         return $this->where('restock_code', $code)->first();
     }
 
-    public function getDataById ($id) {
-        return $this->where('id', $id)->first();
+    public function getDataById($id)
+    {
+        return $this->where('id', $id)->withDeleted()->first();
     }
 
     public function uniqueCode()

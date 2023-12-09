@@ -38,7 +38,6 @@ class Goods extends Model
         'goods_name' => 'required|min_length[5]|max_length[255]',
         'goods_price' => 'required|min_length[3]|numeric',
         'goods_prev_price' => 'numeric',
-        'goods_stock_shop' => 'min_length[1]|numeric',
         'goods_stock_warehouse' => 'min_length[1]|numeric',
         'goods_min_stock' => 'min_length[1]|numeric',
         'users_id' => 'required'
@@ -52,10 +51,6 @@ class Goods extends Model
         'goods_price' => [
             'required' => 'Harga tidak boleh kosong!',
             'min_length' => 'Minimal harga Rp 100',
-            'numeric' => 'Input Harus berupa angka!'
-        ],
-        'goods_stock_shop' => [
-            'min_length' => 'Stok toko tidak boleh minus!',
             'numeric' => 'Input Harus berupa angka!'
         ],
         'goods_stock_warehouse' => [
@@ -83,47 +78,44 @@ class Goods extends Model
 
     public function getPaginate()
     {
-        return $this->orderBy('goods_name', 'ASC')->paginate(20);
+        return $this->orderBy('goods_name', 'ASC')->paginate(30);
     }
 
-    public function getListDeleted () {
-        return $this->onlyDeleted()->findAll();
+    public function getListDeleted()
+    {
+        $goods = $this->onlyDeleted()->findAll();
+        return $goods;
     }
 
     public function search($search)
     {
-        $searchData = "";
+        $searchData = [];
         if ($search) {
-            $searchData = $this->like("goods_name", $search)->orderBy('goods_name', 'ASC')->paginate(20);
+            $searchData = $this->like("goods_name", $search)->orderBy('goods_name', 'ASC')->findAll(30);
         }
 
         if ($searchData == null) {
-            $searchData = $this->like("goods_code", $search)->orderBy('goods_name', 'ASC')->paginate(20);
-        }
-        return $searchData;
-    }
-
-    public function searchAll($search) {
-        $searchData = "";
-        if ($search) {
-            $searchData = $this->like("goods_name", $search)->orderBy('goods_name', 'ASC')->findAll(5);
-        }
-
-        if ($searchData == null) {
-            $searchData = $this->like("goods_code", $search)->orderBy('goods_name', 'ASC')->findAll(5);
+            $searchData = $this->like("goods_code", $search)->orderBy('goods_name', 'ASC')->paginate(30);
         }
         return $searchData;
     }
 
     public function getOneData($code)
     {
-        return $this->where('goods_code', $code)->first();
+        $goods = $this->like('goods_code', $code)->first();
+        return $goods;
     }
 
     public function getDataById($id)
     {
-        $result = $this->where('id', $id)->first();
-        return $result;
+        $goods = $this->where('id', $id)->withDeleted()->first();
+        return $goods;
+    }
+
+    public function getDataByName($name)
+    {
+        $goods = $this->like('goods_name', $name)->first();
+        return $goods;
     }
 
     public function uniqueCode()

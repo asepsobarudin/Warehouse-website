@@ -6,7 +6,7 @@ $session = session()->get('sessionData');
 <?= $this->section('content') ?>
 <main class="container flex justify-center items-start min-h-full p-2">
   <?= $this->include('components/flash_message') ?>
-  <form action="<?= base_url('auth/remove_online') ?>" method="post" class="w-max h-max p-4 bg-netral rounded-md flex flex-col items-center gap-2" id="form_online">
+  <form action="<?= base_url('auth/remove_online') ?>" method="post" class="w-max h-max p-4 bg-white rounded-md flex flex-col items-center gap-2" id="form_online">
     <?= csrf_field() ?>
     <input type="hidden" name="username" value="<?= $session['username'] ?>">
     <h2 class="text-lg font-medium text-center mb-2">Nampaknya akun dengan username <span class="font-semibold">"<?= $session['username'] ?>"</span> sedang online!</h2>

@@ -17,7 +17,7 @@ class Users extends Model
         'username',
         'password',
         'role',
-        'status'
+        "online_status"
     ];
 
     // Dates
@@ -80,7 +80,7 @@ class Users extends Model
     {
         $value = $this->where('username', $username)->first();
         if (!$value) {
-            $value['status'] = null;
+            $value["online_status"] = null;
         }
         return $value;
     }
