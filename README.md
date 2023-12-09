@@ -1,62 +1,59 @@
-# CodeIgniter 4 Application Starter
 
-## What is CodeIgniter?
+# Warehouse Stocks Project
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Introduction
+Warehouse Stocks is a web-based application designed to manage warehouse inventory efficiently. This project utilizes the Shop Cashier Website repository as its foundation.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Getting Started
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+### 1. Clone Repository
+Clone the Warehouse Stocks repository using the following command:
+```bash
+git clone https://github.com/asepsobarudin/Shop_Cashier_Website
+```
 
-The user guide corresponding to the latest version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+### 2. Open Folder in Code Editor
+Navigate to the cloned repository and open the folder in your preferred code editor.
 
-## Installation & updates
+### 3. Install Dependencies
+Open the terminal and run the following commands to install the necessary dependencies:
+```bash 
+composer update 
+```
+``` bash
+npm install
+```
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### 4. Configure Environment
+Rename the .env.example file to .env. Open the .env file and configure the database connection settings.
+``` bash
+database.default.hostname = 127.0.0.1
+database.default.database = db_toko //database name
+database.default.username = root
+database.default.password = //database password
+database.default.DBDriver = MySQLi
+#database.default.DBPrefix =
+database.default.port = 3306
+```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### 5. Migrate and Seed Database
+Run the following commands in the terminal to migrate the database and seed the Goods table:
+```bash
+php spark migrate
+```
+```bash
+php spark db:seed Goods
+```
 
-## Setup
+### 6. Run Server and UI
+Start the PHP development server and build the UI by executing the following commands:
+```bash 
+php spark serve
+```
+#### for development :
+```bash 
+npm run dev
+```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
-
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 7.4 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+### 7. Completion
+The Warehouse Stocks project is now set up and running. Access the application at the specified address, and you're ready to manage your warehouse inventory.
