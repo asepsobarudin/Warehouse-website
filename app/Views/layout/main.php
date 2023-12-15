@@ -6,7 +6,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="<?= base_url('/assets/css/style.css') ?>">
    <link rel="shortcut icon" type="image/png" href="<?= base_url('assets/images/icons.png') ?>">
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script src="<?= base_url() ?>/assets/js/jquery.js"></script>
+   <script src="<?= base_url() ?>/assets/js/chart.js"></script>
 
    <title><?= $title ?></title>
  </head>
@@ -24,6 +25,10 @@
    </dialog>
    <?= $this->renderSection('content'); ?>
 
+   <?php
+    $session = session()->get('sessionData');
+    ?>
+
    <script src="<?= base_url('/assets/js/components.js') ?>"></script>
    <script src="<?= base_url('/assets/js/layout.js') ?>"></script>
    <script src="<?= base_url('/assets/js/api.js') ?>"></script>
@@ -32,9 +37,12 @@
      const baseURL = '<?= base_url() ?>';
      const siteURL = '<?= site_url() ?>';
      const csrfToken = document.getElementsByName('<?= csrf_token() ?>')[0];
+     const role = '<?= $session['role'] ?>';
+     const date = '<?= date('Y-m-d') ?>'
 
      //  Tabel
      const tabelGoodsList = document.getElementById('goods_page_list');
+     const tabelRestockList = document.getElementById('restock_page_list');
      const tabelGoodsHistory = document.getElementById('tabel_history_list');
      const tabelTrashRestock = document.getElementById('trash_restock_list');
      const tabelTrashGoods = document.getElementById('trash_goods_list');
@@ -124,7 +132,7 @@
      const restockList = document.getElementById('restock_trash_list');
      const goodsList = document.getElementById('goods_trash_list');
 
-     btnRestock.addEventListener('click', () => {
+     btnRestock?.addEventListener('click', () => {
        btnGoods.classList.remove('tabActive');
        btnRestock.classList.add('tabActive');
        goodsList.classList.remove('tabActive')
@@ -133,17 +141,14 @@
        restockList.classList.add('tabActive')
      });
 
-     btnGoods.addEventListener('click', () => {
-       GoodsTrashList({
-         url: `${siteURL}/goods/trash`
-       })
+     btnGoods?.addEventListener('click', () => {
        btnRestock.classList.remove('tabActive');
        btnGoods.classList.add('tabActive');
        restockList.classList.remove('tabActive')
        restockList.classList.add('tabNotActive')
        goodsList.classList.remove('tabNotActive')
        goodsList.classList.add('tabActive')
-     })
+     });
    </script>
    <script src="<?= base_url('/assets/js/main.js') ?>"></script>
  </body>

@@ -7,10 +7,10 @@ $session = session()->get('sessionData');
 
 <main class="container" id="main">
   <?= $this->include('components/flash_message') ?>
-  <header class="flex justify-between items-center flex-wrap gap-2 my-2">
+  <header class="flex justify-between items-center flex-wrap gap-2 my-4">
     <div class="flex justify-center items-center gap-2 w-max">
-      <img src="<?= base_url('assets/icons/user-line-groups-purple-1.svg') ?>" alt="users-group" class="w-[30px] h-[30px] object-cover">
-      <h2 class="text-2xl font-semibold text-primary">Pengguna</h2>
+      <img src="<?= base_url('assets/icons/user-line-groups-purple-1.svg') ?>" alt="users-group" class="w-[40px] h-[40px] object-cover">
+      <h2 class="text-2xl font-semibold text-black">Pengguna</h2>
     </div>
     <button class="p-2 flex lg:hidden group hover:bg-black/10 rounded-md effectTrasition" onclick="navMobile()">
       <img src="<?= base_url() ?>assets/icons/menu-line-black-1.svg" alt="menu" class="w-[30px] h-[30px] object-cover">

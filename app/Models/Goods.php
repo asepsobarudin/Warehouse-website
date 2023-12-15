@@ -83,7 +83,7 @@ class Goods extends Model
 
     public function getListDeleted()
     {
-        $goods = $this->onlyDeleted()->findAll();
+        $goods = $this->onlyDeleted()->orderBy('deleted_at', 'DESC')->paginate(1);
         return $goods;
     }
 
@@ -108,7 +108,7 @@ class Goods extends Model
 
     public function getDataById($id)
     {
-        $goods = $this->where('id', $id)->withDeleted()->first();
+        $goods = $this->where('id', $id)->first();
         return $goods;
     }
 

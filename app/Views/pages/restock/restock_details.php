@@ -44,7 +44,7 @@ $role = $session['role'];
     </tbody>
   </table>
   <div class="w-full flex justify-end items-center hide-on-print gap-2 my-2">
-    <?php if ($limit < 24) : ?>
+    <?php if ($limit != true || $role == "admin") : ?>
       <form action="<?= site_url() ?>/restock/cancle" method="post" id="form_restock_cancle">
         <?= csrf_field() ?>
         <input type="hidden" name="restock_code" value="<?= $restock ?>">

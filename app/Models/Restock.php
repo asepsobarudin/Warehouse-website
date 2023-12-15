@@ -70,7 +70,7 @@ class Restock extends Model
 
     public function getPaginate()
     {
-        $restockList = $this->orderBy('created_at', 'DESC')->paginate(20);
+        $restockList = $this->orderBy('updated_at', 'DESC')->paginate(30);
         $restock = [];
         foreach ($restockList as $list) {
             $users = $this->Users->getUserId($list['user_id']);
@@ -79,6 +79,10 @@ class Restock extends Model
             $restock = array_merge($restock, [$list]);
         }
         return $restock;
+    }
+
+    public function searchListRestock ($date) {
+        return $this->like('updated_at', $date)->orderBy('updated_at', 'DESC')->findAll();
     }
 
     public function getOneData($code)

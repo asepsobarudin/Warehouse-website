@@ -93,7 +93,7 @@ class HistoryController extends BaseController
         $lengthData = sizeof($setGoods);
 
         $groups = null;
-        if (count($setRestock) >= count($setHistory)) {
+        if (count($this->GoodsRestock->findAll()) >= count($this->GoodsHistory->findAll())) {
             $groups = 'group1';
         } else {
             $groups = 'group2';

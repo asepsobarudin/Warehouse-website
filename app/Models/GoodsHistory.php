@@ -66,6 +66,6 @@ class GoodsHistory extends Model
     }
 
     public function searchListGoods ($date) {
-        return $this->like('created_at', $date)->findAll(200);
+        return $this->like('created_at', $date)->orderBy('created_at', 'DESC')->findAll();
     }
 }

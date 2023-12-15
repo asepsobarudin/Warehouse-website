@@ -1,6 +1,7 @@
 // Function Smooth Back To Top
-function backToTop({ element }) {
-  element.scrollTo({
+function backToTop() {
+  const scroll = document.getElementById('body')
+  scroll.scrollTo({
     top: 0,
     behavior: "smooth",
   });
@@ -41,7 +42,7 @@ function tableLoading({ col, element }) {
 
   let tabel = [];
   let TD = td.join(',');
-  for (i = 1; i <= 5; i++) {
+  for (i = 1; i <= 10; i++) {
     tabel.push(`
       <tr class="loading">
         ${TD.replace(/,/g, "</td>")}

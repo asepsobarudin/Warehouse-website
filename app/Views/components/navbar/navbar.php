@@ -28,15 +28,15 @@ $session = session()->get('sessionData');
 $role = $session['role'];
 ?>
 
-<nav class="navbar non_active effectTrasition scrollBar scrollBarBg scrollBarColors" id="navbar">
+<nav class="navbar active effectTrasition scrollBar scrollBarBg scrollBarColors" id="navbar">
   <?= $this->include('components/flash_message') ?>
   <label for="btn_nav" id="btn_nav_label" class="group w-[40px] h-[40px] rounded-full bg-primary hover:bg-secondary absolute -right-4 top-4 z-10 select-none cursor-pointer border-4 border-white hidden lg:flex justify-center items-center p-1 shadow-inner btn_nav_label effectTrasition">
     <img src="<?= base_url() ?>/assets/icons/arrow-line-1.svg" alt="arrow" class="w-full h-full object-contain block group-hover:hidden effectTrasition">
     <img src="<?= base_url() ?>/assets/icons/arrow-line-2.svg" alt="arrow" class="w-full h-full object-contain hidden group-hover:block effectTrasition">
     <input type="checkbox" name="btn_nav" id="btn_nav" class="hidden">
   </label>
-  <div class="container py-2 px-4 flex flex-col justify-between items-center h-full w-full overflow-y-scroll scrollBar scrollBarBg scrollBarColors">
-    <div class="block w-full h-max">
+  <div class="container py-2 px-4 flex flex-col justify-between items-center h-full w-full">
+    <div class="flex flex-col justify-between items-center w-full h-full overflow-hidden">
       <div class="block w-full">
         <div class="flex justify-between items-center gap-2 my-2 lg:my-0">
           <div class="profile flex justify-start items-center gap-2 rounded-full overflow-hidden h-[55px] effectTrasition relative select-none">
@@ -47,7 +47,7 @@ $role = $session['role'];
             <img src="<?= base_url() ?>assets/icons/menu-line-gold-2.svg" alt="menu" class="w-[30px] h-[30px] object-cover">
           </button>
         </div>
-        <div class="my-2 block w-full">
+        <div class="mb-2 mt-4 block w-full">
           <div class="block w-full">
             <div class="flex flex-col justify-start items-center gap-2 lg:gap-1 w-full">
               <?php foreach ($menu['all'] as $list) : ?>
@@ -70,7 +70,7 @@ $role = $session['role'];
         </div>
       </div>
 
-      <div class="flex flex-col justify-center items-center w-full gap-2 lg:gap-1 mt-8">
+      <div class="flex flex-col justify-center items-center w-full gap-2 lg:gap-1 mb-2">
         <form action="<?= site_url() ?>/logout" method="post" class="bg-primary hover:bg-danger border-2 border-danger hover:border-transparent rounded-md flex justify-start items-center w-full p-2 gap-1 btm_menu relative group effectTrasition" id="form_logout">
           <?= csrf_field() ?>
           <input type="hidden" name="username" value="<?= $session['username'] ?>">

@@ -324,9 +324,10 @@ class GoodsController extends BaseController
         }
     }
 
+    // Json
     public function trash()
     {
-        $getGoods = $this->Goods->getListDeleted();
+        $getGoods = $this->Goods->onlyDeleted()->orderBy('deleted_at', 'DESC')->paginate(30);
         $setGoods = [];
         foreach ($getGoods as $list) {
             unset($list['id']);
@@ -339,13 +340,26 @@ class GoodsController extends BaseController
             $setGoods = array_merge($setGoods, [$list]);
         }
 
+        $lengthData = sizeof($setGoods);
+        $nextURL = null;
+        if ($lengthData != 0) {
+            $nextURL = $this->Pager->getNextPageURI();
+        }
+
         $data = [
-            'goods' => $setGoods
+            'goods' => $setGoods,
+            'currentPage' => $this->Pager->getCurrentPage(),
+            'pageCount'  => $this->Pager->getPageCount(),
+            'perPage' => $this->Pager->getPerPage(),
+            'totalItems' => $this->Pager->getTotal(),
+            'nextPage' => $nextURL,
+            'backPage' => $this->Pager->getPreviousPageURI(),
         ];
         
         $this->response->setContentType('application/json');
         return $this->response->setJSON($data);
     }
+    // Json
 
     public function restore()
     {
@@ -392,23 +406,6 @@ class GoodsController extends BaseController
                 session()->setFlashdata('errors', 'Data barang gagal di hapus!');
                 return redirect()->back();
             }
-        } else {
-            session()->setFlashdata('errors', 'Barang tidak ditemukan!');
-            return redirect()->back();
-        }
-    }
-
-    public function deleteAllTrash()
-    {
-        $body = $this->request->getPost();
-
-        if (!isset($body[csrf_token()]) || $body[csrf_token()] != csrf_hash()) {
-            $body = null;
-        }
-
-        if ($body && $this->Goods->onlyDeleted()->purgeDeleted()) {
-            session()->setFlashdata('success', 'Semua data barang berhasil di hapus secara permanen.');
-            return redirect()->back();
         } else {
             session()->setFlashdata('errors', 'Barang tidak ditemukan!');
             return redirect()->back();

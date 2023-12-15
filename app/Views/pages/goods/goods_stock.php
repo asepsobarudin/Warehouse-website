@@ -3,9 +3,9 @@
 <?= $this->section('content') ?>
 <main class="container p-2" id="main">
   <?= $this->include('components/flash_message') ?>
-  <div class="w-full flex justify-between items-center my-2 gap-2 flex-wrap">
+  <div class="w-full flex justify-between items-center my-4 gap-2 flex-wrap">
     <div class="flex justify-center items-center gap-2 w-max">
-      <img src="<?= base_url('assets/icons/box-line-add-black-1.svg') ?>" alt="box-line" class="w-[30px] h-[30px] object-cover">
+      <img src="<?= base_url('assets/icons/box-line-add-black-1.svg') ?>" alt="box-line" class="w-[40px] h-[40px] object-cover">
       <h2 class="text-2xl text-black font-semibold">Tambah Stok</h2>
     </div>
     <button class="p-2 flex lg:hidden group hover:bg-black/10 rounded-md effectTrasition" onclick="navMobile()">
@@ -43,7 +43,7 @@
       </div>
     </form>
     <div class="flex flex-col justify-start items-center w-full lg:w-[40%] h-full border-2 p-2 rounded-md">
-      <h2 class="text-xl font-medium w-full text-center px-2 py-4">Stok Barang Kosong</h2>
+      <h2 class="text-xl font-medium w-full text-center px-2 py-4">Stok Barang Dibawah Minimal</h2>
       <span class="block w-full h-[2px] rounded-full bg-primary/50 mb-4"></span>
       <div class="h-full lg:h-[440px] w-full overflow-y-scroll scroll-smooth scrollBar scrollBarBg scrollBarColors block">
         <?php if ($goods) { ?>
@@ -73,7 +73,10 @@
           </div>
         <?php } else { ?>
           <div class="w-full h-full flex justify-center items-center">
-            <h2>Kosong</h2>
+            <div class="flex flex-col justify-center items-center gap-1">
+              <img src="<?= base_url() ?>/assets/icons/not-line-black-1.svg" alt="not-line" class="w-[30px] h-[30px] object-cover opacity-80">
+              <p class="text-sm opacity-80 font-medium">List kosong</p>
+            </div>
           </div>
         <?php } ?>
       </div>

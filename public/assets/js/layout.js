@@ -3,10 +3,7 @@ function tableGoods({ no, value, restockCode }) {
     <tr>
       <td>${no}</td>
       <td>${value.goods_name}</td>
-      <td>
-        <span>Min : </span>
-        <span>${value.goods_min_stock}</span>
-      </td>
+
       <td>
         <span>Gudang : </span>
         <span>${value.goods_stock_warehouse}</span>
@@ -43,83 +40,6 @@ function cardCartCardRestock({ no, value }) {
   `;
 }
 
-function listGoodsRestock({
-  no,
-  goodsName,
-  stockWarehouse,
-  qty,
-  qtyAdd,
-  goodsCode,
-}) {
-  var setComplate = "";
-
-  if (qtyAdd == null) {
-    qtyAdd = 0;
-  }
-
-  if (qty == qtyAdd) {
-    setComplate = `<img src="${baseURL}assets/icons/check-line-black-1.svg" alt="check">`;
-  } else if (qty > qtyAdd) {
-    var percent = (qtyAdd / qty) * 100;
-    var setPercent = Math.floor(percent);
-    setComplate = `${setPercent}%`;
-  } else {
-    var percent = (qtyAdd / qty) * 100;
-    var setPercent = Math.floor(percent);
-    setComplate = `${setPercent}%`;
-  }
-
-  var status = "";
-  if (stockWarehouse < qty) {
-    status = "low";
-  } else {
-    status = "high";
-  }
-
-  return `
-    <tr>
-      <td>${no}</td>
-      <td>${goodsName}</td>
-      <td class='${status}'>
-        <div>
-          <span>Stok Gudang : </span>
-          <span>${stockWarehouse}</span>
-        </div>
-      </td>
-      <td>
-        <div>
-          <span>Permintaan : </span>
-          <span>${qty}</span>
-        </div>
-      </td>
-      <td>
-        <div>
-          <span>Jumlah Kirim: </span>
-          <span>${qtyAdd}</span>
-        </div>
-      </td>
-      <td>
-        <div>
-          <button class="buttonDanger" id="btnMinus${no}" onclick="addDistributionQty({itemInput: 'inputQty${no}', goods: '${goodsCode}', oprator: 'minus', btn: 'btnMinus', no: ${no}})">
-            <img src="${baseURL}assets/icons/minus-line-white-1.svg" alt="minus-line" />
-            <img src="${baseURL}assets/icons/minus-line-red-1.svg" alt="minus-line" />
-          </button>
-          <input type="number" id="inputQty${no}" placeholder="Qty">
-          <button class="buttonInfo" id="btnPlush${no}" onclick="addDistributionQty({itemInput: 'inputQty${no}', goods: '${goodsCode}', oprator: 'plus', btn: 'btnPlush', no: ${no}})">
-            <img src="${baseURL}assets/icons/plus-line-white-1.svg" alt="plus-line" />
-            <img src="${baseURL}assets/icons/plus-line-blue-1.svg" alt="plus-line" />
-          </button>
-        </div>
-      </td>
-      <td>
-        <span>
-          ${setComplate}  
-        </span>
-      </td>
-    </tr>
-  `;
-}
-
 function TabelPageGoods({ value, no }) {
   const number = parseInt(value.goods_price);
   const fixedNumber = number.toFixed(0);
@@ -147,12 +67,6 @@ function TabelPageGoods({ value, no }) {
       </td>
       <td>
         <div>
-          <span>Minimal : </span>
-          <span>${value.goods_min_stock}</span>
-        </div>
-      </td>
-      <td>
-        <div>
           <span>Stok : </span>
           <span>${value.goods_stock_warehouse}</span>
         </div>
@@ -170,31 +84,98 @@ function TabelPageGoods({ value, no }) {
   `;
 }
 
+function TabelPageRestock({ value, no }) {
+  var status = ``;
+  var setButton = ``;
+  if (value.status == 0) {
+    status = `
+      <span>
+        <img src="${baseURL}assets/icons/edit-line-black-1.svg" alt="edit-line">
+      </span>
+    `;
+    setButton = `
+      <a href="${siteURL}/restock/edit/${value.restock_code}" class="buttonWarning">
+        <img src="${baseURL}assets/icons/edit-line-white-1.svg" alt="edit-line">
+        <img src="${baseURL}assets/icons/edit-line-yellow-1.svg" alt="edit-line">
+      </a>
+    `;
+  }
+
+  if (value.status == 1) {
+    status = `
+      <span>
+        <img src="${baseURL}assets/icons/van-line-black-1.svg" alt="edit-line">
+      </span>
+    `;
+    setButton = `
+      <a href="${siteURL}/restock/details/${value.restock_code}" class="buttonInfo">
+        <img src="${baseURL}assets/icons/details-line-white-1.svg" alt="details-line">
+        <img src="${baseURL}assets/icons/details-line-blue-1.svg" alt="details-line">
+      </a>
+    `;
+  }
+
+  var viewRole = ``;
+  if (role == "admin") {
+    viewRole = `
+      <td>
+        <div>
+          <span>User : </span>
+          <span>
+              ${value.user_id}
+          </span>
+        </div>
+      </td>
+    `;
+  }
+
+
+  return `
+    <tr>
+      <td>${no}</td>
+      <td>
+        ${value.updated_at}
+      </td>
+      <td>
+        <div>
+          ${value.restock_code}
+        </div>
+      </td>
+      <td>
+        <div>
+          ${status}
+        </div>
+      </td>
+      ${viewRole}
+      <td>
+        <div>
+          <span>Jumlah : </span>
+          <span>${value.qty}</span>
+        </div>
+      </td>
+      <td>
+        <div>
+          ${setButton}
+          <form action="${siteURL}/restock/delete" method="post" id="form_restock_delete${no}">
+            <input type="hidden" name="csrf_test_name" value="${csrfToken.defaultValue}">
+            <input type="hidden" value="${value.restock_code}" name="restock">
+            <button type="button" class="buttonDanger" onclick="messageConfirmation({ title: 'Hapus Permintaan', text: 'Apakah yakin ingin menghapus permintaan restock?', form: 'form_restock_delete${no}' })">
+              <img src="${baseURL}assets/icons/trash-line-white-1.svg" alt="trash-line-1">
+              <img src="${baseURL}assets/icons/trash-line-red-1.svg" alt="trash-line-1">
+            </button>
+          </form>
+        </div>
+      </td>
+    </tr>
+  `;
+}
+
 function TabelListHistory({ value, no }) {
   let status = ``;
   if (value.status == 1) {
     status = `<span class="success">Masuk</span>`;
   } else {
     status = `<span class="danger">Keluar</span>`;
-  }
-
-  let button = ``;
-  if (value.status == 1) {
-    button = `
-      <button class="buttonDanger">
-        <img src="${baseURL}/assets/icons/trash-line-white-1.svg" alt="save">
-        <img src="${baseURL}/assets/icons/trash-line-red-1.svg" alt="save">
-        <h2>Hapus</h2>
-      </button>
-    `;
-  } else {
-    button = `
-      <a href="${siteURL}/restock/details/${value.restock_code}" class="buttonInfo">
-        <img src="${baseURL}/assets/icons/details-line-white-1.svg" alt="details-line">
-        <img src="${baseURL}/assets/icons/details-line-blue-1.svg" alt="details-line">
-        <h2>Details</h2>
-      </a>
-    `;
   }
 
   return `
@@ -219,11 +200,6 @@ function TabelListHistory({ value, no }) {
           <span>${value.qty}</span>
         </div>
       </td>
-      <td>
-        <div>
-          ${button}
-        </div>
-      </td>
     </tr>
   `;
 }
@@ -234,12 +210,20 @@ function TabelTrashRestock({ no, value }) {
       <td>${no}</td>
       <td>${value.deleted_at}</td>
       <td>
-        ${value.restock_code}
+        <span>${value.restock_code}</span>
       </td>
       <td>
-          <span>${value.user_id}</span>
+          <div>
+            <span>User : </span>
+            <span>${value.user_id}</span>
+          </div>
       </td>
-      <td>${value.qty}</td>
+      <td>
+        <div>
+            <span>Jumlah : </span>
+            <span>${value.qty}</span>
+          </div>
+      </td>
       <td>
         <div>
           <form action="${siteURL}/restock/restore" method="post" id="form_restock_restore${no}">
@@ -270,12 +254,16 @@ function TabelTrashGoods({ no, value }) {
       <td>${no}</td>
       <td>${value.deleted_at}</td>
       <td>
-        ${value.goods_code}
+        <span>${value.goods_code}</span>
       </td>
       <td>
           <span>${value.goods_name}</span>
       </td>
-      <td>${value.users_id}</td>
+      <td>
+        <div>
+            <span>User : </span>
+            <span>${value.users_id}</span>
+          </div>
       <td>
         <div>
           <form action="${siteURL}/goods/restore" method="post" id="form_goods_restore${no}">

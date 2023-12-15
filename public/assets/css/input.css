@@ -91,7 +91,7 @@ body {
 
 /* Navbar */
 nav.navbar {
-  @apply hidden bg-primary h-screen fixed top-0 right-0 lg:left-0 z-10 drop-shadow-xl;
+  @apply block bg-primary h-screen fixed top-0 right-0 lg:left-0 z-10 drop-shadow-xl;
 
   & a.menu {
     @apply flex justify-start items-center gap-2 rounded-md border-2 border-transparent relative bg-primary;
@@ -111,7 +111,7 @@ nav.navbar {
 }
 
 nav.active {
-  @apply block w-[100%] md:w-[50%] lg:w-[180px];
+  @apply w-[100%] md:w-[50%] lg:w-[180px];
 
   & .btn_nav_label > img {
     @apply rotate-180;
@@ -151,7 +151,7 @@ nav.active {
 }
 
 nav.not_active {
-  @apply block w-[0%] lg:w-[80px];
+  @apply w-[0%] lg:w-[80px];
 
   & .btn_nav_label > img {
     @apply rotate-0;
@@ -208,6 +208,7 @@ a:active {
 }
 /* End Navbar */
 
+
 /* Paginate */
 div.paginate_text {
   @apply flex justify-center items-center gap-1 font-semibold text-primary/80 text-sm;
@@ -238,10 +239,10 @@ div.paginate_button {
 }
 
 div.table_loading {
-  @apply min-h-[65vh] flex justify-center items-center flex-col gap-2;
+  @apply flex flex-col justify-center items-center gap-1;
 
   & img {
-    @apply w-[40px] h-[40px] block animate-spin;
+    @apply w-[30px] h-[30px] object-cover opacity-80;
   }
 
   & h2 {
@@ -249,7 +250,7 @@ div.table_loading {
   }
 
   & p {
-    @apply text-sm font-medium text-primary/50;
+    @apply text-sm opacity-80 font-medium;
   }
 }
 
@@ -430,17 +431,6 @@ tbody.goods_list_restock {
     }
 
     & td:nth-child(4) {
-      @apply inline-block w-[33.3%] lg:w-auto lg:table-cell;
-      & span:nth-child(1) {
-        @apply inline-block whitespace-nowrap lg:hidden;
-      }
-
-      & span:nth-child(2) {
-        @apply inline-block whitespace-nowrap;
-      }
-    }
-
-    & td:nth-child(5) {
       @apply block md:table-cell;
 
       & button {
@@ -799,6 +789,113 @@ tbody.tabel_history_list {
 }
 /* End Goods Tabel */
 
+/* Restock Tabel */
+tbody.restock_page_list {
+  & tr {
+    & td {
+      @apply p-2 text-center text-black font-medium;
+    }
+
+    & td:nth-child(1) {
+      @apply min-w-[30px];
+    }
+
+    & td:nth-child(2) {
+      @apply block md:table-cell text-start md:text-center;
+    }
+
+    & td:nth-child(3) {
+      @apply block md:table-cell;
+
+      & div {
+        @apply flex justify-start md:justify-center items-center gap-1;
+      }
+    }
+
+    & td:nth-child(4) {
+      @apply block md:table-cell;
+
+      & div {
+        @apply flex justify-start lg:justify-center items-center;
+
+        & span {
+          @apply flex justify-center items-center rounded-md relative;
+
+          & img {
+            @apply w-[30px] h-[30px] object-cover;
+          }
+        }
+      }
+    }
+
+    & td:nth-child(5) {
+      @apply block md:w-auto lg:table-cell;
+
+      & div {
+        @apply flex justify-start lg:justify-center items-center;
+
+        & span:nth-child(1) {
+          @apply block lg:hidden;
+        }
+
+        & span:nth-child(2) {
+          @apply block;
+        }
+      }
+    }
+
+    & td:nth-child(6) {
+      @apply block lg:table-cell;
+
+      & div {
+        @apply flex justify-start lg:justify-center items-center;
+
+        & span:nth-child(1) {
+          @apply block lg:hidden;
+        }
+
+        & span:nth-child(2) {
+          @apply block;
+        }
+      }
+    }
+
+    & td:nth-last-child(1) {
+      & div {
+        @apply flex flex-col lg:flex-row justify-center items-center gap-2 w-full;
+
+        & a {
+          @apply p-1 lg:p-2 font-medium text-white block w-max;
+
+          & img {
+            @apply w-[30px] h-[30px] object-cover;
+          }
+        }
+
+        & form {
+          & button {
+            @apply block p-1 lg:p-2;
+            & img {
+              @apply w-[30px] h-[30px] object-cover;
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  & tr:nth-child(odd) > td {
+    @apply bg-white border-dark;
+  }
+
+  & tr:nth-child(even) > td {
+    @apply bg-dark border-white;
+  }
+}
+
+/* End Restock Tabel */
+
 /* Trash Restock */
 tbody.trash_list {
   & tr {
@@ -807,25 +904,49 @@ tbody.trash_list {
     }
 
     & td:nth-child(1) {
-      @apply max-w-[60px]
+      @apply max-w-[60px];
     }
 
     & td:nth-child(2) {
-      @apply block text-start md:text-center md:table-cell md:max-w-[200px];
+      @apply block text-start md:text-center md:table-cell;
     }
 
     & td:nth-child(3) {
       @apply block text-start md:text-center md:table-cell;
+
+      & span {
+        @apply block max-w-[200px] lg:max-w-none;
+      }
     }
 
     & td:nth-child(4) {
-      @apply block text-start md:text-center md:table-cell;
+      @apply block text-start md:table-cell;
+
+      & span {
+        @apply block max-w-[200px] lg:max-w-none;
+      }
+
+      & div {
+        @apply flex justify-start md:justify-center items-center gap-1;
+
+        & span:nth-child(1) {
+          @apply block md:hidden;
+        }
+      }
     }
 
     & td:nth-child(5) {
       @apply block text-start md:text-center md:table-cell;
+
+      & div {
+        @apply flex justify-start md:justify-center items-center gap-1;
+
+        & span:nth-child(1) {
+          @apply block md:hidden;
+        }
+      }
     }
-    
+
     & td:nth-child(6) {
       & div {
         @apply flex flex-col md:flex-row justify-center items-center gap-2;

@@ -21,9 +21,9 @@ async function addCartRestock({ restock, goods, btn }) {
       listRestock({ restock: result.restock });
       const key = document.getElementById("input_search");
       if (key.value != "") {
-        SEARCH({ url: `${siteURL}/goods/goods_search` });
+        GoodsSearch({ url: `${siteURL}/goods/goods_search` });
       } else {
-        GET({ url: `${siteURL}/goods/goods_list` });
+        GoodsList({ url: `${siteURL}/goods/goods_list` });
       }
     }
 
@@ -54,9 +54,10 @@ async function removeCartRestock({ restock, goods, no }) {
 
   const url = `${siteURL}/restock/delete_goods`;
   const result = await post({ url: url, data: data });
+  console.log(result);
 
   if (result.success && result.load == 1) {
-    GET({ url: `${siteURL}/goods/goods_list` });
+    GoodsList({ url: `${siteURL}/goods/goods_list` });
   }
 
   if (result.success) {
@@ -99,9 +100,9 @@ async function addCardRestockQty({ no, goods, restock }) {
     listRestock({ restock: restockCode });
     const key = document.getElementById("input_search");
     if (key.value != "") {
-      SEARCH({ url: `${siteURL}/goods/goods_search` });
+      GoodsSearch({ url: `${siteURL}/goods/goods_search` });
     } else {
-      GET({ url: `${siteURL}/goods/goods_list` });
+      GoodsList({ url: `${siteURL}/goods/goods_list` });
     }
   }
 
@@ -165,24 +166,28 @@ async function listRestock({ restock }) {
 
 loadData({
   text: `/restock/create`,
-  fnc: `GET({url: '${siteURL}/goods/goods_list'})`,
+  fnc: `GoodsList({url: '${siteURL}/goods/goods_list'})`,
 });
 
 loadData({
   text: `/restock/edit/`,
-  fnc: `GET({url: '${siteURL}/goods/goods_list'})`,
+  fnc: `GoodsList({url: '${siteURL}/goods/goods_list'})`,
 });
 
-async function GET({ url }) {
+async function GoodsList({ url }) {
   const goodsTable = document.getElementById("goods_table");
-  goodsTable.innerHTML = tableLoading({
-    col: 5,
-    element: ["paginate_button", "paginate_text"],
-  });
+
+  if(goodsTable.value == '') {
+    goodsTable.innerHTML = tableLoading({
+      col: 5,
+      element: ["paginate_button", "paginate_text"],
+    });
+  }
+
   const result = await get({ url: url });
 
   if (result.code) {
-    goodsTable.innerHTML = tableError({ col: 6, code: result.code });
+    goodsTable.innerHTML = tableError({ col: 5, code: result.code });
   }
 
   if (result && result.goods.length != 0) {
@@ -219,7 +224,7 @@ async function GET({ url }) {
   } else {
     goodsTable.innerHTML = `
     <tr>
-      <td colspan="6" >
+      <td colspan="5" >
         <div class="table_loading">
           <h2>Tidak Ada Barang</h2>
         </div>
@@ -229,7 +234,7 @@ async function GET({ url }) {
   }
 }
 
-async function SEARCH({ url }) {
+async function GoodsSearch({ url }) {
   const goodsTable = document.getElementById("goods_table");
   goodsTable.innerHTML = tableLoading({
     col: 5,
@@ -246,7 +251,6 @@ async function SEARCH({ url }) {
 
   if (key.value) {
     const result = await post({ url: url, data: data });
-    console.log(result);
     if (result && result.goods.length != 0 && result.goods.currentRow != 0) {
       setTimeout(() => {
         key.disabled = false;
@@ -286,7 +290,7 @@ async function SEARCH({ url }) {
       btnSearch.disabled = false;
       goodsTable.innerHTML = `
         <tr>
-          <td colspan="6" >
+          <td colspan=5" >
             <div class="table_loading">
               <h2>Barang tidak ditemukan!</h2>
             </div>
@@ -295,11 +299,16 @@ async function SEARCH({ url }) {
         `;
     }
   } else {
-    GET({ url: `${siteURL}/goods/goods_list` });
+    GoodsList({ url: `${siteURL}/goods/goods_list` });
   }
 }
 
 function PagePaginate({ url }) {
-  GET({ url: url });
-  backToTop({ element: containerPage });
+  const goodsTable = document.getElementById("goods_table");
+  goodsTable.innerHTML = tableLoading({
+    col: 5,
+    element: ["paginate_button", "paginate_text"],
+  });
+  GoodsList({ url: url });
+  backToTop();
 }
