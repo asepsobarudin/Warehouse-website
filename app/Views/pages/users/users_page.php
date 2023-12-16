@@ -55,7 +55,7 @@ $session = session()->get('sessionData');
               <?= $i ?>
             </td>
             <td class="p-2 group-odd:bg-white group-even:bg-dark text-primary font-medium text-center block md:table-cell"><?= $list['username'] ?></td>
-            <td class="p-2 group-odd:bg-white group-even:bg-dark font-semibold inline-block w-[50%] md:w-max md:table-cell">
+            <td class="p-2 group-odd:bg-white group-even:bg-dark font-medium inline-block w-[50%] md:w-max md:table-cell">
               <?php if ($list['role'] == 'admin') { ?>
                 <span class="block bg-danger p-2 w-max rounded-md text-white m-auto select-none">
                   <?= $list['role'] ?>

@@ -4652,6 +4652,10 @@ button.copy:active{
     width: max-content;
   }
 
+  .lg\:w-\[19\%\]{
+    width: 19%;
+  }
+
   .lg\:max-w-none{
     max-width: none;
   }

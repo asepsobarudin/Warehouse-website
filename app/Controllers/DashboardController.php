@@ -44,7 +44,8 @@ class DashboardController extends BaseController
             'goods_in' => $goodsIn[0]['qty'] != '' ? $goodsIn[0]['qty'] : 0,
             'goods_out' => $goodsOut[0]['qty'] != '' ? $goodsOut[0]['qty'] : 0,
             'restock' => count($restock),
-            'goods_low' => count($setGoods)
+            'goods_low' => count($setGoods),
+            'goods_qty' => count($goods)
         ]);
     }
 

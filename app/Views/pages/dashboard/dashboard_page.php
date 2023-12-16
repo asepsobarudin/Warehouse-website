@@ -57,21 +57,21 @@ $hari = [
   </header>
   <div class="flex justify-start items-center flex-wrap gap-2 mb-4">
     <?php if ($session['role'] == "admin") : ?>
-      <a href="<?= site_url() ?>/history" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[24%] hover:bg-info hover:text-white effectTrasition">
+      <a href="<?= site_url() ?>/history" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
         <p class="text-sm font-semibold"> Total Barang Masuk</p>
         <h2 class="font-medium w-full block">
           <span class="text-xl"><?= $goods_in ?></span>
           <span class="text-sm">/Qty</span>
         </h2>
       </a>
-      <a href="<?= site_url() ?>/history" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[24%] hover:bg-info hover:text-white effectTrasition">
+      <a href="<?= site_url() ?>/history" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
         <p class="text-sm font-semibold">Total Barang Keluar</p>
         <h2 class="font-medium w-full block">
           <span class="text-xl"><?= $goods_out ?></span>
           <span class="text-sm">/Qty</span>
         </h2>
       </a>
-      <a href="<?= site_url() ?>/goods/restock" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[24%] hover:bg-info hover:text-white effectTrasition">
+      <a href="<?= site_url() ?>/goods/restock" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
         <p class="text-sm font-semibold">Restok Barang</p>
         <h2 class="font-medium w-full block">
           <span class="text-xl"><?= $restock ?></span>
@@ -79,7 +79,14 @@ $hari = [
         </h2>
       </a>
     <?php endif; ?>
-    <a href="<?= site_url() ?>/goods/add_stock" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[24%] hover:bg-info hover:text-white effectTrasition">
+    <a href="<?= site_url() ?>/goods" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
+      <p class="text-sm font-semibold">Jumlah Barang</p>
+      <h2 class="font-medium w-full block">
+        <span class="text-xl"><?= $goods_qty ?></span>
+        <span class="text-sm">barang</span>
+      </h2>
+    </a>
+    <a href="<?= site_url() ?>/goods/add_stock" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
       <p class="text-sm font-semibold">Stok Dibawah Minimal</p>
       <h2 class="font-medium w-full block">
         <span class="text-xl"><?= $goods_low ?></span>
