@@ -7,19 +7,19 @@ $menu = [
       'icons' => 'dashboard-line-gold-1',
     ],
     [
-      'title' => 'Tambah Stok',
-      'link' => '/goods/add_stock',
-      'icons' => 'box-line-add-gold-1',
-    ],
-    [
       'title' => 'Barang',
       'link' => '/goods',
       'icons' => 'box-line-gold-1',
     ],
     [
-      'title' => 'Restock',
+      'title' => 'Tambah Stok',
+      'link' => '/goods/add_stock',
+      'icons' => 'box-line-add-gold-1',
+    ],
+    [
+      'title' => 'Kirim Barang',
       'link' => '/restock',
-      'icons' => 'restock-line-gold-1'
+      'icons' => 'van-line-gold-1'
     ],
   ],
 ];

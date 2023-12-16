@@ -676,6 +676,7 @@ async function GoodsInOut() {
         data: {
           labels: chartData.map((row) =>
             row.name.length > 15 ? row.name.substring(0, 15) + "..." : row.name
+            // row.name.split(" ")
           ),
           datasets: [
             {

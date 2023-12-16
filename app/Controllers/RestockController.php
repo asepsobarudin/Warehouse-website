@@ -26,7 +26,7 @@ class RestockController extends BaseController
     public function index()
     {
         $data = [
-            'title' => 'Restock',
+            'title' => 'Kirim Barang',
         ];
 
         return view('pages/restock/restock_page', $data);
