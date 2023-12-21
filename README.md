@@ -41,6 +41,12 @@ Run the following commands in the terminal to migrate the database and seed the 
 ```bash
 php spark migrate
 ```
+or if a database has been created:
+```bash
+php spark migrate:refresh
+```
+
+Optional if you want to add data automatically:
 ```bash
 php spark db:seed Goods
 ```
