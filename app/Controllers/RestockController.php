@@ -192,7 +192,7 @@ class RestockController extends BaseController
             }
         } else {
             $data = [
-                'title' => 'Buat Restock',
+                'title' => 'Buat Pengiriman',
                 'link' => '/restock',
                 'restock_code' => $this->Restock->uniqueCode()
             ];
@@ -469,7 +469,7 @@ class RestockController extends BaseController
 
         if ($users['id'] === $restock['user_id'] || $decoded->role === "admin") {
             $data = [
-                'title' => 'Edit Restock',
+                'title' => 'Edit Pengiriman',
                 'link' => '/restock',
                 'status' => $restock['status'],
                 'restock_code' => $restock['restock_code']
@@ -600,7 +600,7 @@ class RestockController extends BaseController
             $hours = $hoursDifference > 24 * 60 * 60;
 
             $data = [
-                'title' => 'Detail Restock',
+                'title' => 'Detail Pengiriman',
                 'link' => '/restock',
                 'restock' => $restock['restock_code'],
                 'date' => $restock['updated_at'],

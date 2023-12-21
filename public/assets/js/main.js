@@ -1,3 +1,4 @@
+// Searc Goods List
 async function searchGoods({ goods }) {
   const data = {
     search: goods,
@@ -16,6 +17,7 @@ async function searchGoods({ goods }) {
   }
 }
 
+// Goods Page List
 loadData({
   text: `/goods`,
   fnc: `GoodsPageList({url: '${baseURL}/goods/goods_list'})`,
@@ -111,6 +113,7 @@ async function GoodsPageList({ url }) {
   }, result);
 }
 
+// Search Goods
 async function GoodsSearchList({ url }) {
   tabelGoodsList.innerHTML = tableLoading({
     col: 6,
@@ -163,6 +166,7 @@ async function GoodsSearchList({ url }) {
   }
 }
 
+// Get Restock List
 loadData({
   text: `/restock`,
   fnc: `RestockPageList({url: '${baseURL}/restock/restock_list'})`,
@@ -257,6 +261,7 @@ async function RestockPageList({ url }) {
   }, result);
 }
 
+// GET History Goods List
 loadData({
   text: `/history`,
   fnc: `GoodsHistoryList({url: '${baseURL}/history/history_list'})`,
@@ -346,6 +351,7 @@ async function GoodsHistoryList({ url }) {
   }
 }
 
+// GET Restock by date
 async function DateRestockList() {
   const getDate = document.getElementById("input-date");
   if (getDate.value.length > 0) {
@@ -387,6 +393,7 @@ async function DateRestockList() {
   }
 }
 
+// GET History by date
 async function DateHistoryList() {
   const getDate = document.getElementById("input-date");
   if (getDate.value.length > 0) {
@@ -428,6 +435,7 @@ async function DateHistoryList() {
   }
 }
 
+// Get Trash Restock List
 loadData({
   text: `/trash`,
   fnc: `RestockTrashList({url: '${baseURL}/restock/trash'})`,
@@ -512,6 +520,7 @@ async function RestockTrashList({ url }) {
   }, result);
 }
 
+// Goods Trash List
 loadData({
   text: `/trash`,
   fnc: `GoodsTrashList({url: '${baseURL}/goods/trash'})`,
@@ -598,6 +607,7 @@ async function GoodsTrashList({ url }) {
   }, result);
 }
 
+// Get Data Hitory QTY Goods
 loadData({
   text: `/dashboard`,
   fnc: `ChartHistory()`,
@@ -605,58 +615,50 @@ loadData({
 
 async function ChartHistory() {
   const url = `${siteURL}/goods_history`;
-  const result = await get({
+  const getDate = document.getElementById("input-date-7").value;
+
+  const data = {
+    date: getDate,
+  };
+
+  const result = await post({
+    data: data,
     url: url,
   });
 
   setTimeout(() => {
-    const data1 = result.goodsHistory;
-    const data2 = result.goodsRestock;
-
     if (role == "admin") {
-      new Chart(document.getElementById("goods_in"), {
+      MakeChart({
+        elementDiv: "div_goods_in",
+        elementCanvas: "goods_in",
+        data: result.goodsHistory,
         type: "line",
-        data: {
-          labels: data1.map((row) => row.key),
-          datasets: [
-            {
-              label: "Total barang masuk (per 7 hari)",
-              data: data1.map((row) => row.qty),
-              borderColor: "#599afe",
-            },
-          ],
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-          },
-        },
+        colors: "#599afe",
+        index: "x",
+        label: "Total barang masuk (per 30 hari)",
       });
 
-      new Chart(document.getElementById("goods_out"), {
+      MakeChart({
+        elementDiv: "div_goods_out",
+        elementCanvas: "goods_out",
+        data: result.goodsRestock,
         type: "line",
-        data: {
-          labels: data2.map((row) => row.key),
-          datasets: [
-            {
-              label: "Total barang keluar (per 7 hari)",
-              data: data2.map((row) => row.qty),
-              borderColor: "#df5338",
-            },
-          ],
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-          },
-        },
+        colors: "#df5338",
+        index: "x",
+        label: "Total barang keluar (per 30 hari)",
       });
     }
-
-    GoodsInOut();
   }, result);
 }
 
+// Chart Get Good In Out input date
+loadData({
+  text: `/dashboard`,
+  fnc: `GoodsInOut();`,
+});
+
 async function GoodsInOut() {
-  const getDate = document.getElementById("input-date").value;
+  const getDate = document.getElementById("input-date-1").value;
   const url = `${siteURL}/goods_in_out`;
 
   const data = {
@@ -666,49 +668,30 @@ async function GoodsInOut() {
   const result = await post({ url: url, data: data });
 
   setTimeout(() => {
-    if (Array.isArray(window.myChart)) {
-      window.myChart.forEach((chart) => chart.destroy());
-    }
-
-    const createBarChart = (canvasId, chartData, label, backgroundColor) => {
-      var MyChart = new Chart(document.getElementById(canvasId), {
-        type: "bar",
-        data: {
-          labels: chartData.map((row) =>
-            row.name.length > 15 ? row.name.substring(0, 15) + "..." : row.name
-            // row.name.split(" ")
-          ),
-          datasets: [
-            {
-              label: label,
-              data: chartData.map((row) => row.qty),
-              backgroundColor: backgroundColor,
-            },
-          ],
-        },
-        options: {
-          indexAxis: "y",
-          responsive: true,
-          maintainAspectRatio: false,
-        },
-      });
-
-      return MyChart;
+    const options = {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
     };
 
-    const chart1 = createBarChart(
-      "goods_in_list",
-      result.goodsIn,
-      "Barang masuk",
-      "#599afe"
-    );
-    const chart2 = createBarChart(
-      "goods_out_list",
-      result.goodsOut,
-      "Barang keluar",
-      "#df5338"
-    );
+    MakeChart({
+      elementDiv: "div_goods_in_list",
+      elementCanvas: "goods_in_list",
+      data: result.goodsIn,
+      type: "bar",
+      colors: "#599afe",
+      index: "y",
+      label: "Barang Masuk",
+    });
 
-    window.myChart = [chart1, chart2];
+    MakeChart({
+      elementDiv: "div_goods_out_list",
+      elementCanvas: "goods_out_list",
+      data: result.goodsOut,
+      type: "bar",
+      colors: "#df5338",
+      index: "y",
+      label: "Barang Keluar",
+    });
   }, result);
 }

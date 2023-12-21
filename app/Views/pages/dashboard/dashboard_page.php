@@ -56,6 +56,22 @@ $hari = [
     </button>
   </header>
   <div class="flex justify-start items-center flex-wrap gap-2 mb-4">
+    <?php if ($session['role'] == "gudang") : ?>
+      <div class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
+        <p class="text-sm font-semibold"> Total Barang Masuk</p>
+        <h2 class="font-medium w-full block">
+          <span class="text-xl"><?= $goods_in ?></span>
+          <span class="text-sm">/Qty</span>
+        </h2>
+      </div>
+      <div class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
+        <p class="text-sm font-semibold">Total Barang Keluar</p>
+        <h2 class="font-medium w-full block">
+          <span class="text-xl"><?= $goods_out ?></span>
+          <span class="text-sm">/Qty</span>
+        </h2>
+      </div>
+    <?php endif; ?>
     <?php if ($session['role'] == "admin") : ?>
       <a href="<?= site_url() ?>/history" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
         <p class="text-sm font-semibold"> Total Barang Masuk</p>
@@ -95,36 +111,41 @@ $hari = [
     </a>
   </div>
   <?php if ($session['role'] == "admin") : ?>
-  <div class="flex justify-start items-center flex-wrap mt-2">
+    <div class="flex justify-end items-center gap-2 flex-wrap">
+      <label for="input-date" class="w-full md:w-max">
+        <input type="date" name="input-date-7" id="input-date-7" class="block w-full md::min-w-[100px] outline-none p-2 border-2 border-black/10 focus:border-black/30 rounded-md" value="<?= date('Y-m-d') ?>" onchange="ChartHistory()">
+      </label>
+    </div>
+    <div class="flex justify-start items-center flex-wrap mt-2">
       <div class="w-full lg:w-[50%] block">
-        <div class="w-full min-h-max md:min-h-[400px] lg:min-h-[300px]">
+        <div class="w-full min-h-max md:min-h-[400px] lg:min-h-[300px]" id="div_goods_in">
           <canvas id="goods_in"></canvas>
         </div>
       </div>
 
       <div class="w-full lg:w-[50%] block">
-        <div class="w-full min-h-max md:min-h-[400px] lg:min-h-[300px]">
+        <div class="w-full min-h-max md:min-h-[400px] lg:min-h-[300px]" id="div_goods_out">
           <canvas id="goods_out"></canvas>
         </div>
       </div>
     </div>
-    <?php endif; ?>
+  <?php endif; ?>
 
   <div class="flex justify-between items-center gap-2 flex-wrap mt-14">
     <h2 class="text-lg font-medium w-full md:w-max text-center">Barang Masuk & Keluar</h2>
     <label for="input-date" class="w-full md:w-max">
-      <input type="date" name="input-date" id="input-date" class="block w-full md::min-w-[100px] outline-none p-2 border-2 border-black/10 focus:border-black/30 rounded-md" value="<?= date('Y-m-d') ?>" onchange="GoodsInOut()">
+      <input type="date" name="input-date-1" id="input-date-1" class="block w-full md::min-w-[100px] outline-none p-2 border-2 border-black/10 focus:border-black/30 rounded-md" value="<?= date('Y-m-d') ?>" onchange="GoodsInOut()">
     </label>
   </div>
   <div class="flex justify-start items-center flex-wrap mb-2">
     <div class=" w-full lg:w-[95%] block">
-      <div class="w-full min-h-[500px]">
+      <div class="w-full min-h-[500px]" id="div_goods_in_list">
         <canvas id="goods_in_list"></canvas>
       </div>
     </div>
 
     <div class="w-full lg:w-[95%] block">
-      <div class="w-full min-h-[500px]">
+      <div class="w-full min-h-[500px]" id="div_goods_out_list">
         <canvas id="goods_out_list"></canvas>
       </div>
     </div>

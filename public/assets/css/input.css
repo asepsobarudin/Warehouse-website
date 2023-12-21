@@ -91,7 +91,7 @@ body {
 
 /* Navbar */
 nav.navbar {
-  @apply block bg-primary h-screen fixed top-0 right-0 lg:left-0 z-10 drop-shadow-xl;
+  @apply block bg-primary h-screen fixed top-0 right-0 lg:left-0 z-10 drop-shadow-md;
 
   & a.menu {
     @apply flex justify-start items-center gap-2 rounded-md border-2 border-transparent relative bg-primary;

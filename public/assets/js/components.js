@@ -1,6 +1,6 @@
 // Function Smooth Back To Top
 function backToTop() {
-  const scroll = document.getElementById('body')
+  const scroll = document.getElementById("body");
   scroll.scrollTo({
     top: 0,
     behavior: "smooth",
@@ -41,14 +41,14 @@ function tableLoading({ col, element }) {
   }
 
   let tabel = [];
-  let TD = td.join(',');
+  let TD = td.join(",");
   for (i = 1; i <= 10; i++) {
     tabel.push(`
       <tr class="loading">
         ${TD.replace(/,/g, "</td>")}
       </tr>`);
   }
-  let TABEl = tabel.join(',')
+  let TABEl = tabel.join(",");
 
   return TABEl.replace(/,/g, "</td>");
 }
@@ -58,7 +58,7 @@ function loadData({ text, fnc }) {
   var href = window.location.href;
   var getIndex = href.indexOf(text);
   var link = href.slice(getIndex, getIndex + text.length);
-  if (link == text && !href.includes('/', getIndex + text.length)) {
+  if (link == text && !href.includes("/", getIndex + text.length)) {
     window.addEventListener("load", () => {
       eval(fnc);
     });
@@ -165,4 +165,46 @@ function notification({ notif, status }) {
   notifTimeOut = setTimeout(() => {
     closeConfirmation({ element: `notification_message` });
   }, 3000);
+}
+
+function MakeChart({
+  elementDiv,
+  elementCanvas,
+  data,
+  type,
+  colors,
+  index,
+  label,
+}) {
+  document.getElementById(
+    `${elementDiv}`
+  ).innerHTML = `<canvas id="${elementCanvas}"></canvas>`;
+  const canvas = document.getElementById(`${elementCanvas}`);
+  if (canvas.getContext("2d").chart) {
+    canvas.getContext("2d").chart.destroy();
+  }
+
+  var config = {
+    type: type,
+    data: {
+      labels: data.map((row) =>
+        row.name.length > 30 ? `${row.name.slice(0, 30)}...` : row.name
+      ),
+      datasets: [
+        {
+          label: label,
+          data: data.map((row) => row.qty),
+          backgroundColor: colors,
+          borderColor: colors,
+        },
+      ],
+    },
+    options: {
+      indexAxis: index,
+      responsive: true,
+      maintainAspectRatio: false,
+    },
+  };
+
+  const getChart = new Chart(canvas, config);
 }

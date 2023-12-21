@@ -16,7 +16,7 @@ $routes->post('/auth/remove_online', 'AuthController::removeOnline', ['filter' =
 
 $routes->get('/dashboard', 'DashboardController::index', ['filter' => 'auth']);
 // Json
-$routes->get('/goods_history', 'DashboardController::history', ['filter' => 'auth']);
+$routes->post('/goods_history', 'DashboardController::history', ['filter' => 'auth']);
 $routes->post('/goods_in_out', 'DashboardController::getGoodsInOut', ['filter' => 'auth']);
 // End Json
 $routes->get('/trash', 'DashboardController::trash', ['filter' => 'auth:admin']);

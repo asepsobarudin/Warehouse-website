@@ -51,16 +51,27 @@ class DashboardController extends BaseController
 
     public function history()
     {
-        $date = date('Y-m-d', strtotime('-7 day'));
-        $goodsHistory = $this->GoodsHistory->where('created_at >=', $date)->orderBy('created_at', 'ASC')->findAll();
+        $csrfToken = $this->request->getHeaderLine('X-CSRF-TOKEN');
+        $requestBody = $this->request->getBody();
+        $body = json_decode($requestBody, true);
 
+        if ($csrfToken != csrf_hash()) {
+            $body = null;
+        }
+
+        $date = date('Y-m-d', strtotime('-30 day'));
+        if ($body && isset($body['date'])) {
+            $date = date('Y-m-d', strtotime($body['date'].' -30 day'));
+        }
+
+        $goodsHistory = $this->GoodsHistory->where('created_at >=', $date)->orderBy('created_at', 'ASC')->findAll();
         $setGoods = [];
         foreach ($goodsHistory as $list1) {
             $key = date('Y-m-d', strtotime($list1['created_at']));
             $found = false;
 
             foreach ($setGoods as &$list2) {
-                if ($list2['key'] == $key) {
+                if ($list2['name'] == $key) {
                     $list2['qty'] += $list1['qty'];
                     $found = true;
                     break;
@@ -69,12 +80,11 @@ class DashboardController extends BaseController
 
             if (!$found) {
                 $setGoods[] = [
-                    'key' => $key,
+                    'name' => $key,
                     'qty' => $list1['qty'],
                 ];
             }
         }
-
 
         $goodsRestock = $this->GoodsRestock->where('updated_at >=', $date)->orderBy('updated_at', 'ASC')->findAll();
         $setRestock = [];
@@ -83,7 +93,7 @@ class DashboardController extends BaseController
             $found = false;
 
             foreach ($setRestock as &$list2) {
-                if ($list2['key'] == $key) {
+                if ($list2['name'] == $key) {
                     $list2['qty'] += $list1['qty'];
                     $found = true;
                     break;
@@ -92,7 +102,7 @@ class DashboardController extends BaseController
 
             if (!$found) {
                 $setRestock[] = [
-                    'key' => $key,
+                    'name' => $key,
                     'qty' => $list1['qty'],
                 ];
             }

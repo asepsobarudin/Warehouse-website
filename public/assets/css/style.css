@@ -1658,7 +1658,7 @@ nav.navbar{
   height: 100vh;
   --tw-bg-opacity: 1;
   background-color: rgb(34 40 49 / var(--tw-bg-opacity));
-  --tw-drop-shadow: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+  --tw-drop-shadow: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
@@ -4619,8 +4619,8 @@ button.copy:active{
     min-height: 300px;
   }
 
-  .lg\:w-\[24\%\]{
-    width: 24%;
+  .lg\:w-\[19\%\]{
+    width: 19%;
   }
 
   .lg\:w-\[300px\]{
@@ -4650,10 +4650,6 @@ button.copy:active{
   .lg\:w-max{
     width: -moz-max-content;
     width: max-content;
-  }
-
-  .lg\:w-\[19\%\]{
-    width: 19%;
   }
 
   .lg\:max-w-none{
