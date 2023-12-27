@@ -87,7 +87,7 @@ $hari = [
           <span class="text-sm">/Qty</span>
         </h2>
       </a>
-      <a href="<?= site_url() ?>/goods/restock" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
+      <a href="<?= site_url() ?>/restock" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
         <p class="text-sm font-semibold">Restok Barang</p>
         <h2 class="font-medium w-full block">
           <span class="text-xl"><?= $restock ?></span>
@@ -111,7 +111,8 @@ $hari = [
     </a>
   </div>
   <?php if ($session['role'] == "admin") : ?>
-    <div class="flex justify-end items-center gap-2 flex-wrap">
+    <div class="flex justify-between items-center gap-2 flex-wrap">
+      <h2 class="text-lg font-medium">Total Barang Masuk Dan Keluar</h2>
       <label for="input-date" class="w-full md:w-max">
         <input type="date" name="input-date-7" id="input-date-7" class="block w-full md::min-w-[100px] outline-none p-2 border-2 border-black/10 focus:border-black/30 rounded-md" value="<?= date('Y-m-d') ?>" onchange="ChartHistory()">
       </label>
@@ -132,7 +133,7 @@ $hari = [
   <?php endif; ?>
 
   <div class="flex justify-between items-center gap-2 flex-wrap mt-14">
-    <h2 class="text-lg font-medium w-full md:w-max text-center">Barang Masuk & Keluar</h2>
+    <h2 class="text-lg font-medium w-full md:w-max text-center">Barang Masuk Dan Keluar</h2>
     <label for="input-date" class="w-full md:w-max">
       <input type="date" name="input-date-1" id="input-date-1" class="block w-full md::min-w-[100px] outline-none p-2 border-2 border-black/10 focus:border-black/30 rounded-md" value="<?= date('Y-m-d') ?>" onchange="GoodsInOut()">
     </label>

@@ -4,10 +4,10 @@
  <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="<?= base_url('/assets/css/style.css') ?>">
+   <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
    <link rel="shortcut icon" type="image/png" href="<?= base_url('assets/images/icons.png') ?>">
-   <script src="<?= base_url() ?>/assets/js/jquery.js"></script>
-   <script src="<?= base_url() ?>/assets/js/chart.js"></script>
+   <script src="<?= base_url() ?>assets/js/jquery.js"></script>
+   <script src="<?= base_url() ?>assets/js/chart.js"></script>
 
    <title><?= $title ?></title>
  </head>
@@ -28,10 +28,9 @@
    <?php
     $session = session()->get('sessionData');
     ?>
-
-   <script src="<?= base_url('/assets/js/components.js') ?>"></script>
-   <script src="<?= base_url('/assets/js/layout.js') ?>"></script>
-   <script src="<?= base_url('/assets/js/api.js') ?>"></script>
+   <script src="<?= base_url('assets/js/api.js') ?>"></script>
+   <script src="<?= base_url('assets/js/components.js') ?>"></script>
+   <script src="<?= base_url('assets/js/layout.js') ?>"></script>
    <script>
      const containerPage = document.getElementById('container_page');
      const baseURL = '<?= base_url() ?>';
@@ -150,7 +149,7 @@
        goodsList.classList.add('tabActive')
      });
    </script>
-   <script src="<?= base_url('/assets/js/main.js') ?>"></script>
+   <script src="<?= base_url('assets/js/main.js') ?>"></script>
  </body>
 
  </html>

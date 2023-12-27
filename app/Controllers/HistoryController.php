@@ -90,30 +90,8 @@ class HistoryController extends BaseController
             return $timestampB - $timestampA;
         });
 
-        $lengthData = sizeof($setGoods);
-
-        $groups = null;
-        if (count($this->GoodsRestock->findAll()) >= count($this->GoodsHistory->findAll())) {
-            $groups = 'group1';
-        } else {
-            $groups = 'group2';
-        }
-
-        $nextURL = null;
-        if ($lengthData != 0) {
-            $nextURL = $this->Pager->getNextPageURI($groups);
-        }
-
-        $perPage = $this->Pager->getPerPage('groups1') + $this->Pager->getPerPage('groups2');
-        $total = $this->Pager->getTotal('group1') + $this->Pager->getTotal('group2');
         $data = [
             'goods' => $setGoods,
-            'currentPage' => $this->Pager->getCurrentPage($groups),
-            'pageCount'  => $this->Pager->getPageCount($groups),
-            'perPage' => $perPage,
-            'totalItems' => $total,
-            'nextPage' => $nextURL,
-            'backPage' => $this->Pager->getPreviousPageURI($groups)
         ];
 
         $this->response->setContentType('application/json');

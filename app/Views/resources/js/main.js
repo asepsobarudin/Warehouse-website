@@ -103,8 +103,8 @@ async function GoodsPageList({ url }) {
       <tr>
         <td colspan="6">
           <div class="table_loading">
-            <img src="${baseURL}/assets/icons/not-line-black-1.svg" alt="not-line">
-            <h2>Tidak ditemukan!</h2>
+              <img src="${baseURL}/assets/icons/not-line-black-1.svg" alt="not-line">
+
           </div>
         </td>
       </tr>
@@ -153,7 +153,7 @@ async function GoodsSearchList({ url }) {
           <td colspan="7" >
             <div class="table_loading">
               <img src="${baseURL}/assets/icons/not-line-black-1.svg" alt="not-line">
-              <h2>Tidak ditemukan!</h2>
+
             </div>
           </td>
         </tr>
@@ -253,7 +253,6 @@ async function RestockPageList({ url }) {
         <td colspan="7">
           <div class="table_loading">
             <img src="${baseURL}/assets/icons/not-line-black-1.svg" alt="not-line">
-            <h2>Tidak ditemukan!</h2>
           </div>
         </td>
       </tr>
@@ -275,14 +274,13 @@ async function GoodsHistoryList({ url }) {
   });
 
   const result = await get({ url: url });
-  console.log(result)
 
   if (result.code) {
     tabelGoodsHistory.innerHTML = tableError({ col: 6, code: result.code });
   }
 
   if (result && result.goods?.length > 0) {
-    var noList = 1;
+    var noList = (result.currentPage - 1) * result.perPage + 1;
     setTimeout((async) => {
       tabelGoodsHistory.innerHTML = "";
       result.goods.map(async (value) => {
@@ -292,6 +290,53 @@ async function GoodsHistoryList({ url }) {
         });
         noList++;
       });
+
+      const PaginateText = document.getElementById("paginate_text");
+      if (result.currentPage && result.pageCount && result.totalItems) {
+        PaginateText.innerHTML = `
+          <span>${result.currentPage} dari ${result.pageCount} (${result.totalItems} barang)</span>
+        `;
+      }
+
+      const PaginateButton = document.getElementById("paginate_button");
+      if (result.backPage) {
+        PaginateButton.innerHTML += `
+          <button class="back" onclick="GoodsHistoryList({url: '${result.backPage}'})">
+            Back
+          </button>
+        `;
+      }
+      if (result.pageCount >= 5) {
+        for (
+          i = Math.max(1, result.currentPage - 5);
+          i < result.currentPage;
+          i++
+        ) {
+          PaginateButton.innerHTML += `
+              <button class="number" onclick="GoodsHistoryList({url: '${siteURL}/goods/goods_list?page=${i}'})">
+                ${i}
+              </button>
+            `;
+        }
+
+        for (i = result.currentPage; i <= result.pageCount; i++) {
+          if (result.currentPage != i) {
+            PaginateButton.innerHTML += `
+              <button class="number" onclick="GoodsHistoryList({url: '${siteURL}/goods/goods_list?page=${i}'})">
+                ${i}
+              </button>
+            `;
+          }
+        }
+      }
+
+      if (result.nextPage) {
+        PaginateButton.innerHTML += `
+          <button class="back" onclick="GoodsHistoryList({url: '${result.nextPage}'})">
+            Next
+          </button>
+        `;
+      }
     }, result);
   } else {
     tabelGoodsHistory.innerHTML = `
@@ -340,7 +385,6 @@ async function DateRestockList() {
         <td colspan="7" >
           <div class="table_loading">
             <img src="${baseURL}/assets/icons/not-line-black-1.svg" alt="not-line">
-            <h2>Tidak ditemukan!</h2>
           </div>
         </td>
       </tr>
@@ -383,7 +427,6 @@ async function DateHistoryList() {
         <td colspan="7" >
           <div class="table_loading">
             <img src="${baseURL}/assets/icons/not-line-black-1.svg" alt="not-line">
-            <h2>Tidak ditemukan!</h2>
           </div>
         </td>
       </tr>
@@ -469,7 +512,6 @@ async function RestockTrashList({ url }) {
         <td colspan="6" >
           <div class="table_loading">
             <img src="${baseURL}/assets/icons/not-line-black-1.svg" alt="not-line">
-            <h2>Tidak ditemukan!</h2>
           </div>
         </td>
       </tr>
@@ -557,8 +599,6 @@ async function GoodsTrashList({ url }) {
         <td colspan="6" >
           <div class="table_loading">
             <img src="${baseURL}/assets/icons/not-line-black-1.svg" alt="not-line">
-            <h2>Tidak ditemukan!</h2>
-            <h2>
           </div>
         </td>
       </tr>
@@ -595,7 +635,7 @@ async function ChartHistory() {
         type: "line",
         colors: "#599afe",
         index: "x",
-        label: "Total barang masuk",
+        label: "Total barang masuk (per 30 hari)",
       });
 
       MakeChart({
@@ -605,7 +645,7 @@ async function ChartHistory() {
         type: "line",
         colors: "#df5338",
         index: "x",
-        label: "Total barang keluar",
+        label: "Total barang keluar (per 30 hari)",
       });
     }
   }, result);

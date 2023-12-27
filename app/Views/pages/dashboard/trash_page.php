@@ -17,11 +17,11 @@ $role = $session['role'];
     </button>
   </header>
   <div class="block w-full">
-    <div class="flex justify-start items-center w-full gap-1">
-      <button id="restock_trash" class="block p-2 rounded-t-md border-x-2 border-t-2 cursor-pointer tabActive">
+    <div class="flex justify-start items-center w-full">
+      <button id="restock_trash" class="block p-2 border-x-2 border-t-2 cursor-pointer tabActive">
         Restock
       </button>
-      <button id="goods_trash" class="block p-2 rounded-t-md border-x-2 border-t-2 cursor-pointer">
+      <button id="goods_trash" class="block p-2 border-x-2 border-t-2 cursor-pointer">
         Barang
       </button>
     </div>

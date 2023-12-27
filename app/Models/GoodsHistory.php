@@ -61,7 +61,7 @@ class GoodsHistory extends Model
     protected $afterDelete    = [];
 
     public function listGoods () {
-        $listGoods = $this->orderBy('created_at', 'DESC')->paginate(15, 'group2');
+        $listGoods = $this->orderBy('created_at', 'DESC')->findAll();
         return $listGoods;
     }
 

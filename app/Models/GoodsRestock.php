@@ -64,7 +64,7 @@ class GoodsRestock extends Model
     protected $afterDelete    = [];
 
     public function listGoods () {
-        $listRestock = $this->orderBy('created_at', 'DESC')->paginate(15, 'group1');
+        $listRestock = $this->orderBy('created_at', 'DESC')->findAll();
         return $listRestock;
     }
 

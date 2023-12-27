@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/style.css') ?>">
   <link rel="shortcut icon" type="image/png" href="<?= base_url('assets/images/icons.png') ?>">
-  <script src="<?= base_url() ?>/assets/js/jquery.js"></script>
+  <script src="<?= base_url() ?>assets/js/jquery.js"></script>
   <title> <?= $title ?> </title>
 </head>
 
@@ -39,9 +39,9 @@
     $userRole = $session['role'];
   }
   ?>
-
-  <script src="<?= base_url('/assets/js/components.js') ?>"></script>
-  <script src="<?= base_url('/assets/js/layout.js') ?>"></script>
+  <script src="<?= base_url('assets/js/api.js') ?>"></script>
+  <script src="<?= base_url('assets/js/components.js') ?>"></script>
+  <script src="<?= base_url('assets/js/layout.js') ?>"></script>
   <script>
     const baseURL = '<?= base_url() ?>';
     const siteURL = '<?= site_url() ?>';
@@ -60,11 +60,6 @@
         document.getElementById("out_price").innerHTML = 'Rp. ' + setPrice
       })
     })
-
-    loadData({
-      text: "/goods/edit/",
-      fnc: 'getPrice()'
-    });
 
     function getPrice() {
       const getPrice = price.value;
@@ -131,8 +126,7 @@
       }
     }
   </script>
-  <script src="<?= base_url('/assets/js/api.js') ?>"></script>
-  <script src="<?= base_url('/assets/js/sub_main.js') ?>"></script>
+  <script src="<?= base_url('assets/js/sub_main.js') ?>"></script>
 </body>
 
 </html>
