@@ -9,7 +9,7 @@ function tableGoods({ no, value, restockCode }) {
         <span>${value.goods_stock_warehouse}</span>
       </td>
       <td>
-        <button class="buttonInfo" onclick="addCartRestock({restock: '${restockCode}', goods: '${value.goods_code}', btn: ${no} })" id="addCartRestock${no}">
+        <button class="buttonInfo" onclick="addCartRestock({goods: '${value.goods_code}', btn: ${no} })" id="addCartRestock${no}">
           <img src="${baseURL}assets/icons/cart-line-plus-white-1.svg" alt="add-line">
           <img src="${baseURL}assets/icons/cart-line-plus-blue-1.svg" alt="add-line">
           <h2>Tambahkan</h2>

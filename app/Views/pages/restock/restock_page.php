@@ -42,10 +42,10 @@ $role = $session['role'];
           <td class="p-2 font-semibold text-center bg-primary text-secondary">#</td>
           <td class="p-2 font-semibold text-center bg-primary text-secondary">
             <span class="hidden md:block">Tanggal</span>
-            <span class="block md:hidden">Restock</span>
+            <span class="block md:hidden">Pengiriman</span>
           </td>
           <td class="p-2 font-semibold text-center bg-primary text-secondary hidden md:table-cell">
-            Kode
+            Kode Faktur
           </td>
           <td class="p-2 font-semibold text-center bg-primary text-secondary hidden md:table-cell">Status</td>
           <?php if ($role == 'admin') : ?>

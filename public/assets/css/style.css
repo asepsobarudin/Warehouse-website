@@ -783,6 +783,18 @@ video {
   min-height: 100vh;
 }
 
+.min-h-\[450px\]{
+  min-height: 450px;
+}
+
+.min-h-\[400px\]{
+  min-height: 400px;
+}
+
+.min-h-\[410px\]{
+  min-height: 410px;
+}
+
 .w-1\/2{
   width: 50%;
 }
@@ -4363,6 +4375,10 @@ button.copy:active{
   border-color: transparent;
 }
 
+.hover\:border-black\/30:hover{
+  border-color: rgb(0 0 0 / 0.3);
+}
+
 .hover\:bg-black\/0:hover{
   background-color: rgb(0 0 0 / 0);
 }
@@ -4437,6 +4453,10 @@ button.copy:active{
 .active\:border-primary:active{
   --tw-border-opacity: 1;
   border-color: rgb(34 40 49 / var(--tw-border-opacity));
+}
+
+.active\:border-black\/30:active{
+  border-color: rgb(0 0 0 / 0.3);
 }
 
 .group:nth-child(odd) .group-odd\:bg-white{

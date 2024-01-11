@@ -88,10 +88,10 @@ $hari = [
         </h2>
       </a>
       <a href="<?= site_url() ?>/restock" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
-        <p class="text-sm font-semibold">Restok Barang</p>
+        <p class="text-sm font-semibold">Jumlah Pengiriman</p>
         <h2 class="font-medium w-full block">
           <span class="text-xl"><?= $restock ?></span>
-          <span class="text-sm">Restok</span>
+          <span class="text-sm">Pengiriman</span>
         </h2>
       </a>
     <?php endif; ?>

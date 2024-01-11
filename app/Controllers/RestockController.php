@@ -194,7 +194,6 @@ class RestockController extends BaseController
             $data = [
                 'title' => 'Buat Pengiriman',
                 'link' => '/restock',
-                'restock_code' => $this->Restock->uniqueCode()
             ];
             return view('pages/restock/restock_create', $data);
         }

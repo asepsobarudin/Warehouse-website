@@ -94,24 +94,4 @@ class Restock extends Model
     {
         return $this->where('id', $id)->withDeleted()->first();
     }
-
-    public function uniqueCode()
-    {
-        $newCode = '';
-        $getCode = $this->where('restock_code', $newCode)->first();
-
-        do {
-            $prefix = 'RS';
-            $maxDigit = 5;
-            $unique = uniqid();
-
-            $result = $this->findAll();
-            $maxCode = sizeof($result);
-            $newNumericPart = $maxCode + 1;
-
-            $newCode = $prefix . $unique . str_pad($newNumericPart, $maxDigit, '0', STR_PAD_LEFT);
-        } while ($newCode == $getCode);
-
-        return $newCode;
-    }
 }

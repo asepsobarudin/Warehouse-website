@@ -1,9 +1,10 @@
 // Restock
-async function addCartRestock({ restock, goods, btn }) {
+async function addCartRestock({ goods, btn }) {
   const btnLoading = document.getElementById(`addCartRestock${btn}`);
+  const restockCode = document.getElementById('restock_code').value;
   btnLoading.disabled = true;
   const data = {
-    restock: restock,
+    restock: restockCode,
     goods: goods,
     qty: null,
   };
@@ -216,7 +217,6 @@ async function GoodsList({ url }) {
         goodsTable.innerHTML += tableGoods({
           no: no,
           value: value,
-          restockCode: restockCode,
         });
         no++;
       });
