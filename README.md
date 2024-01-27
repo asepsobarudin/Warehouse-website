@@ -20,7 +20,7 @@ Open the terminal and run the following commands to install the necessary depend
 ```bash 
 composer update 
 ```
-Opsional untuk mengembangkan UI:
+Optional for develop UI:
 ``` bash
 npm install
 ```
