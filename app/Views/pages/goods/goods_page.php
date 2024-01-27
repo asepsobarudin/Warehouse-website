@@ -53,7 +53,9 @@ $role = $session['role'];
             <span class="block lg:hidden">Detail</span>
           </td>
           <td class="p-2 bg-primary text-secondary font-semibold text-center hidden lg:table-cell">Stok</td>
-          <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Aksi</td>
+          <?php if ($role != 'kasir') : ?>
+            <td class="p-2 bg-primary text-secondary font-semibold text-center hidden md:table-cell">Aksi</td>
+          <?php endif; ?>
         </tr>
       </thead>
       <tbody class="goods_page_list" id="goods_page_list">

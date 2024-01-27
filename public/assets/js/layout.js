@@ -1,6 +1,6 @@
-function tableGoods({ no, value}) {
-  let btnCart = '';
-  if(status == 0) {
+function tableGoods({ no, value }) {
+  let btnCart = "";
+  if (status == 0) {
     btnCart = `
     <td>
       <button class="buttonInfo" onclick="addCartRestock({goods: '${value.goods_code}', btn: ${no} })" id="addCartRestock${no}">
@@ -9,7 +9,7 @@ function tableGoods({ no, value}) {
         <h2>Tambahkan</h2>
       </button>
     </td>
-    `
+    `;
   }
   return `
     <tr>
@@ -63,6 +63,21 @@ function TabelPageGoods({ value, no }) {
   const numberWithCommas = fixedNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   const goodsCode = value.goods_code;
   var code = goodsCode.substring(0, 5) + "...";
+  var detailBtn = ``;
+
+  if (role != "kasir") {
+    detailBtn = `
+      <td>
+        <div>
+          <a href="${siteURL}/goods/edit/${value.goods_code}" class="buttonInfo">
+            <img src="${baseURL}/assets/icons/details-line-white-1.svg" alt="eye">
+            <img src="${baseURL}/assets/icons/details-line-blue-1.svg" alt="eye">
+            <h2>Detail</h2>
+          </a>
+        </div>
+      </td>
+    `;
+  }
 
   return `
     <tr>
@@ -88,15 +103,7 @@ function TabelPageGoods({ value, no }) {
           <span>${value.goods_stock_warehouse}</span>
         </div>
       </td>
-      <td>
-        <div>
-          <a href="${siteURL}/goods/edit/${value.goods_code}" class="buttonInfo">
-            <img src="${baseURL}/assets/icons/details-line-white-1.svg" alt="eye">
-            <img src="${baseURL}/assets/icons/details-line-blue-1.svg" alt="eye">
-            <h2>Detail</h2>
-          </a>
-        </div>
-      </td>
+      ${detailBtn}
     </tr>
   `;
 }
