@@ -11,7 +11,11 @@ $role = $session['role'];
   <div class="flex w-full justify-between items-center my-2 flex-wrap">
     <div class="flex justify-center items-center gap-2 w-max">
       <img src="<?= base_url('assets/icons/van-line-black-1.svg') ?>" alt="van-line" class="w-[40px] h-[40px] object-cover">
-      <h2 class="text-2xl text-black font-semibold w-max">Kirim Barang</h2>
+      <?php if ($role == 'kasir') { ?>
+        <h2 class="text-2xl text-black font-semibold w-max">Permintaan</h2>
+      <?php } else { ?>
+        <h2 class="text-2xl text-black font-semibold w-max">Pengiriman</h2>
+      <?php } ?>
     </div>
     <button class="p-2 flex lg:hidden group hover:bg-black/10 rounded-md effectTrasition" onclick="navMobile()">
       <img src="<?= base_url() ?>assets/icons/menu-line-black-1.svg" alt="menu" class="w-[30px] h-[30px] object-cover">
@@ -26,13 +30,16 @@ $role = $session['role'];
           <img src="<?= base_url('assets/icons/update-line-yellow-1.svg') ?>" alt="save" class="w-[30px] h-[30px] object-cover">
         </button>
       </div>
-      <?php if ($role === 'gudang' || $role === 'admin') { ?>
-        <a href="<?= site_url() ?>/restock/create" class="buttonInfo p-1 lg:py-2 lg:pl-4 lg:pr-2 flex justify-center items-center gap-1">
-          <img src="<?= base_url('assets/icons/van-line-white-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
-          <img src="<?= base_url('assets/icons/van-line-blue-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+      <a href="<?= site_url() ?>/restock/create" class="buttonInfo p-1 lg:py-2 lg:pl-4 lg:pr-2 flex justify-center items-center gap-1">
+        <img src="<?= base_url('assets/icons/van-line-white-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+        <img src="<?= base_url('assets/icons/van-line-blue-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+
+        <?php if ($role == 'kasir') { ?>
+          <span class="font-semibold pr-2 hidden lg:block">Buat Permintaan</span>
+        <?php } else { ?>
           <span class="font-semibold pr-2 hidden lg:block">Kirim Barang</span>
-        </a>
-      <?php } ?>
+        <?php } ?>
+      </a>
     </div>
   </div>
   <div class="block w-full min-h-[75vh]">

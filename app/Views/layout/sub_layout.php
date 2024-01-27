@@ -38,6 +38,10 @@
   if (isset($session['role'])) {
     $userRole = $session['role'];
   }
+  $setStatus = '';
+  if (isset($status)) {
+    $setStatus = $status;
+  }
   ?>
   <script src="<?= base_url('assets/js/api.js') ?>"></script>
   <script src="<?= base_url('assets/js/components.js') ?>"></script>
@@ -47,6 +51,7 @@
     const siteURL = '<?= site_url() ?>';
     const restockCode = '<?= $restockCode  ?>';
     const userRole = '<?= $userRole ?>';
+    const status = '<?= $setStatus ?>'
 
     const containerPage = document.getElementById('container_page');
     const price = document.getElementById('goods_price');

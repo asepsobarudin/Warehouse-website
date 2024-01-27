@@ -44,7 +44,7 @@ $hari = [
       <div class="flex justify-center items-center w-max gap-2">
         <img src="<?= base_url() ?>/assets/icons/dashboard-line-black-1.svg" alt="dashboard" class="w-[40px] h-[40px] object-cover">
         <h2 class="text-2xl font-semibold text-primary whitespace-normal">
-          Dashboard, <span class="text-xl font-semibold text-green-800"><?= $session['username'] ?></span>
+          Dashboard, <span class="text-xl font-semibold text-green-800"><?= $session['username'] ?></span><span class="text-base ml-1">(<?= $session['role'] ?>)</span>
         </h2>
       </div>
       <h2 class="text-lg font-medium">
@@ -102,13 +102,15 @@ $hari = [
         <span class="text-sm">barang</span>
       </h2>
     </a>
-    <a href="<?= site_url() ?>/goods/add_stock" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
-      <p class="text-sm font-semibold">Stok Dibawah Minimal</p>
-      <h2 class="font-medium w-full block">
-        <span class="text-xl"><?= $goods_low ?></span>
-        <span class="text-sm">barang</span>
-      </h2>
-    </a>
+    <?php if ($session['role'] != 'kasir') { ?>
+      <a href="<?= site_url() ?>/goods/add_stock" class="flex flex-col justify-center items-start p-3 bg-white rounded-md text-black shadow-md w-full md:w-[49%] lg:w-[19%] hover:bg-info hover:text-white effectTrasition">
+        <p class="text-sm font-semibold">Stok Dibawah Minimal</p>
+        <h2 class="font-medium w-full block">
+          <span class="text-xl"><?= $goods_low ?></span>
+          <span class="text-sm">barang</span>
+        </h2>
+      </a>
+    <?php } ?>
   </div>
   <?php if ($session['role'] == "admin") : ?>
     <div class="flex justify-between items-center gap-2 flex-wrap">

@@ -17,7 +17,7 @@ class Restock extends Model
         'restock_code',
         'status',
         'user_id',
-        'message',
+        'res_user_id',
         'deleted_at'
     ];
 
@@ -81,7 +81,8 @@ class Restock extends Model
         return $restock;
     }
 
-    public function searchListRestock ($date) {
+    public function searchListRestock($date)
+    {
         return $this->like('updated_at', $date)->orderBy('updated_at', 'DESC')->findAll();
     }
 

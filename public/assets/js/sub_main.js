@@ -37,7 +37,7 @@ async function addCartRestock({ goods, btn }) {
     }
   } else {
     var notif = {
-      title: "Data barang gagal ditambahkan!",
+      title: "Data barang gagal ditambahkan! \n silahkan masukan kode faktur|",
     };
     btnLoading.disabled = false;
     notification({ notif: notif, status: 0 });
@@ -55,7 +55,6 @@ async function removeCartRestock({ restock, goods, no }) {
 
   const url = `${siteURL}/restock/delete_goods`;
   const result = await post({ url: url, data: data });
-  console.log(result);
 
   if (result.success && result.load == 1) {
     GoodsList({ url: `${siteURL}/goods/goods_list` });
@@ -91,6 +90,7 @@ async function addCardRestockQty({ no, goods, restock }) {
 
   const url = `${siteURL}/restock/add_qty`;
   const result = await post({ url: url, data: data });
+  console.log(result)
 
   if (result.success) {
     var notif = {
@@ -154,6 +154,7 @@ async function listRestock({ restock }) {
           restockList.innerHTML += cardCartCardRestock({
             no: no,
             value: value,
+            status: result.status
           });
           no++;
         });

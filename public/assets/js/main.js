@@ -199,7 +199,7 @@ async function RestockPageList({ url }) {
       const PaginateText = document.getElementById("paginate_text");
       if (result.currentPage && result.pageCount && result.totalItems) {
         PaginateText.innerHTML = `
-        <span>${result.currentPage} dari ${result.pageCount} (${result.totalItems} barang)</span>
+        <span>${result.currentPage} dari ${result.pageCount}</span>
       `;
       }
 

@@ -99,7 +99,7 @@ class UserController extends BaseController
                 $body['role'] = null;
             }
 
-            if ($body['role'] != 'gudang' && $body['role'] != 'admin') {
+            if ($body['role'] != 'kasir' && $body['role'] != 'gudang' && $body['role'] != 'admin') {
                 $body['role'] = null;
             }
 

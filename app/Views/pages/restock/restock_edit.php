@@ -36,7 +36,9 @@ $session = session()->get('sessionData')
                 <span class="block lg:hidden">Detail</span>
               </td>
               <td class="bg-primary text-secondary font-medium p-2 text-center hidden lg:table-cell">Gudang</td>
-              <td class="bg-primary text-secondary font-medium p-2 text-center hidden md:table-cell">Aksi</td>
+              <?php if ($status = 0) : ?>
+                <td class="bg-primary text-secondary font-medium p-2 text-center hidden md:table-cell">Aksi</td>
+              <?php endif; ?>
             </tr>
           </thead>
           <tbody class="goods_list_restock" id="goods_table">

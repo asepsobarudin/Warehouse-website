@@ -26,7 +26,7 @@ class RestockController extends BaseController
     public function index()
     {
         $data = [
-            'title' => 'Kirim Barang',
+            'title' => 'Pengiriman',
         ];
 
         return view('pages/restock/restock_page', $data);
@@ -40,9 +40,21 @@ class RestockController extends BaseController
         $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
         $restock = [];
 
-        if (isset($decoded->role) && $decoded->role === 'gudang') {
+        if (isset($decoded->role) && $decoded->role === 'kasir') {
             foreach ($restockList as $list) {
                 if (isset($list['user_id']) && $list['user_id'] === $decoded->username) {
+                    $goodsList = $this->GoodsRestock->listRestock($list['id']);
+                    $length = count($goodsList);
+                    $list = array_merge($list, ['qty' => $length]);
+                    unset($list['id']);
+                    $restock = array_merge($restock, [$list]);
+                }
+            }
+        }
+
+        if (isset($decoded->role) && $decoded->role === 'gudang') {
+            foreach ($restockList as $list) {
+                if ((isset($list['user_id']) || $list['user_id'] == $decoded->username) || ($list['status'] == 1 || $list['res_user_id'])) {
                     $goodsList = $this->GoodsRestock->listRestock($list['id']);
                     $length = count($goodsList);
                     $list = array_merge($list, ['qty' => $length]);
@@ -91,6 +103,18 @@ class RestockController extends BaseController
             $session = $this->SessionHelpers->getSession();
             $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
             $restock = [];
+
+            if (isset($decoded->role) && $decoded->role === 'kasir') {
+                foreach ($restockList as $list) {
+                    if (isset($list['user_id']) && $list['user_id'] === $decoded->username) {
+                        $goodsList = $this->GoodsRestock->listRestock($list['id']);
+                        $length = count($goodsList);
+                        $list = array_merge($list, ['qty' => $length]);
+                        unset($list['id']);
+                        $restock = array_merge($restock, [$list]);
+                    }
+                }
+            }
 
             if (isset($decoded->role) && $decoded->role === 'gudang') {
                 foreach ($restockList as $list) {
@@ -164,18 +188,31 @@ class RestockController extends BaseController
                 }
             }
 
+            $status = 0;
+
+            if ($users['role'] == 'gudang' || $users['role'] == 'admin') {
+                $status = 2;
+            } else {
+                $status = 1;
+            }
+
             $data = [
-                'status' => 1,
-                'user_id' => $users['id'],
+                'status' => $status,
             ];
 
             $rules = $this->Restock->getValidationRules();
             $message = $this->Restock->getValidationMessages();
-            unset($rules['restock_code'], $rules['response_user_id']);
+            unset($rules['restock_code']);
+            if (isset($restock['user_id']) && $restock['user_id'] != null) {
+                unset($rules['user_id']);
+            } else {
+                session()->setFlashdata('errors', 'Permintaan restock gagal dibuat!');
+                return redirect()->back();
+            }
             $this->Restock->setValidationRules($rules);
 
-            if (isset($users['id']) != isset($restock['user_id'])) {
-                $data = array_merge($data, ['user_id' => $users['id']]);
+            if (isset($users['id']) != isset($restock['user_id']) && ($users['role'] == 'gudang' || $users['role'] == 'admin')) {
+                $data = array_merge($data, ['res_user_id' => $users['id']]);
             }
 
             if ($this->validateData($data, $rules, $message)) {
@@ -223,10 +260,19 @@ class RestockController extends BaseController
             $this->Restock->setValidationRules($rules);
 
             if (!$restock) {
+                $status = 0;
+                $resUser = null;
+
+                if ($users['role'] == 'gudang' || $users['role'] == 'admin') {
+                    $status = 1;
+                    $resUser = $users['id'];
+                }
+
                 $data = [
                     'restock_code' => $body['restock'],
-                    'status' => 0,
+                    'status' => $status,
                     'user_id' => $users['id'],
+                    'res_user_id' => $resUser
                 ];
 
                 if ($this->validateData($data, $rules, $message) && $this->Restock->insert($data)) {
@@ -244,8 +290,11 @@ class RestockController extends BaseController
                         'restock_id' => $restock['id'],
                         'qty' => 1,
                     ];
-                    $goodsValue = $goods['goods_stock_warehouse'] - 1;
-                    $this->Goods->update($goods['id'], ['goods_stock_warehouse' => $goodsValue]);
+
+                    if ($decoded->role == 'gudang' || $decoded->role == 'admin') {
+                        $goodsValue = $goods['goods_stock_warehouse'] - 1;
+                        $this->Goods->update($goods['id'], ['goods_stock_warehouse' => $goodsValue]);
+                    }
                 } else {
                     $this->response->setContentType('application/json');
                     return $this->response->setJSON(['errors' => 'Barang pada gundang habis!']);
@@ -332,17 +381,18 @@ class RestockController extends BaseController
         $requestBody = $this->request->getBody();
         $body = json_decode($requestBody, true);
         $validated = \Config\Services::validation();
+        $session = $this->SessionHelpers->getSession();
+        $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
+        $users = $this->Users->getUser($decoded->username);
 
         if ($csrfToken != csrf_hash()) {
             $body = null;
         }
 
-
         if ($body && isset($body['restock']) && isset($body['goods']) && isset($body['qty'])) {
             $restock = $this->Restock->getOneData($body['restock']);
             $rules = $this->GoodsRestock->getValidationRules();
             $message = $this->GoodsRestock->getValidationMessages();
-
 
             if ($body['goods'] == 'null' || $body['goods'] == '') {
                 $this->response->setContentType('application/json');
@@ -366,7 +416,7 @@ class RestockController extends BaseController
                 return $this->response->setJSON(['errors' => 'Jumlah barang tidak boleh kurang dari 1!']);
             }
 
-            if ($idGoods['qty'] == $data['qty']) {
+            if ($idGoods['qty'] == $data['qty'] && $restock['user_id'] == $users['id']) {
                 $this->response->setContentType('application/json');
                 return $this->response->setJSON(['errors' => 'Jumlah yang dimasukan sama dengan yang sebelumnya!']);
             }
@@ -385,10 +435,16 @@ class RestockController extends BaseController
                 $goodsValue = $goods['goods_stock_warehouse'] + $resultValue;
             }
 
+            if ($restock['status'] == 1 && $restock['user_id'] != $users['id']) {
+                $goodsValue = $goods['goods_stock_warehouse'] - $body['qty'];
+                $resultValue = $body['qty'];
+            }
 
             if ($this->validateData($data, $rules, $message)) {
-                if (($idGoods && isset($idGoods['id']) && isset($idGoods['goods_id'])) && ($resultValue >= 1 && $goodsValue >= 1) && $this->GoodsRestock->update($idGoods['id'], $data) && $this->Goods->update($idGoods['goods_id'], ['goods_stock_warehouse' => $goodsValue])) {
-                    $this->Restock->update($restock['id'], ['status' => 0]);
+                if (($idGoods && isset($idGoods['id']) && isset($idGoods['goods_id'])) && ($resultValue >= 1 && $goodsValue >= 1) && $this->GoodsRestock->update($idGoods['id'], $data)) {
+                    if ($users['role'] == 'gudang' || $users['role'] == 'admin') {
+                        $this->Goods->update($idGoods['goods_id'], ['goods_stock_warehouse' => $goodsValue]);
+                    }
                     $this->response->setContentType('application/json');
                     return $this->response->setJSON(['success' => 'Jumlah barang berhasil diubah!']);
                 } else {
@@ -410,6 +466,9 @@ class RestockController extends BaseController
         $csrfToken = $this->request->getHeaderLine('X-CSRF-TOKEN');
         $requestBody = $this->request->getBody();
         $body = json_decode($requestBody, true);
+        $session = $this->SessionHelpers->getSession();
+        $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
+        $users = $this->Users->getUser($decoded->username);
 
         if ($csrfToken != csrf_hash()) {
             $body = null;
@@ -434,7 +493,7 @@ class RestockController extends BaseController
 
                 $idGoods = $this->GoodsRestock->checkList($restock['id'], $goods['id']);
                 $load = 0;
-                if (isset($idGoods['qty']) && $idGoods > 0) {
+                if (isset($idGoods['qty']) && $idGoods > 0 && $decoded->role != 'kasir') {
                     $load = 1;
                     $goodsValue = $goods['goods_stock_warehouse'] + $idGoods['qty'];
                     $this->Goods->update($goods['id'], ['goods_stock_warehouse' => $goodsValue]);
@@ -466,7 +525,7 @@ class RestockController extends BaseController
         $decoded = $this->JwtHelpers->decodeToken($session['jwt_token']);
         $users = $this->Users->getUser($decoded->username);
 
-        if ($users['id'] === $restock['user_id'] || $decoded->role === "admin") {
+        if ($users['id'] === $restock['user_id'] || ($decoded->role === "gudang" || $decoded->role === "admin")) {
             $data = [
                 'title' => 'Edit Pengiriman',
                 'link' => '/restock',
@@ -546,7 +605,7 @@ class RestockController extends BaseController
 
         if ($body && isset($body['restock_code'])) {
             $restock = $this->Restock->getOneData($body['restock_code']);
-            if (isset($restock['status']) && $restock['status'] == 1) {
+            if (isset($restock['status']) && ($restock['status'] == 1 || $restock['status'] == 2)) {
                 if ($users['id'] === $restock['user_id'] || $decoded->role === "admin") {
                     if ($this->Restock->update($restock['id'], ['status' => 0])) {
                         session()->setFlashdata('success', 'Pengiriman restock berhasil di batalkan.');
@@ -593,17 +652,11 @@ class RestockController extends BaseController
                 $goodsList = array_merge($goodsList, [$list]);
             }
 
-            $updatedAt = strtotime($restock['updated_at']);
-            $currentDateTime = time();
-            $hoursDifference = $currentDateTime - $updatedAt;
-            $hours = $hoursDifference > 24 * 60 * 60;
-
             $data = [
                 'title' => 'Detail Pengiriman',
                 'link' => '/restock',
                 'restock' => $restock['restock_code'],
                 'date' => $restock['updated_at'],
-                'limit' => $hours,
                 'status' => $restock['status'],
                 'goods' => $goodsList,
             ];

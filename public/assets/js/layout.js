@@ -1,4 +1,16 @@
-function tableGoods({ no, value, restockCode }) {
+function tableGoods({ no, value}) {
+  let btnCart = '';
+  if(status == 0) {
+    btnCart = `
+    <td>
+      <button class="buttonInfo" onclick="addCartRestock({goods: '${value.goods_code}', btn: ${no} })" id="addCartRestock${no}">
+        <img src="${baseURL}assets/icons/cart-line-plus-white-1.svg" alt="add-line">
+        <img src="${baseURL}assets/icons/cart-line-plus-blue-1.svg" alt="add-line">
+        <h2>Tambahkan</h2>
+      </button>
+    </td>
+    `
+  }
   return `
     <tr>
       <td>${no}</td>
@@ -8,18 +20,26 @@ function tableGoods({ no, value, restockCode }) {
         <span>Gudang : </span>
         <span>${value.goods_stock_warehouse}</span>
       </td>
-      <td>
-        <button class="buttonInfo" onclick="addCartRestock({goods: '${value.goods_code}', btn: ${no} })" id="addCartRestock${no}">
-          <img src="${baseURL}assets/icons/cart-line-plus-white-1.svg" alt="add-line">
-          <img src="${baseURL}assets/icons/cart-line-plus-blue-1.svg" alt="add-line">
-          <h2>Tambahkan</h2>
-        </button>
-      </td>
+      ${btnCart}
     </tr>
   `;
 }
 
-function cardCartCardRestock({ no, value }) {
+function cardCartCardRestock({ no, value, status }) {
+  let inputV = null;
+  let deleteBtn = "<div></div>";
+
+  if (status == 1) {
+    inputV = `<input type="number" id="qty${no}" value="${value.qty}" disabled >`;
+  } else {
+    inputV = `<input type="number" id="qty${no}" value="${value.qty}" >`;
+    deleteBtn = `
+                  <button class="buttonDanger" id="buttonDelete${no}" onclick="removeCartRestock({ restock: '${value.restock_code}', goods: '${value.goods_code}', no: ${no} })">
+                    <img src="${baseURL}assets/icons/trash-line-white-1.svg" alt="trash-line">
+                      <img src="${baseURL}assets/icons/trash-line-red-1.svg" alt="trash-line">
+                  </button>`;
+  }
+
   return `
     <div class="card_cart_restock">
       <div>
@@ -27,12 +47,9 @@ function cardCartCardRestock({ no, value }) {
         <h2>${value.goods_name}</h2>
       </div>
       <div>
-        <button class="buttonDanger" id="buttonDelete${no}" onclick="removeCartRestock({ restock: '${value.restock_code}', goods: '${value.goods_code}', no: ${no} })">
-          <img src="${baseURL}assets/icons/trash-line-white-1.svg" alt="trash-line">
-          <img src="${baseURL}assets/icons/trash-line-red-1.svg" alt="trash-line">
-        </button>
+        ${deleteBtn}
         <label for="qty">
-          <input type="number" id="qty${no}" value="${value.qty}">
+          ${inputV}
           <button class="buttonInfo" id="btnQty${no}" onclick="addCardRestockQty({no: ${no}, goods:'${value.goods_code}', restock:'${value.restock_code}'})">Set</button>
         </label>
       </div>
@@ -98,13 +115,24 @@ function TabelPageRestock({ value, no }) {
         <img src="${baseURL}assets/icons/edit-line-white-1.svg" alt="edit-line">
         <img src="${baseURL}assets/icons/edit-line-yellow-1.svg" alt="edit-line">
       </a>
+      <form action="${siteURL}/restock/delete" method="post" id="form_restock_delete${no}">
+            <input type="hidden" name="csrf_test_name" value="${csrfToken.defaultValue}">
+            <input type="hidden" value="${value.restock_code}" name="restock">
+            <button type="button" class="buttonDanger" onclick="messageConfirmation({ title: 'Hapus Permintaan', text: 'Apakah yakin ingin menghapus permintaan restock?', form: 'form_restock_delete${no}' })">
+              <img src="${baseURL}assets/icons/trash-line-white-1.svg" alt="trash-line-1">
+              <img src="${baseURL}assets/icons/trash-line-red-1.svg" alt="trash-line-1">
+            </button>
+          </form>
     `;
   }
 
-  if (value.status == 1) {
+  if (
+    ((value.status == 1 || value.status == 2) && role == "kasir") ||
+    (value.status == 2 && (role == "gudang" || role == "admin"))
+  ) {
     status = `
       <span>
-        <img src="${baseURL}assets/icons/van-line-black-1.svg" alt="edit-line">
+        <img src="${baseURL}assets/icons/send-line-black-1.svg" alt="edit-line">
       </span>
     `;
     setButton = `
@@ -112,6 +140,28 @@ function TabelPageRestock({ value, no }) {
         <img src="${baseURL}assets/icons/details-line-white-1.svg" alt="details-line">
         <img src="${baseURL}assets/icons/details-line-blue-1.svg" alt="details-line">
       </a>
+    `;
+  }
+
+  if (value.status == 1 && (role == "gudang" || role == "admin")) {
+    status = `
+      <span>
+        <img src="${baseURL}assets/icons/package-line-black-1.svg" alt="edit-line">
+      </span>
+    `;
+    setButton = `
+      <a href="${siteURL}/restock/edit/${value.restock_code}" class="buttonWarning">
+        <img src="${baseURL}assets/icons/edit-line-white-1.svg" alt="edit-line">
+        <img src="${baseURL}assets/icons/edit-line-yellow-1.svg" alt="edit-line">
+      </a>
+    `;
+  }
+
+  if (value.status == 2) {
+    status = `
+      <span>
+        <img src="${baseURL}assets/icons/van-line-black-1.svg" alt="edit-line">
+      </span>
     `;
   }
 
@@ -128,7 +178,6 @@ function TabelPageRestock({ value, no }) {
       </td>
     `;
   }
-
 
   return `
     <tr>
@@ -156,14 +205,6 @@ function TabelPageRestock({ value, no }) {
       <td>
         <div>
           ${setButton}
-          <form action="${siteURL}/restock/delete" method="post" id="form_restock_delete${no}">
-            <input type="hidden" name="csrf_test_name" value="${csrfToken.defaultValue}">
-            <input type="hidden" value="${value.restock_code}" name="restock">
-            <button type="button" class="buttonDanger" onclick="messageConfirmation({ title: 'Hapus Permintaan', text: 'Apakah yakin ingin menghapus permintaan restock?', form: 'form_restock_delete${no}' })">
-              <img src="${baseURL}assets/icons/trash-line-white-1.svg" alt="trash-line-1">
-              <img src="${baseURL}assets/icons/trash-line-red-1.svg" alt="trash-line-1">
-            </button>
-          </form>
         </div>
       </td>
     </tr>

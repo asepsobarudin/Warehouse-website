@@ -33,6 +33,7 @@ $session = session()->get('sessionData');
         </div>
         <select name="role" id="role" class="py-3 px-2 bg-white outline-none w-full border-2 rounded-md font-medium">
           <option value="0">--Pilih Role--</option>
+          <option value="kasir">Kasir</option>
           <option value="gudang">Gudang</option>
           <option value="admin">Admin</option>
         </select>

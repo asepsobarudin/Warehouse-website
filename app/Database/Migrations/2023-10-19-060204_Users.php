@@ -123,6 +123,12 @@ class Users extends Migration
                 'unsigned' => true,
                 'null' => true
             ],
+            'res_user_id' => [
+                'type' => 'BIGINT',
+                'constraint' => 20,
+                'unsigned' => true,
+                'null' => true
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
             ],

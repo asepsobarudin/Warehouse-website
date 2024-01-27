@@ -66,6 +66,11 @@ $session = session()->get('sessionData');
                   <?= $list['role'] ?>
                 </span>
               <?php } ?>
+              <?php if ($list['role'] == 'kasir') { ?>
+                <span class="block bg-sky-500 p-2 w-max rounded-md text-white m-auto select-none">
+                  <?= $list['role'] ?>
+                </span>
+              <?php } ?>
             </td>
             <td class="p-2 group-odd:bg-white group-even:bg-dark font-medium text-start md:text-center inline-block w-[50%] md:w-max md:table-cell">
               <?php if ($list['online_status']) { ?>

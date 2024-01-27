@@ -12,15 +12,35 @@ $menu = [
       'icons' => 'box-line-gold-1',
     ],
     [
+      'title' => 'Pengiriman',
+      'link' => '/restock',
+      'icons' => 'van-line-gold-1'
+    ],
+  ],
+
+  'gudang' => [
+    [
       'title' => 'Tambah Stok',
       'link' => '/goods/add_stock',
       'icons' => 'box-line-add-gold-1',
     ],
+  ],
+
+  'admin' => [
     [
-      'title' => 'Kirim Barang',
-      'link' => '/restock',
-      'icons' => 'van-line-gold-1'
+      'title' => 'Pengguna',
+      'link' => '/users',
+      'icons' => 'user-line-groups-gold-1'
     ],
+    [
+      'title' => 'History',
+      'link' => '/history',
+      'icons' => 'history-line-gold-1'
+    ], [
+      'title' => 'Trash',
+      'link' => '/trash',
+      'icons' => 'trash-line-gold-1'
+    ]
   ],
 ];
 
@@ -64,9 +84,49 @@ $role = $session['role'];
                   </a>
                 <?php } ?>
               <?php endforeach; ?>
+
+              <?php if ($role == 'gudang' || $role == 'admin') { ?>
+                <?php foreach ($menu['gudang'] as $list) : ?>
+                  <?php if ($list['title'] == $title) { ?>
+                    <a href="<?= site_url() . $list['link'] ?>" class="menu shadow-black shadow-inner">
+                      <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+                      <h2 class="tit_menu"><?= $list['title'] ?></h2>
+                      <span class="checkActive"></span>
+                    </a>
+                  <?php } else { ?>
+                    <a href="<?= site_url() . $list['link'] ?>" class="menu not_active">
+                      <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+                      <h2 class="tit_menu"><?= $list['title'] ?></h2>
+                    </a>
+                  <?php } ?>
+                <?php endforeach; ?>
+              <?php } ?>
+
+              <?php if ($role === 'admin') : ?>
+                <div class="block my-2 w-full">
+                  <div class="flex justify-between items-center head_menu mb-1">
+                    <span class="block font-semibold text-white/80 text-xs">Admin</span>
+                  </div>
+                  <div class="flex flex-col justify-start items-center gap-2 lg:gap-1">
+                    <?php foreach ($menu['admin'] as $list) : ?>
+                      <?php if ($list['title'] == $title) { ?>
+                        <a href="<?= site_url() . $list['link'] ?>" class="menu shadow-inner shadow-black">
+                          <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+                          <h2 class="tit_menu"><?= $list['title'] ?></h2>
+                          <span class="checkActive"></span>
+                        </a>
+                      <?php } else { ?>
+                        <a href="<?= site_url() . $list['link'] ?>" class="menu not_active">
+                          <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+                          <h2 class="tit_menu"><?= $list['title'] ?></h2>
+                        </a>
+                      <?php } ?>
+                    <?php endforeach; ?>
+                  </div>
+                </div>
+              <?php endif; ?>
             </div>
           </div>
-          <?= $this->include('components/navbar/list_menu/admin') ?>
         </div>
       </div>
 
