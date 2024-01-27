@@ -9,7 +9,7 @@ Warehouse Stocks is a web-based application designed to manage warehouse invento
 ### 1. Clone Repository
 Clone the Warehouse Stocks repository using the following command:
 ```bash
-git clone https://github.com/asepsobarudin/Shop_Cashier_Website
+git clone https://github.com/asepsobarudin/Warehouse-website
 ```
 
 ### 2. Open Folder in Code Editor
