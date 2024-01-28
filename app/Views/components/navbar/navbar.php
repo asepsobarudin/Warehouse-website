@@ -18,6 +18,14 @@ $menu = [
     ],
   ],
 
+  'kasir' => [
+    [
+      'title' => 'Buat Pesanan',
+      'link' => '/restock/create',
+      'icons' => 'box-line-add-gold-1',
+    ],
+  ],
+
   'gudang' => [
     [
       'title' => 'Tambah Stok',
@@ -84,6 +92,23 @@ $role = $session['role'];
                   </a>
                 <?php } ?>
               <?php endforeach; ?>
+
+              <?php if ($role == 'kasir' || $role == 'admin') { ?>
+                <?php foreach ($menu['kasir'] as $list) : ?>
+                  <?php if ($list['title'] == $title) { ?>
+                    <a href="<?= site_url() . $list['link'] ?>" class="menu shadow-black shadow-inner">
+                      <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+                      <h2 class="tit_menu"><?= $list['title'] ?></h2>
+                      <span class="checkActive"></span>
+                    </a>
+                  <?php } else { ?>
+                    <a href="<?= site_url() . $list['link'] ?>" class="menu not_active">
+                      <img src="<?= base_url('assets/icons/' . $list['icons'] . '.svg') ?>" alt="icons" class="block w-[30px] h-[30px] object-cover">
+                      <h2 class="tit_menu"><?= $list['title'] ?></h2>
+                    </a>
+                  <?php } ?>
+                <?php endforeach; ?>
+              <?php } ?>
 
               <?php if ($role == 'gudang' || $role == 'admin') { ?>
                 <?php foreach ($menu['gudang'] as $list) : ?>

@@ -30,16 +30,18 @@ $role = $session['role'];
           <img src="<?= base_url('assets/icons/update-line-yellow-1.svg') ?>" alt="save" class="w-[30px] h-[30px] object-cover">
         </button>
       </div>
-      <a href="<?= site_url() ?>/restock/create" class="buttonInfo p-1 lg:py-2 lg:pl-4 lg:pr-2 flex justify-center items-center gap-1">
-        <img src="<?= base_url('assets/icons/van-line-white-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
-        <img src="<?= base_url('assets/icons/van-line-blue-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+      <?php if ($role != 'kasir') : ?>
+        <a href="<?= site_url() ?>/restock/create" class="buttonInfo p-1 lg:py-2 lg:pl-4 lg:pr-2 flex justify-center items-center gap-1">
+          <img src="<?= base_url('assets/icons/van-line-white-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
+          <img src="<?= base_url('assets/icons/van-line-blue-1.svg') ?>" alt="add" class="w-[30px] h-[30px] object-cover">
 
-        <?php if ($role == 'kasir') { ?>
-          <span class="font-semibold pr-2 hidden lg:block">Buat Permintaan</span>
-        <?php } else { ?>
-          <span class="font-semibold pr-2 hidden lg:block">Kirim Barang</span>
-        <?php } ?>
-      </a>
+          <?php if ($role == 'kasir') { ?>
+            <span class="font-semibold pr-2 hidden lg:block">Buat Permintaan</span>
+          <?php } else { ?>
+            <span class="font-semibold pr-2 hidden lg:block">Kirim Barang</span>
+          <?php } ?>
+        </a>
+      <?php endif; ?>
     </div>
   </div>
   <div class="block w-full min-h-[75vh]">
