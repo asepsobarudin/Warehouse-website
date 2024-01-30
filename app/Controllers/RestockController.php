@@ -289,6 +289,7 @@ class RestockController extends BaseController
                         'goods_id' => $goods['id'],
                         'restock_id' => $restock['id'],
                         'qty' => 1,
+                        'check' => 0,
                     ];
 
                     if ($decoded->role == 'gudang' || $decoded->role == 'admin') {
@@ -407,7 +408,7 @@ class RestockController extends BaseController
                 'goods_id' => $goods['id'],
                 'restock_id' => $restock['id'],
                 'status' => 0,
-                'qty' => $body['qty']
+                'qty' => $body['qty'],
             ];
 
             if ($data['qty'] < 1) {
@@ -438,10 +439,11 @@ class RestockController extends BaseController
             if ($restock['status'] == 1 && $restock['user_id'] != $users['id']) {
                 $goodsValue = $goods['goods_stock_warehouse'] - $body['qty'];
                 $resultValue = $body['qty'];
+                $data = array_merge($data, ['check' => 1]);
             }
 
             if ($this->validateData($data, $rules, $message)) {
-                if (($idGoods && isset($idGoods['id']) && isset($idGoods['goods_id'])) && ($resultValue >= 1 && $goodsValue >= 1) && $this->GoodsRestock->update($idGoods['id'], $data)) {
+                if (($idGoods && isset($idGoods['id']) && isset($idGoods['goods_id'])) && ($resultValue >= 1 && $goodsValue >= 0) && $this->GoodsRestock->update($idGoods['id'], $data)) {
                     if ($users['role'] == 'gudang' || $users['role'] == 'admin') {
                         $this->Goods->update($idGoods['goods_id'], ['goods_stock_warehouse' => $goodsValue]);
                     }

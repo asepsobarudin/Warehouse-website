@@ -28,6 +28,7 @@ function tableGoods({ no, value }) {
 function cardCartCardRestock({ no, value, status }) {
   let inputV = null;
   let deleteBtn = "<div></div>";
+  let setBtn = "<div></div>";
 
   if (status == 1) {
     inputV = `<input type="number" id="qty${no}" value="${value.qty}" disabled >`;
@@ -40,6 +41,14 @@ function cardCartCardRestock({ no, value, status }) {
                   </button>`;
   }
 
+  if(value.check == 0) {
+    setBtn = `
+      <button class="buttonInfo" id="btnQty${no}" onclick="addCardRestockQty({no: ${no}, goods:'${value.goods_code}', restock:'${value.restock_code}'})">Set</button>
+    `;
+  } else {
+    setBtn = `<div></div>`
+  }
+
   return `
     <div class="card_cart_restock">
       <div>
@@ -50,7 +59,7 @@ function cardCartCardRestock({ no, value, status }) {
         ${deleteBtn}
         <label for="qty">
           ${inputV}
-          <button class="buttonInfo" id="btnQty${no}" onclick="addCardRestockQty({no: ${no}, goods:'${value.goods_code}', restock:'${value.restock_code}'})">Set</button>
+          ${setBtn}
         </label>
       </div>
     </div>

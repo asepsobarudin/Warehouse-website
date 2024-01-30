@@ -168,6 +168,10 @@ class Users extends Migration
                 'type' => 'BIGINT',
                 'null' => false
             ],
+            'check' => [
+                'type' => 'INT',
+                'null' => true
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
             ],

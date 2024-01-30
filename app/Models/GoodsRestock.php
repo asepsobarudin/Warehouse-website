@@ -17,10 +17,7 @@ class GoodsRestock extends Model
         'goods_id',
         'restock_id',
         'qty',
-        'qty_send',
-        'qty_damaged',
-        'qty_excess',
-        'qty_less',
+        'check'
     ];
 
     // Dates

@@ -43,6 +43,7 @@
     $setStatus = $status;
   }
   ?>
+
   <script src="<?= base_url('assets/js/api.js') ?>"></script>
   <script src="<?= base_url('assets/js/components.js') ?>"></script>
   <script src="<?= base_url('assets/js/layout.js') ?>"></script>
